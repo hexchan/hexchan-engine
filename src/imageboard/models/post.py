@@ -2,8 +2,37 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.db.models import Prefetch, F
 
 from hexchan import config
+
+
+class RefReplyManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset()
+                .select_related('thread', 'thread__board')
+                .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+        )
+
+
+class PostManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset()
+                .filter(is_deleted=False)
+                .select_related('thread', 'thread__board')
+                .prefetch_related(
+                    Prefetch('images'),
+                    Prefetch('refs', queryset=Post.ref_and_reply_objects.all()),
+                    Prefetch('post_set', to_attr='replies', queryset=Post.ref_and_reply_objects.all()),
+                    Prefetch('created_by'),
+                )
+                .annotate(
+                    thread_hid=F('thread__hid'),
+                    board_hid=F('thread__board__hid'),
+                )
+        )
 
 
 class Post(models.Model):
@@ -116,6 +145,12 @@ class Post(models.Model):
         editable=False,
         db_index=True
     )
+
+    objects = models.Manager()
+
+    active_objects = PostManager()
+
+    ref_and_reply_objects = RefReplyManager()
 
     class Meta:
         verbose_name = _('Post')

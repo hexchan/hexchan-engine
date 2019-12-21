@@ -2,12 +2,12 @@
 from django.template.loader import render_to_string
 from django.db.models import Prefetch, Count
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 # App imports
-from imageboard.models import Thread, Post
+from imageboard.models import Board, Thread, Post
 from imageboard.forms import PostingForm
 from imageboard.views import parts
-from imageboard.views.parts import CacheInterface, prefetch_posts_related_data
 
 
 def thread_page(request, board_hid, thread_hid):
@@ -23,32 +23,12 @@ def thread_page(request, board_hid, thread_hid):
     boards = parts.get_boards()
 
     # Get current board
-    board = parts.get_board(board_hid)
-
-    # Thread queryset
-    thread = parts.get_thread(board_hid, thread_hid)
-
-    # Create cache interface
-    cache_interface = CacheInterface(
-        key='thread_page__{board_hid}__{thread_hid}'.format(board_hid=board_hid, thread_hid=thread_hid),
-        obj=thread,
-        is_admin=request.user.is_authenticated
-    )
-
-    # Get cached page if exists and return it
-    cached_template = cache_interface.get_cached_template()
-    if cached_template:
-        response.write(cached_template)
-        return response
-
-    posts_queryset = Post.objects.filter(is_deleted=False)
-
-    prefetch_args = prefetch_posts_related_data('posts', posts_queryset=posts_queryset)
+    board = get_object_or_404(Board, hid=board_hid)
 
     # Prefetch stuff for the thread
     thread = Thread.objects\
         .select_related('board')\
-        .prefetch_related(*prefetch_args) \
+        .prefetch_related(Prefetch('posts', queryset=Post.active_objects.all()))\
         .annotate(posts_count=Count('posts')) \
         .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
 
@@ -69,9 +49,6 @@ def thread_page(request, board_hid, thread_hid):
         },
     )
 
-    # Cache data
-    cache_data = cache_interface.make_cache_info(board=board, thread=thread)
-
     # Render template
     rendered_template = render_to_string(
         'imageboard/thread_page.html',
@@ -81,14 +58,9 @@ def thread_page(request, board_hid, thread_hid):
             'board': board,
             'boards': boards,
             'thread': thread,
-            'cache_data': cache_data,
         },
         request
     )
 
-    # Write page to cache
-    cache_interface.write_template_to_cache(rendered_template)
-
-    # Return response
     response.write(rendered_template)
     return response

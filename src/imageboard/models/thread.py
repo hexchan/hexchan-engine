@@ -1,9 +1,24 @@
 from django.db import models
+from django.db.models import Prefetch, Count
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from hexchan import config
+from imageboard.models import Post
+
+
+class ThreadWithOpManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset()
+                .filter(is_deleted=False)
+                .select_related('board')
+                .prefetch_related(
+                    Prefetch('op', queryset=Post.active_objects.filter(is_op=True))
+                )
+                .annotate(posts_count=Count('posts'))
+        )
 
 
 class Thread(models.Model):
@@ -67,6 +82,10 @@ class Thread(models.Model):
         editable=False,
         db_index=True
     )
+
+    objects = models.Manager()
+
+    objects_with_op = ThreadWithOpManager()
 
     class Meta:
         verbose_name = _('Thread')
