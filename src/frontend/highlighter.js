@@ -2,35 +2,36 @@ import LocalCollection from './localCollection';
 
 
 var Highlighter = function(props) {
-    var localCollection = new LocalCollection({
-        key: props.storageKey
-    });
+    function markElements(key, data, selector) {
+        // Create localstorage interface
+        var localCollection = new LocalCollection({key: key});
 
-    function init() {
-        // Write new items into collection
-        localCollection.concat(props.cookieData);
+        // Concat new data with collection
+        localCollection.concat(data);
 
         // Add attributes for styling marked elements
-        var elements = document.querySelectorAll(props.selector);
+        var elements = document.querySelectorAll(selector);
         var element, elementId;
-
         for (var i = 0; i < elements.length; i++) {
             element = elements[i];
-            elementId = element.getAttribute('data-id');
+            elementId = parseInt(element.getAttribute('data-id'), 10);
             if (localCollection.check(elementId)) {
                 element.setAttribute('data-user', true);
             }
         }
     }
 
-    function destroy() {
-        localCollection.destroy();
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/session');
+    xhr.responseType = 'json';
+    xhr.send();
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            markElements('userThreads', xhr.response['user_threads'], '.js-thread-hid');
+            markElements('userPosts', xhr.response['user_posts'], '.js-post-hid');
+        }
 
-    init();
-    return {
-        destroy: destroy
-    };
+    }
 };
 
 

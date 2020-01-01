@@ -18,8 +18,9 @@ def get_session_list(request, session_key: str, limit=16) -> List[int]:
 
 def push_to_session_list(request, session_key: str, value: int, limit=16) -> None:
     session_list = request.session.get(session_key, [])[-(limit-1):]
-    session_list.append(value)
-    request.session[session_key] = session_list
+    if value not in session_list:
+        session_list.append(value)
+        request.session[session_key] = session_list
 
 
 def set_session_data_as_cookie(request, response, session_key: str):

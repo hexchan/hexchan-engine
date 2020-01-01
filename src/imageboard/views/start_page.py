@@ -12,11 +12,6 @@ def start_page(request):
     # Create response object
     response = HttpResponse()
 
-    # Send some user session data as cookies
-    set_session_data_as_cookie(request, response, 'user_threads')
-    set_session_data_as_cookie(request, response, 'user_posts')
-    set_session_data_as_cookie(request, response, 'user_thread_replies')
-
     # Recently updated threads queryset
     updated_threads_queryset = Thread.objects\
         .filter(board=OuterRef('board'), is_deleted=False)\
