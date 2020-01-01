@@ -28,7 +28,7 @@ var Captcha = function() {
         var xhr = new XMLHttpRequest();
 
         // Open async request
-        xhr.open('GET', '/captcha' + (doForceUpdate ? '?update=1' : ''), true);
+        xhr.open('GET', '/captcha/' + (doForceUpdate ? '?update=1' : ''), true);
 
         // Set event handler
         xhr.onreadystatechange = function () { // (3)

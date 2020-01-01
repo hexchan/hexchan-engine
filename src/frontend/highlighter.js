@@ -22,7 +22,7 @@ var Highlighter = function(props) {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/session');
+    xhr.open('GET', '/session/');
     xhr.responseType = 'json';
     xhr.send();
     xhr.onload = function() {
