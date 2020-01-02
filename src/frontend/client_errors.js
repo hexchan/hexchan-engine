@@ -1,9 +1,13 @@
-import Cookies from 'js-cookie';
-
-
 function globalErrorHandler(msg, url, line, column, error) {
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
     // Get CSRF token
-    var csrfToken = Cookies.get('csrftoken');
+    var csrfToken = getCookie('csrftoken');
     if (!csrfToken) {
         console.error('Couldn\'t get CSRF token. Aborted.');
         return;
