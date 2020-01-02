@@ -10,12 +10,10 @@ export default {
         format: 'iife',
         globals: {
             'jquery': '$',
-            'underscore': '_',
-            'js-cookie': 'Cookies',
             'lightbox2': 'lightbox',
         },
     },
-    external: ['jquery', 'underscore', 'js-cookie', 'lightbox2'],
+    external: ['jquery', 'lightbox2'],
     plugins: [
         resolve(),
         commonjs(),

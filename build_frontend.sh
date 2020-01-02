@@ -22,8 +22,6 @@ cp -r src/frontend/images dev/frontend/
 echo "Copy libraries"
 mkdir -p dev/frontend/libs
 cp -r node_modules/lightbox2/dist dev/frontend/libs/lightbox
-cp node_modules/underscore/underscore-min.js dev/frontend/libs/underscore-min.js
 cp node_modules/jquery/dist/jquery.min.js dev/frontend/libs/jquery.min.js
-cp node_modules/js-cookie/src/js.cookie.js dev/frontend/libs/js.cookie.js
 
 echo "Done"
