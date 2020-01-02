@@ -1,5 +1,6 @@
-import _ from 'underscore';
 import LocalCollection from './localCollection';
+import {tmpl} from './resig-template';
+
 
 
 var Hider = function(props) {
@@ -18,7 +19,7 @@ var Hider = function(props) {
     if (!placeholderItem) {
         throw 'Placeholder template not found';
     }
-    var placeholderItemTemplate = _.template(placeholderItem.innerHTML.trim());
+    var placeholderItemTemplate = tmpl(placeholderItem.innerHTML.trim());
 
 
     function setItemState(itemId, itemHid, isHidden) {
