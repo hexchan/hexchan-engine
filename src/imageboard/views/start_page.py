@@ -5,7 +5,6 @@ from django.db.models import Prefetch, OuterRef, Subquery, Q
 
 # App imports
 from imageboard.models import Board, Thread
-from imageboard.views.parts import set_session_data_as_cookie
 
 
 def start_page(request):
