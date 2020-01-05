@@ -21,19 +21,10 @@ def thread_page(request, board_hid, thread_hid):
     board = get_object_or_404(Board, hid=board_hid)
 
     # Prefetch stuff for the thread
-    thread = Thread.objects\
+    thread = Thread.objects_with_op\
         .select_related('board')\
-        .prefetch_related(Prefetch('posts', queryset=Post.active_objects.all()))\
-        .annotate(posts_count=Count('posts')) \
-        .get(board__hid=board_hid, hid=thread_hid, is_deleted=False)
-
-    # Add extra data
-    thread.other_posts = []
-    for post in thread.posts.all():
-        if post.is_op:
-            thread.op = post
-        else:
-            thread.other_posts.append(post)
+        .prefetch_related(Prefetch('posts', queryset=Post.active_objects.filter(is_op=False), to_attr='other_posts'))\
+        .get(board__hid=board_hid, hid=thread_hid)
 
     # Init post creation form
     form = PostingForm(
