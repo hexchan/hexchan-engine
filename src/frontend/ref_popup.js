@@ -28,16 +28,23 @@ var RefPopup = function(props) {
                 showPopup(ev.target, hid, postEl.cloneNode(true));
             } else {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', url, true);
-                xhr.onreadystatechange = function () { // (3)
-                    if (xhr.readyState !== 4) return;
 
-                    if (xhr.status !== 200) {
-                        console.error('Error occured when requesting post', xhr.status, xhr.statusText);
-                    } else {
+                xhr.open('GET', url, true);
+
+                xhr.responseType = 'text';
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
                         showPopup(ev.target, hid, xhr.responseText);
+                    } else {
+                        console.error('Failed to fetch post\'s HTML');
                     }
                 };
+
+                xhr.onerror = function() {
+                    console.error('Failed to fetch post\'s HTML');
+                };
+
                 xhr.send();
             }
         }

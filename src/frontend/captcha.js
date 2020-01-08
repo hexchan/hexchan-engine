@@ -24,35 +24,24 @@ var Captcha = function() {
 
 
     function requestCaptcha(doForceUpdate) {
-        // Create new XHR
         var xhr = new XMLHttpRequest();
 
-        // Open async request
         xhr.open('GET', '/captcha/' + (doForceUpdate ? '?update=1' : ''), true);
 
-        // Set event handler
-        xhr.onreadystatechange = function () { // (3)
-            if (xhr.readyState !== 4) return;
+        xhr.responseType = 'json';
 
-            if (xhr.status !== 200) {
-                console.error('Error occured when requesting captcha', xhr.status, xhr.statusText);
+        xhr.onload = function () { // (3)
+            if (xhr.status === 200) {
+                updateDom(xhr.response);
             } else {
-                var captchaData;
-
-                // Parse server response
-                try {
-                    captchaData = JSON.parse(xhr.responseText);
-                } catch (err) {
-                    console.error('Error occured when parsing captcha response');
-                } finally {
-                    if (captchaData) {
-                        updateDom(captchaData);
-                    }
-                }
+                console.error('Failed to fetch captcha data');
             }
         };
 
-        // Send request
+        xhr.onerror = function() {
+            console.error('Failed to fetch captcha data');
+        };
+
         xhr.send();
     }
 

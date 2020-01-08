@@ -22,16 +22,25 @@ var Highlighter = function(props) {
     }
 
     var xhr = new XMLHttpRequest();
+
     xhr.open('GET', '/session/');
+
     xhr.responseType = 'json';
-    xhr.send();
+
     xhr.onload = function() {
         if (xhr.status === 200) {
             markElements('userThreads', xhr.response['user_threads'], '.js-thread-hid');
             markElements('userPosts', xhr.response['user_posts'], '.js-post-hid');
+        } else {
+            console.error('Failed to fetch user session data');
         }
+    };
 
-    }
+    xhr.onerror = function() {
+        console.error('Failed to fetch user session data');
+    };
+
+    xhr.send();
 };
 
 

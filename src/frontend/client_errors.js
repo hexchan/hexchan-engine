@@ -13,24 +13,26 @@ function globalErrorHandler(msg, url, line, column, error) {
         return;
     }
 
-    // Create new XHR
+    // Create new request
     var xhr = new XMLHttpRequest();
 
-    // Open async request
     xhr.open('POST', '/clientErrors/', true);
 
-    // Set headers
+    xhr.responseType = 'json';
+
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader("X-CSRFToken", csrfToken);
 
-    // Set event handler
-    xhr.onreadystatechange = function () { // (3)
-        if (xhr.readyState !== 4) return;
-
+    xhr.onload = function() {
         if (xhr.status !== 200) {
-            console.error('Error occured when sending client error to the server:', xhr.status, xhr.statusText);
+            console.error('Error occured when sending client error to the server');
         }
     };
+
+    xhr.onerror = function() {
+        console.error('Error occured when sending client error to the server');
+    };
+
 
     // Make request body
     var requestBodyArray = [
