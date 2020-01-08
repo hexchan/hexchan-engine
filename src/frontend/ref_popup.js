@@ -19,7 +19,7 @@ var RefPopup = function(props) {
     function onMouseOver(ev) {
         if (ev.target.classList.contains('js-ref')) {
             var hid = ev.target.innerHTML.replace('&gt;&gt;', '');
-            var url = ev.target.getAttribute('href').replace('#', '');
+            var url = ev.target.getAttribute('href').replace('#', '') + '/';
             var postEl = document.querySelector('.js-post[data-hid="' + hid + '"]');
 
             popupIsVisible = true;
