@@ -8,7 +8,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def markup(text, board, thread, post, make_refs=True, make_links=True):
+def markup(text, post=None, make_refs=True, make_links=True):
 
-    rendered_text = parse_text(text, board, thread, post, make_refs, make_links)
+    rendered_text = parse_text(text, post, make_refs, make_links)
     return mark_safe(rendered_text)

@@ -1,75 +1,81 @@
 from django.test import TestCase
 
 from imageboard import wakabamark
+from imageboard.models import Board, Thread, Post
 
 
 class NestedTagsTest(TestCase):
-    def _get_url_by_hid(self, hid: str) -> str:
-        return 'http://example.com/#{0}'.format(hid)
-
     def test_em_plus_strong(self):
         self.assertEqual(
-            wakabamark.make_all_inline_tags('*nomad*', self._get_url_by_hid),
-            '<em>nomad</em>'
+            '<p><em>nomad</em></p>',
+            wakabamark.parse_text('*nomad*'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('* *nomad* *', self._get_url_by_hid),
-            '* <em>nomad</em> *'
+            '<p>* <em>nomad</em> *</p>',
+            wakabamark.parse_text('* *nomad* *'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('**nomad**', self._get_url_by_hid),
-            '<strong>nomad</strong>'
+            '<p><strong>nomad</strong></p>',
+            wakabamark.parse_text('**nomad**'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('***nomad***', self._get_url_by_hid),
-            '***nomad***'
+            '<p>***nomad***</p>',
+            wakabamark.parse_text('***nomad***'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('** *nomad* **', self._get_url_by_hid),
-            '** <em>nomad</em> **'
+            '<p>** <em>nomad</em> **</p>',
+            wakabamark.parse_text('** *nomad* **'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('* **nomad** *', self._get_url_by_hid),
-            '* <strong>nomad</strong> *'
+            '<p>* <strong>nomad</strong> *</p>',
+            wakabamark.parse_text('* **nomad** *'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('** **nomad** **', self._get_url_by_hid),
-            '** <strong>nomad</strong> **'
+            '<p>** <strong>nomad</strong> **</p>',
+            wakabamark.parse_text('** **nomad** **'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('** __nomad__ **', self._get_url_by_hid),
-            '** <strong>nomad</strong> **'
+            '<p>** <strong>nomad</strong> **</p>',
+            wakabamark.parse_text('** __nomad__ **'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('__ *nomad* __', self._get_url_by_hid),
-            '__ <em>nomad</em> __'
+            '<p>__ <em>nomad</em> __</p>',
+            wakabamark.parse_text('__ *nomad* __'),
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('_ **nomad** _', self._get_url_by_hid),
-            '_ <strong>nomad</strong> _'
+            '<p>_ <strong>nomad</strong> _</p>',
+            wakabamark.parse_text('_ **nomad** _'),
         )
 
     def test_multi_words(self):
         self.assertEqual(
-            wakabamark.make_all_inline_tags('**nomad**huita**', self._get_url_by_hid),
-            '<strong>nomad**huita</strong>'
+            '<p><strong>nomad**huita</strong></p>',
+            wakabamark.parse_text('**nomad**huita**'),
+
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('**nomad** atata **huita**', self._get_url_by_hid),
-            '<strong>nomad</strong> atata <strong>huita</strong>'
+            '<p><strong>nomad</strong> atata <strong>huita</strong></p>',
+            wakabamark.parse_text('**nomad** atata **huita**'),
+
         )
 
         self.assertEqual(
-            wakabamark.make_all_inline_tags('__nomad__ atata **huita**', self._get_url_by_hid),
-            '<strong>nomad</strong> atata <strong>huita</strong>'
+            '<p><strong>nomad</strong> atata <strong>huita</strong></p>',
+            wakabamark.parse_text('__nomad__ atata **huita**'),
+        )
+
+    def test_blockquote(self):
+        self.assertEqual(
+            '<blockquote>&gt;&gt; some_quote</blockquote>',
+            wakabamark.parse_text('&gt;&gt; some_quote'),
         )

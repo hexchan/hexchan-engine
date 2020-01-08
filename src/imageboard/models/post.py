@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Prefetch, F
+from django.utils.functional import cached_property
 
 from hexchan import config
 
@@ -174,3 +175,7 @@ class Post(models.Model):
         )
 
         return post_url
+
+    @cached_property
+    def ref_urls(self):
+        return {ref.hid: ref.get_absolute_url() for ref in self.refs.all()}
