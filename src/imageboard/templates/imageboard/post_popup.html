@@ -4,5 +4,7 @@
 {% if post %}
     {% include 'imageboard/parts/post.html' %}
 {% else %}
-    {% trans "Post not found." %}
+    <div class="post post--empty">
+        {% trans "Post not found." %}
+    </div>
 {% endif %}
