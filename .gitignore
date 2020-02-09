@@ -3,6 +3,7 @@ __pycache__
 
 /dev
 /dist
+/storage
 /node_modules
 /python_modules
 
@@ -15,3 +16,7 @@ style.css
 style.css.map
 
 django.mo
+
+hexchan-engine.apache.conf
+hexchan-engine.postgresql.sql
+hexchan-engine.config.ini

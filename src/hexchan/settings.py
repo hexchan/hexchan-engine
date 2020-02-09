@@ -6,7 +6,8 @@ from django.utils.translation import gettext_lazy as _
 # Paths
 SETTINGS_PATH = Path(__file__).resolve()
 BASE_DIR = SETTINGS_PATH.parents[1]
-STORAGE_DIR = BASE_DIR / '..' / 'dev'
+INSTALL_DIR = BASE_DIR.parent
+STORAGE_DIR = INSTALL_DIR / 'storage'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'cl-x4wji(%=&43=*tla3+n-)vr4220%(_tiwh&@^(=dyw*=r2x'
@@ -15,7 +16,8 @@ SECRET_KEY = 'cl-x4wji(%=&43=*tla3+n-)vr4220%(_tiwh&@^(=dyw*=r2x'
 DEBUG = True
 
 # Hosts
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+HOST = 'example.com'
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', HOST]
 INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
@@ -83,8 +85,12 @@ WSGI_APPLICATION = 'hexchan.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(STORAGE_DIR / 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hexchan',
+        'USER': 'hexchan',
+        'PASSWORD': 'swordfish',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -146,58 +152,6 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 SESSION_FILE_PATH = str(STORAGE_DIR / 'session')
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days in seconds
-
-
-# Logging
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'base': {
-            'format': '{levelname} -- {asctime} -- {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'server_errors': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': str(STORAGE_DIR / 'log' / 'server_errors.log'),
-            'formatter': 'base',
-        },
-        'client_errors': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': str(STORAGE_DIR / 'log' / 'client_errors.log'),
-            'formatter': 'base',
-        },
-        'security_errors': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': str(STORAGE_DIR / 'log' / 'security_errors.log'),
-            'formatter': 'base',
-        },
-        'null': {
-            'class': 'logging.NullHandler',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['server_errors'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'django.security.*': {
-            'handlers': ['security_errors'],
-            'propagate': True,
-        },
-        'client_errors': {
-            'handlers': ['client_errors'],
-            'propagate': True,
-        }
-    },
-}
-
 
 # Generated fixtures
 FIXTURE_DIRS = [
