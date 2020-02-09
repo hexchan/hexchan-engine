@@ -3,11 +3,6 @@ import Hider from './hider';
 import Highlighter from './highlighter';
 import RefPopup from './ref_popup';
 import Captcha from './captcha';
-import globalErrorHandler from './client_errors';
-
-
-// Set global error handler
-window.onerror = globalErrorHandler;
 
 
 // Lightbox config

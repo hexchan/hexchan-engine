@@ -20,7 +20,6 @@ if settings.DEBUG:
 
 urlpatterns += [
     path('admin/', admin.site.urls),
-    path('clientErrors/', include('client_errors.urls')),
     path('captcha/', include('captcha.urls')),
     path('', include('imageboard.urls')),
 ]
