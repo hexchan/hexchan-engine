@@ -13,25 +13,25 @@ class ImageInlineAdmin(admin.TabularInline):
     extra = 0
 
     fields = (
-        'hid', 'thumbnail', 'original_name', 'path', 'mimetype', 'created_at', 'size', 'width', 'height', 'checksum',
+        'hid', 'thumbnail', 'file', 'original_name', 'mimetype', 'created_at', 'size', 'width', 'height', 'checksum',
         'is_spoiler', 'is_deleted',
     )
 
     readonly_fields = (
-        'hid', 'thumbnail', 'original_name', 'path', 'mimetype', 'created_at', 'size', 'width', 'height', 'checksum',
+        'hid', 'thumbnail', 'file', 'original_name', 'mimetype', 'created_at', 'size', 'width', 'height', 'checksum',
     )
 
     show_change_link = True
 
-    # Custom fields
-    # ==================================================================================================================
+    # # Custom fields
+    # # ==================================================================================================================
     def thumbnail(self, obj):
         return format_html(
             '<a href="{}">'
             '<img src={} alt={} title={} style="max-width: 100px; max-height: 100px;" />'
             '</a>',
-            ''.join([settings.MEDIA_URL, obj.path()]),
-            ''.join([settings.MEDIA_URL, obj.thumb_path()]),
+            str(obj.file.url),
+            str(obj.thumb_file.url),
             obj.hid(),
             obj.original_name,
         )

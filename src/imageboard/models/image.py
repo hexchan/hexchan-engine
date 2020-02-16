@@ -1,8 +1,18 @@
+from io import BytesIO
+import os.path
+
 from django.db import models
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from hexchan import config
+
+
+def make_file_upload_path(instance, filename):
+    return os.path.join('images', instance.make_file_name())
+
+
+def make_thumb_file_upload_path(instance, filename):
+    return os.path.join('thumbs', instance.make_thumb_file_name())
 
 
 class Image(models.Model):
@@ -12,6 +22,15 @@ class Image(models.Model):
         related_name='images',
         on_delete=models.CASCADE,
         db_index=True
+    )
+
+    file = models.ImageField(
+        _('Image'),
+        upload_to=make_file_upload_path,
+        width_field='width',
+        height_field='height',
+        editable=False,
+        blank=True,
     )
 
     original_name = models.CharField(
@@ -39,17 +58,21 @@ class Image(models.Model):
 
     width = models.IntegerField(
         _('Width'),
-        editable=False
+        editable=False,
+        blank=True,
+        null=True,
     )
 
     height = models.IntegerField(
         _('Height'),
-        editable=False
+        editable=False,
+        blank=True,
+        null=True,
     )
 
     is_spoiler = models.BooleanField(
         _('Is spoiler'),
-        default=False
+        default=False,
     )
 
     is_deleted = models.BooleanField(
@@ -65,14 +88,27 @@ class Image(models.Model):
         blank=True
     )
 
+    thumb_file = models.ImageField(
+        _('Thumb'),
+        upload_to=make_thumb_file_upload_path,
+        width_field='thumb_width',
+        height_field='thumb_height',
+        editable=False,
+        blank=True,
+    )
+
     thumb_width = models.IntegerField(
         _('Thumb width'),
-        editable=False
+        editable=False,
+        blank=True,
+        null=True,
     )
 
     thumb_height = models.IntegerField(
         _('Thumb height'),
-        editable=False
+        editable=False,
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -83,18 +119,24 @@ class Image(models.Model):
         ordering = ['id']
 
     def hid(self):
-        return config.IMAGE_HID_FORMAT.format(hid=self.id) if self.id else '<empty>'
+        return config.IMAGE_HID_FORMAT.format(hid=self.id) if self.id is not None else None
 
-    def path(self):
-        return '{dir}/{name}.{ext}'.format(
-            dir=config.IMAGE_DIR,
-            name=config.IMAGE_HID_FORMAT.format(hid=self.id),
+    def make_file_name(self):
+        return '{name}.{ext}'.format(
+            name=self.hid(),
             ext=config.IMAGE_EXTENSION[self.mimetype]
-        ) if self.id else ''
+        )
 
-    def thumb_path(self):
-        return '{dir}/{name}.{ext}'.format(
-            dir=config.THUMB_DIR,
-            name=config.IMAGE_HID_FORMAT.format(hid=self.id),
+    def make_thumb_file_name(self):
+        return '{name}.{ext}'.format(
+            name=self.hid(),
             ext=config.THUMB_EXTENSION
-        ) if self.id else ''
+        )
+
+    def delete(self, *args, **kwargs):
+        super(Image, self).delete(*args, **kwargs)
+        self.delete_files()
+
+    def delete_files(self):
+        os.remove(self.file.path)
+        os.remove(self.thumb_file.path)

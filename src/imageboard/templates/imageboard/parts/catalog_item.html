@@ -33,7 +33,7 @@
             {% if image %}
                 <img
                     class="catalog-item__image"
-                    src="{{MEDIA_URL}}{{image.thumb_path}}"
+                    src="{{image.thumb_file.url}}"
                     alt="{{ image.original_name }}"
                     width="{{ image.thumb_width|multiply:0.75 }}"
                     height="{{ image.thumb_height|multiply:0.75 }}"

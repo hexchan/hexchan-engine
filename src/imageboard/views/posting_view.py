@@ -2,6 +2,7 @@
 import os
 import hashlib
 import datetime
+from io import BytesIO
 
 # Django imports
 from django.shortcuts import redirect, render
@@ -11,6 +12,7 @@ from django.db import transaction, DatabaseError
 from django.db.models import F, Subquery
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.core.files.base import ContentFile
 
 # Third party imports
 import PIL.Image
@@ -34,6 +36,7 @@ from moderation import exceptions as m_ex
 
 
 @csrf_exempt
+@transaction.atomic
 def posting_view(request):
     response = None
 
@@ -130,7 +133,7 @@ def posting_view(request):
 def get_board(board_id: int) -> Board:
     """Get valid Board model object."""
     try:
-        board = Board.objects.get(id=board_id, is_deleted=False)
+        board = Board.objects.select_for_update().get(id=board_id, is_deleted=False)
     except Board.DoesNotExist:
         raise i_ex.BoardNotFound
 
@@ -144,7 +147,7 @@ def get_board(board_id: int) -> Board:
 def get_thread(thread_id: int) -> Thread:
     """Get valid Thread model object."""
     try:
-        thread = Thread.objects.get(id=thread_id, is_deleted=False)
+        thread = Thread.objects.select_for_update().get(id=thread_id, is_deleted=False)
     except Thread.DoesNotExist:
         raise i_ex.ThreadNotFound
 
@@ -206,42 +209,43 @@ def get_images(raw_images):
 def create_images(post: Post, images_and_checksums) -> None:
     """Save all images in request."""
     for image_file, checksum in images_and_checksums:
-        # Load image with PIL library
+        # Create Django image object
+        image = Image(
+            post=post,
+            original_name=image_file.name,
+            mimetype=image_file.content_type,
+            size=image_file.size,
+            checksum=checksum,
+        )
+
+        # Save image object to the database
+        image.save()
+
+        # Update with image
+        image.file = image_file
+
+        # Load image with PIL
         image_pil_object = PIL.Image.open(image_file)
 
         # Create thumbnail with PIL library
         # Convert image to RGBA format when needed (for example, if image has indexed pallette 8bit per pixel mode)
         thumbnail_pil_object = image_pil_object.convert('RGBA')
-        thumbnail_pil_object.thumbnail(config.IMAGE_THUMB_SIZE)
+        thumbnail_pil_object.thumbnail(config.IMAGE_THUMB_SIZE, PIL.Image.ANTIALIAS)
 
-        # Create Django image object
-        image = Image(
-            post=post,
+        # Save thumbnail to in-memory file as BytesIO
+        thumb_file = BytesIO()
+        thumbnail_pil_object.save(thumb_file, config.THUMB_TYPE)
+        thumb_file.seek(0)
 
-            original_name=image_file.name,
-            mimetype=image_file.content_type,
-            size=image_file.size,
-            width=image_pil_object.width,
-            height=image_pil_object.height,
-
-            checksum=checksum,
-
-            thumb_width=thumbnail_pil_object.width,
-            thumb_height=thumbnail_pil_object.height,
+        # Set save=False, otherwise it will run in an infinite loop
+        image.thumb_file.save(
+            image.make_thumb_file_name(),
+            ContentFile(thumb_file.read()),
+            save=False
         )
 
-        # Save image to the database
+        # Save everything
         image.save()
-
-        # Save image to the disk
-        image_full_path = os.path.join(settings.MEDIA_ROOT, image.path())
-        with open(image_full_path, 'wb+') as destination:
-            for chunk in image_file.chunks(config.IMAGE_CHUNK_SIZE):
-                destination.write(chunk)
-
-        # Save thumbnail to the disk
-        image_thumb_full_path = os.path.join(settings.MEDIA_ROOT, image.thumb_path())
-        thumbnail_pil_object.save(image_thumb_full_path, "PNG")
 
 
 def create_thread(request, board: Board) -> Thread:

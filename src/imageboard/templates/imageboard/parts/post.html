@@ -72,7 +72,7 @@
                 {% for image in post.images.all %}
                     <a
                         class="post__image-wrap"
-                        href="{{MEDIA_URL}}{{image.path}}"
+                        href="{{image.file.url}}"
                         target="_blank"
                         data-lightbox="{{ post.id }}"
                         data-alt="{{ image.original_name }}"
@@ -80,7 +80,7 @@
                     >
                         <img
                             class="post__image"
-                            src="{{MEDIA_URL}}{{image.thumb_path}}"
+                            src="{{image.thumb_file.url}}"
                             alt="{{ image.original_name }}"
                             width="{{ image.thumb_width }}"
                             height="{{ image.thumb_height }}"

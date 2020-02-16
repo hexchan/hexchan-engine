@@ -14,15 +14,14 @@ CACHE_START_PAGE = 60 * 10  # 10 min
 
 
 # Images
-IMAGE_DIR = 'images'
 IMAGE_EXTENSION = {'image/jpeg': 'jpg', 'image/png': 'png', 'image/gif': 'gif'}
 IMAGE_CHUNK_SIZE = 1 * (1024 * 1024)  # 1 MiB
 IMAGE_THUMB_SIZE = 200, 200
 
 
 # Thumbs
-THUMB_DIR = 'thumbs'
 THUMB_EXTENSION = 'png'
+THUMB_TYPE = 'PNG'
 
 
 # Uploads

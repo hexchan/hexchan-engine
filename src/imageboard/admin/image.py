@@ -127,18 +127,19 @@ class ImageAdmin(admin.ModelAdmin):
     admin_board_hid.admin_order_field = 'post__thread__board__hid'
 
     def thumbnail(self, obj):
-        return format_html(
-            '<a href="{}">'
-            '<img src={} alt={} title={} style="max-width: 100px; max-height: 100px;" />'
-            '</a>',
-            ''.join([settings.MEDIA_URL, obj.path()]),
-            ''.join([settings.MEDIA_URL, obj.thumb_path()]),
-            obj.hid(),
-            obj.original_name,
-        )
+        if obj.file and obj.thumb_file:
+            return format_html(
+                '<a href="{}">'
+                '<img src={} alt={} title={} style="max-width: 100px; max-height: 100px;" />'
+                '</a>',
+                ''.join([settings.MEDIA_URL, obj.file.url]),
+                ''.join([settings.MEDIA_URL, obj.thumb_file.url]),
+                obj.hid(),
+                obj.original_name,
+            )
     thumbnail.short_description = 'Thumbnail'
 
     def url(self, obj):
-        url = ''.join([settings.MEDIA_URL, obj.path()])
+        url = ''.join([settings.MEDIA_URL, obj.file.url])
         return format_html('<a href="{}">{}</a>', url, url)
     url.short_description = 'URL'
