@@ -6,7 +6,7 @@ export default {
     input: 'src/frontend/main.js',
     output: {
         name: 'HexchanJS',
-        file: 'dev/frontend/scripts.js',
+        file: 'storage/frontend/scripts.js',
         format: 'iife',
         globals: {
             'jquery': '$',
