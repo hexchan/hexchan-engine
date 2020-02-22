@@ -9,12 +9,44 @@ register_converter(converters.PostHidConverter, 'pid')
 
 
 urlpatterns = [
-    path('', views.start_page, name='start_page'),
-    path('session/', views.session_data_view, name='session'),
-    path('create/', views.posting_view, name='posting_view'),
-    path('<str:board_hid>/', views.board_page, name='board_page'),
-    path('<str:board_hid>/<int:page_num>/', views.board_page, name='board_page_num'),
-    path('<str:board_hid>/catalog/', views.catalog_page, name='catalog_page'),
-    path('<str:board_hid>/<tid:thread_hid>/', views.thread_page, name='thread_page'),
-    path('<str:board_hid>/<tid:thread_hid>/<pid:post_hid>/', views.post_popup, name='post_popup'),
+    path(
+        '',
+        views.StartPage.as_view(),
+        name='start_page'
+    ),
+    path(
+        'session/',
+        views.session_data_view,
+        name='session'
+    ),
+    path(
+        'create/',
+        views.posting_view,
+        name='posting_view'
+    ),
+    path(
+        '<str:board_hid>/',
+        views.BoardPage.as_view(),
+        name='board_page'
+    ),
+    path(
+        '<str:board_hid>/<int:page_num>/',
+        views.BoardPage.as_view(),
+        name='board_page_num'
+    ),
+    path(
+        '<str:board_hid>/catalog/',
+        views.CatalogPage.as_view(),
+        name='catalog_page'
+    ),
+    path(
+        '<str:board_hid>/<tid:thread_hid>/',
+        views.ThreadPage.as_view(),
+        name='thread_page'
+    ),
+    path(
+        '<str:board_hid>/<tid:thread_hid>/<pid:post_hid>/',
+        views.PostPage.as_view(),
+        name='post_popup'
+    ),
 ]

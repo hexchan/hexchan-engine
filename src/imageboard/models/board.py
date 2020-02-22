@@ -3,6 +3,13 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
+class BoardManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset().order_by('hid').filter(is_deleted=False, is_hidden=False)
+        )
+
+
 class Board(models.Model):
     hid = models.CharField(
         _('HID'),
@@ -98,6 +105,10 @@ class Board(models.Model):
         auto_now=True,
         editable=False
     )
+
+    objects = models.Manager()
+
+    active_objects = BoardManager()
 
     class Meta:
         verbose_name = _('Board')

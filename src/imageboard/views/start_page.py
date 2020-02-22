@@ -1,44 +1,37 @@
 # Django imports
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from django.db.models import Prefetch, OuterRef, Subquery, Q
+from django.db.models import Prefetch, OuterRef, Subquery
+from django.views.generic import TemplateView
 
 # App imports
 from imageboard.models import Board, Thread
 
 
-def start_page(request):
-    # Create response object
-    response = HttpResponse()
+class StartPage(TemplateView):
+    template_name = 'imageboard/start_page.html'
 
-    # Recently updated threads queryset
-    updated_threads_queryset = Thread.objects\
-        .filter(board=OuterRef('board'), is_deleted=False)\
-        .order_by('-is_sticky', '-updated_at')\
-        .values_list('id', flat=True)[:5]
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    # Prefetch threads
-    threads_prefetch = Prefetch(
-        'threads',
-        queryset=Thread.objects_with_op
-                       .filter(id__in=Subquery(updated_threads_queryset))
-                       .order_by('-is_sticky', '-updated_at'),
-        to_attr='updated_threads'
-    )
+        # Recently updated threads queryset
+        updated_threads_queryset = (
+            Thread.objects
+                  .filter(board=OuterRef('board'), is_deleted=False)
+                  .order_by('-is_sticky', '-updated_at')
+                  .values_list('id', flat=True)[:5]
+        )
 
-    # Get boards with threads and OP posts
-    boards = Board.objects\
-        .order_by('hid')\
-        .filter(is_deleted=False, is_hidden=False)\
-        .prefetch_related(threads_prefetch)
+        # Prefetch threads
+        threads_prefetch = Prefetch(
+            'threads',
+            queryset=(
+                Thread.objects_with_op
+                      .filter(id__in=Subquery(updated_threads_queryset))
+                      .order_by('-is_sticky', '-updated_at')
+            ),
+            to_attr='updated_threads'
+        )
 
-    rendered_template = render_to_string(
-        'imageboard/start_page.html',
-        {
-            'boards': boards,
-        },
-        request
-    )
+        # Get boards with threads and OP posts
+        context['boards'] = Board.active_objects.prefetch_related(threads_prefetch)
 
-    response.write(rendered_template)
-    return response
+        return context
