@@ -30,7 +30,8 @@ build_frontend:
 	@echo $(separator)
 	@echo '$(cyan)Build frontend$(sgr0)'
 	@echo '$(cyan)==============$(sgr0)'	
-	./build_frontend.sh $(shell src/manage.py print_storage_path)	
+	npx rollup --sourcemap --silent --config src/imageboard/static/imageboard/rollup.config.js
+	npx lessc --source-map --math=strict src/imageboard/static/imageboard/style.less src/imageboard/static/imageboard/style.css
 
 create_database:
 	@echo $(separator)

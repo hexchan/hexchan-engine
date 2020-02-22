@@ -123,9 +123,7 @@ USE_TZ = True
 # Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = str(STORAGE_DIR / 'static')
-STATICFILES_DIRS = [
-    str(STORAGE_DIR / 'frontend')
-]
+STATICFILES_DIRS = []
 
 # Uploads
 MEDIA_URL = '/media/'

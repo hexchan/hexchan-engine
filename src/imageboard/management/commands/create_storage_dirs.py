@@ -19,7 +19,6 @@ class Command(BaseCommand):
             storage_path / 'cache',
             storage_path / 'static',
             storage_path / 'fixtures',
-            storage_path / 'frontend',
         ]
 
         try:

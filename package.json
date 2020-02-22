@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "scripts": "npx rollup -cm",
-    "styles": "npx lessc --source-map src/frontend/style.less dev/frontend/style.css"
   },
   "author": "",
   "license": "MIT",
@@ -14,8 +11,7 @@
     "jquery": "^3.4.1",
     "less": "^3.10.3",
     "lightbox2": "^2.11.1",
-    "rollup": "^1.27.13",
-    "rollup-plugin-commonjs": "^9.3.4",
-    "rollup-plugin-node-resolve": "^4.2.4"
+    "material-design-icons": "^3.0.1",
+    "rollup": "^1.27.13"
   }
 }

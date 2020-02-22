@@ -1,22 +1,21 @@
+# Editors
 .idea
+
+# Python cache
 __pycache__
 
-/dev
-/dist
+# Storage
 /storage
+
+# Dependencies
 /node_modules
 /python_modules
 
-images.json
-posts.json
-threads.json
-captchas.json
-
+# Frontend builds
+hexchan.js
+hexchan.js.map
 style.css
 style.css.map
 
+# Locales
 django.mo
-
-hexchan-engine.apache.conf
-hexchan-engine.postgresql.sql
-hexchan-engine.config.ini
