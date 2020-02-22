@@ -1,6 +1,14 @@
 class Captcha {
     constructor() {
-        document.querySelector('.js-captcha-refresh').addEventListener('click', () => {
+        this.captchaRefreshButton = document.querySelector('.js-captcha-refresh');
+        this.captchaImage = document.querySelector('.js-captcha-image');
+        this.captchaHiddenInput = document.querySelector('.js-captcha-id');
+
+        if (!this.captchaRefreshButton || !this.captchaImage || !this.captchaHiddenInput) {
+            return;
+        }
+
+        this.captchaRefreshButton.addEventListener('click', () => {
             this.requestCaptcha(true);
         });
 
@@ -15,8 +23,8 @@ class Captcha {
         fetch(url)
             .then((response) => response.json())
             .then((captchaData) => {
-                document.querySelector('.js-captcha-id').value = captchaData.publicId;
-                document.querySelector('.js-captcha-image').src = captchaData.image;                
+                this.captchaHiddenInput.value = captchaData.publicId;
+                this.captchaImage.src = captchaData.image;
             })
             .catch((error) => {
                 console.error('Failed to fetch captcha data', error);
