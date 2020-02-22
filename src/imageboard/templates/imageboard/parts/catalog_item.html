@@ -1,7 +1,5 @@
 {% load static %}
-{% load date_format %}
 {% load markup %}
-{% load multiply %}
 {% load i18n %}
 
 <a
@@ -35,8 +33,8 @@
                     class="catalog-item__image"
                     src="{{image.thumb_file.url}}"
                     alt="{{ image.original_name }}"
-                    width="{{ image.thumb_width|multiply:0.75 }}"
-                    height="{{ image.thumb_height|multiply:0.75 }}"
+                    width="{{ image.thumb_width }}"
+                    height="{{ image.thumb_height }}"
                 />
             {% else %}
                 <div class="catalog-item__image catalog-item__image--empty">
