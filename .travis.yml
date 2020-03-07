@@ -1,8 +1,17 @@
 language: python
+
 python:
   - "3.6"
+
+services:
+  - postgresql
+
 before_script:
-  - python generators/dirmaker.py
   - cd src
+  - ./manage.py create_storage_dirs
+  - ./manage.py create_postgresql_script | psql -U postgres -a
+  - ./manage.py migrate
+
+
 script:
   - ./manage.py test

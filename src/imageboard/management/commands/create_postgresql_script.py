@@ -8,6 +8,7 @@ create user {user} with password '{password}';
 alter role {user} set client_encoding to 'utf8';
 alter role {user} set default_transaction_isolation to 'read committed';
 alter role {user} set timezone to 'utc';
+alter USER {user} CREATEDB;
 grant all privileges on database {name} to {user};
 '''.strip()
 
