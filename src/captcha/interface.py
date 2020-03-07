@@ -6,12 +6,14 @@ from captcha import exceptions
 
 
 def set_captcha(request):
-    captcha_count = Captcha.objects.count()
+    captcha_ids = Captcha.objects.values_list('pk', flat=True)
+
+    captcha_count = len(captcha_ids)
 
     if captcha_count == 0:
         raise exceptions.CaptchaDbIsEmpty
 
-    random_id = random.randint(1, captcha_count)
+    random_id = random.choice(captcha_ids)
     captcha = Captcha.objects.get(pk=random_id)
 
     # TODO: Move delta to the config

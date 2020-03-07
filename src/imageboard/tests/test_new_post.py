@@ -46,8 +46,8 @@ class NewPostTestCase(TestCase):
         # Base post content dict
         self.base_post_content = {
             'form_type': 'new_post',
-            'board_id': '1',
-            'thread_id': '1',
+            'board_id': self.board.id,
+            'thread_id': self.thread.id,
             'captcha_0': 'swordfish',
             'captcha_1': '100500',
             'title': 'Test title',
@@ -73,16 +73,13 @@ class NewPostTestCase(TestCase):
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
     def check_post_created(self, post_hid=0):
-        post = Post.objects.get(thread__board__id=1, hid=post_hid)
+        post = Post.objects.get(thread__board__hid='t', thread__hid=0, hid=post_hid)
         self.assertNotEqual(post, None)
         self.assertEqual(post.title, self.base_post_content['title'])
         self.assertEqual(post.author, self.base_post_content['author'])
-        self.assertEqual(post.email, self.base_post_content['email'])
         self.assertEqual(post.text, self.base_post_content['text'])
-        self.assertEqual(post.password, self.base_post_content['password'])
 
-    def check_image_created(self, image_id, filename):
-        image = Image.objects.get(id=image_id)
+    def check_image_created(self, image: Image, filename):
         self.assertNotEqual(image, None)
         self.assertEqual(image.original_name, os.path.basename(filename))
 
@@ -102,10 +99,11 @@ class NewPostTestCase(TestCase):
                 post_data = self.base_post_content.copy()
                 post_data.update({'images': fp})
                 response = self.client.post('/create/', post_data)
+                image = Image.objects.first()
 
                 self.check_redirect(response, '/t/0x000000/')
                 self.check_post_created()
-                self.check_image_created(1, filename)
+                self.check_image_created(image, filename)
 
     def test_new_post_many_images(self):
         filename = os.path.join(os.path.dirname(__file__), 'noise.png')
@@ -118,8 +116,9 @@ class NewPostTestCase(TestCase):
 
                 self.check_redirect(response, '/t/0x000000/')
                 self.check_post_created()
-                self.check_image_created(1, filename)
-                self.check_image_created(2, filename)
+                for image in Image.objects.all():
+                    self.check_image_created(image, filename)
+                    self.check_image_created(image, filename)
 
     def test_lock_thread_after_reaching_limit(self):
         little_thread = Thread.objects.create(
@@ -130,7 +129,7 @@ class NewPostTestCase(TestCase):
 
         # First post should pass
         post_data = self.base_post_content.copy()
-        post_data.update({'thread_id': '2'})
+        post_data.update({'thread_id': little_thread.id})
         response = self.client.post('/create/', post_data)
         self.check_redirect(response, '/t/0x000001/')
 
@@ -156,3 +155,32 @@ class NewPostTestCase(TestCase):
 
         response_02 = self.client.post('/create/', post_data)
         self.check_redirect(response_02, '/t/0x000000/')
+
+    def test_bleaching(self):
+        bad_string = "<script>alert('pwned');</script>"
+        escaped_string = "&lt;script&gt;alert('pwned');&lt;/script&gt;"
+
+        post_data = self.base_post_content.copy()
+        post_data.update({'text': bad_string})
+
+        self.client.post('/create/', post_data)
+
+        post = Post.objects.get(thread__board__hid='t', thread__hid=0, hid=0)
+
+        self.assertNotEqual(post.text, bad_string)
+        self.assertEqual(post.text, escaped_string)
+
+    def test_image_checksum_and_size(self):
+        with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
+            filename = os.path.join(os.path.dirname(__file__), 'noise.png')
+
+            with open(filename, 'rb') as fp:
+                post_data = self.base_post_content.copy()
+                post_data.update({'images': fp})
+
+                self.client.post('/create/', post_data)
+
+                image = Image.objects.last()
+
+                self.assertEqual(image.checksum, '023943b7771ab11604a64ca306cc0ec4')
+                self.assertEqual(image.size, 82633)

@@ -32,7 +32,7 @@ class NewThreadTestCase(TestCase):
         # Base post content dict
         self.base_post_content = {
             'form_type': 'new_thread',
-            'board_id': '1',
+            'board_id': self.board.id,
             'captcha_0': 'swordfish',
             'captcha_1': '100500',
             'title': 'Test title',

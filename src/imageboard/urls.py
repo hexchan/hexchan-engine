@@ -21,7 +21,7 @@ urlpatterns = [
     ),
     path(
         'create/',
-        views.posting_view,
+        views.PostingView.as_view(),
         name='posting_view'
     ),
     path(
