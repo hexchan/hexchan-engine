@@ -5,7 +5,7 @@ What's an *imageboard*, you may ask. It's a webforum, where you can post message
 and pictures are typically used to communicate all sorts of ideas, thus *imageboard*. 
 An example would be the infamous 4chan.org.
 
-# Project status
+## Project status
 [![Build Status](https://travis-ci.org/hexchan/hexchan-engine.svg?branch=master)](https://travis-ci.org/hexchan/hexchan-engine)
 
 ## Is it deployed somewhere?
