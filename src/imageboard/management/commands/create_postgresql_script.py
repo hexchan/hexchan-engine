@@ -27,7 +27,7 @@ class Command(BaseCommand):
         if not database_engine:
             raise CommandError('`ENGINE` parameter is missing')
 
-        if database_engine != 'django.db.backends.postgresql_psycopg2':
+        if database_engine != 'django.db.backends.postgresql':
             raise CommandError('Specified `ENGINE` is not PostgreSQL')
 
         required_settings = ['NAME', 'USER', 'PASSWORD']

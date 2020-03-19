@@ -5,3 +5,4 @@ ipython==7.12.0
 Markdown==3.2.1
 Pillow==7.0.0
 psycopg2-binary==2.8.4
+django_environ==0.4.5

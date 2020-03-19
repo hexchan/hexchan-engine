@@ -1,5 +1,9 @@
+# Environment
+.env
+
 # Editors
 .idea
+.vscode
 
 # Python cache
 __pycache__

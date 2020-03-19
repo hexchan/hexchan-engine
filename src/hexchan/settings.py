@@ -1,22 +1,44 @@
+# Standard libs
 import os
 from pathlib import Path
 
+# Third party libs
+from environ import Env
+
+# Django libs
 from django.utils.translation import gettext_lazy as _
 
-# Paths
+
+# Base paths
 SETTINGS_PATH = Path(__file__).resolve()
 BASE_DIR = SETTINGS_PATH.parents[1]
 INSTALL_DIR = BASE_DIR.parent
-STORAGE_DIR = INSTALL_DIR / 'storage'
+
+# Setup environment loader
+env = Env(
+    DEBUG=(bool, False),
+    STORAGE_DIR=(str, None),
+)
+
+# Load .env file
+with open(INSTALL_DIR / '.env', 'r') as env_config_file:
+    Env.read_env(env_config_file)
+
+# Storage directory
+STORAGE_DIR = Path(env('STORAGE_DIR')) if env('STORAGE_DIR') else (INSTALL_DIR / 'storage')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'cl-x4wji(%=&43=*tla3+n-)vr4220%(_tiwh&@^(=dyw*=r2x'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
+
+# Branding
+SITE_NAME=env('SITE_NAME', default='HEXCHAN')
+FAVICON_URL=env('FAVICON_URL', default='/static/imageboard/favicon.png')
 
 # Hosts
-HOST = 'example.com'
+HOST = env('HOST', default='example.com')
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', HOST]
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -83,14 +105,10 @@ WSGI_APPLICATION = 'hexchan.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hexchan',
-        'USER': 'hexchan',
-        'PASSWORD': 'swordfish',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+    'default': env.db(
+        'DATABASE_URL',
+        default='sqlite:///{storage_dir}/hexchan.db'.format(storage_dir=STORAGE_DIR)
+    ),
 }
 
 # Password validation
@@ -110,12 +128,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization and time
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env('LANGUAGE_CODE', default='en')
 LANGUAGES = [
   ('ru', _('Russian')),
   ('en', _('English')),
 ]
-TIME_ZONE = 'UTC'
+TIME_ZONE = env('TIME_ZONE', default='UTC')
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -128,21 +146,6 @@ STATICFILES_DIRS = []
 # Uploads
 MEDIA_URL = '/media/'
 MEDIA_ROOT = str(STORAGE_DIR / 'upload')
-
-# Cache
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    },
-    # 'default': {
-    #     'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-    #     'LOCATION': str(STORAGE_DIR / 'cache'),
-    #     'TIMEOUT': 60 * 60,  # 1 hour
-    #     'OPTIONS': {
-    #         'MAX_ENTRIES': 10000
-    #     }
-    # },
-}
 
 # Session
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'

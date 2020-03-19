@@ -1,9 +1,10 @@
 {% load i18n %}
+{% load settings_value %}
 
 
 <header class="header">
     <div class="header__inner">
-        <a class="header__logo" href="{% url 'start_page' %}">HEXCHAN.ORG</a>
+        <a class="header__logo" href="{% url 'start_page' %}">{% settings_value 'SITE_NAME' %}</a>
 
         {% if board %}
             <div class="header__board-selector">
