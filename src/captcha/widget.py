@@ -10,7 +10,8 @@ class CaptchaWidget(MultiWidget):
             forms.TextInput(attrs={
                 'maxlength': 128,
                 'data-key': 'solution',
-                'class': 'captcha-widget__input'
+                'class': 'captcha-widget__input',
+                'placeholder': 'CAPTCHA',
             }),
             forms.HiddenInput(attrs={
                 'maxlength': 8,

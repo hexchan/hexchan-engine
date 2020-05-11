@@ -21,21 +21,23 @@
             </button>
         </div>
 
-        {% for hidden_field in form.hidden_fields %}
-            {{ hidden_field }}
-        {% endfor %}
+        <div class="posting-form__fields">
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+            {% endfor %}
 
-        {% for field in form.visible_fields %}
-            <div class="posting-form__field">
-                {% if field.erros %}
-                    <div class="posting-form__field-errors">
-                        {{ field.errors }}
-                    </div>
-                {% endif %}
+            {% for field in form.visible_fields %}
+                <div class="posting-form__field" data-type="{{ field.name }}">
+                    {% if field.erros %}
+                        <div class="posting-form__field-errors">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
 
-                {{ field.label_tag }} {{ field }}
-            </div>
-        {% endfor %}
+                    {{ field.label_tag }} {{ field }}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="posting-form__rules">

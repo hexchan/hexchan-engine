@@ -71,6 +71,8 @@ class PostingForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         super(PostingForm, self).__init__(*args, **kwargs)
 
+    field_order = ['title', 'author', 'text', 'images', 'captcha']
+
     class Meta:
         model = Post
         fields = [

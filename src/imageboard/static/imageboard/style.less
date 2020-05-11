@@ -1,6 +1,6 @@
 // Variables
 // =====================================================================================================================
-@base-width: 1024px;
+@base-width: 960px;
 @icon-size: 18px;
 @large-icon-size: 24px;
 
@@ -30,7 +30,7 @@
 @dimmed-color: #777;
 
 @block-border-radius: 3px;
-@input-border-radius: 2px;
+@input-border-radius: 3px;
 
 @ref-color: yellowgreen;
 @title-color: royalblue;
@@ -126,7 +126,7 @@
 html {
   padding: 0;
   margin: 0;
-  font: 14px 'Trebuchet MS', sans-serif;
+  font: 14px 'Open Sans', sans-serif;
 }
 
 
@@ -797,32 +797,43 @@ a {
     padding-left: 0rem;
   }
 
-  &__field {
+  &__fields {
     display: flex;
-    margin: 0.5rem 0;
-    width: 100%;
-
-    &:first-child {
-      margin-top: 0;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+    margin: -0.5rem;
+    flex-wrap: wrap;
+    position: relative;
   }
+
+  &__field {
+    margin: 0.5rem;
+    flex: 0 0 auto;
+
+    &[data-type="title"] {
+      width: calc(50% - 1rem);
+    }
+
+    &[data-type="author"] {
+      width: calc(50% - 1rem);
+    }
+
+    &[data-type="text"] {
+      width: calc(100% - 1rem);
+    }
+
+    &[data-type="images"] {
+      width: calc(100% - 1rem);
+    }
+
+    &[data-type="captcha"] {
+      width: auto;
+    }
+
+  }
+
+
 
   label {
     display: block;
-    width: 6rem;
-    font-size: inherit;
-    padding: 1px 0.5rem 1px;
-    flex: 0 0 auto;
-    border-radius: @input-border-radius 0 0 @input-border-radius;
-    border: 1px solid @field-border;
-    border-right: none;
-    //box-shadow: inset 0 0 2px @field-border;
-    background: @field-bg;
-    text-align: right;
   }
 
   input, textarea {
@@ -833,12 +844,13 @@ a {
   input[type="text"], textarea {
     padding: 1px 3px;
     border: 1px solid @field-border;
-    border-radius: 0 @input-border-radius @input-border-radius 0;
+    border-radius: @input-border-radius;
     background: @field-bg;
     color: @main-color;
     margin-top: 0;
     margin-bottom: 0;
     flex: 1 0 auto;
+    width: 100%;
 
     &:focus {
       border-color: @field-focus;
@@ -846,7 +858,8 @@ a {
   }
 
   input[type="file"] {
-    flex: 1 0 auto;
+    flex: 0 0 auto;
+    width: 100%;
     background: @field-bg;
     color: @main-color;
     border: 1px solid @field-border;
@@ -1041,39 +1054,39 @@ a {
 .captcha-widget {
   display: flex;
   margin-right: 1rem;
+  padding: 0 1rem;
   align-items: center;
-
-  &__image-wrapper {
-    position: relative;
-    margin-right: 1rem;
-  }
+  background: #fff;
+  height: 48px;
+  border: 1px solid @field-border;
+  border-radius: @input-border-radius;
 
   &__image {
     display: block;
     background: transparent;
     color: transparent;
-    box-shadow: inset 0 0 0 1px @field-border;
+    border-radius: @input-border-radius;
     width: 192px;
-    height: 48px;
-    border: 1px solid @field-border;
-    border-radius: 0 @input-border-radius @input-border-radius 0;
+    height: 46px;
+    margin-right: 1rem;
   }
 
   &__input {
-    margin-right: 1rem;
-    width: 8rem;
+    width: auto !important;
+    border-radius: @input-border-radius 0 0 @input-border-radius !important;
   }
 
   &__button {
-    .rectr(10px, 50%, @icon-size, @icon-size);
-    transform: translateY(-50%);
-    position: absolute;
     background: @button-bg;
     padding: 0;
     border: 0;
     cursor: pointer;
-    border-radius: @input-border-radius;
+    border-radius: 0 @input-border-radius @input-border-radius 0;
     color: @button-color;
+    width: 24px;
+    font-size: 24px;
+    height: 24px;
+
 
     &:hover {
       .hover-effect;
