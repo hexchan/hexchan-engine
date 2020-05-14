@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<div id="lightbox" class="lightbox lightbox--hidden">
+    <div class="lightbox__content">
+        <div class="lightbox__image-wrap lightbox__image-wrap--hidden">
+            <img src="" alt="" class="lightbox__image">
+
+            <div class="lightbox__title"></div>
+
+            <button class="lightbox__close icon" title="{% trans "Close" %}">close</button>
+        </div>
+
+        <div class="lightbox__loader lightbox__loader--hidden">
+            <span class="lightbox__loader-spinner"></span>
+            <br>
+            {% trans "Loading image…" %}
+        </div>
+
+        <div class="lightbox__error lightbox__error--hidden">
+            <span class="lightbox__error-icon icon">error</span>
+            <br>
+            {% trans "Image loading error" %}
+        </div>
+    </div>
+</div>

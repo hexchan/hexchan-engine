@@ -70,7 +70,7 @@
             <div class="post__images {% if post.images.count > 1 %}post__images--multiple{% endif %}">
                 {% for image in post.images.all %}
                     <a
-                        class="post__image-wrap"
+                        class="post__image-wrap js-lightbox-link"
                         href="{{image.file.url}}"
                         target="_blank"
                         data-lightbox="{{ post.id }}"

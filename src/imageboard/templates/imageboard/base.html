@@ -16,8 +16,6 @@
     <link rel="icon" href="{% settings_value 'FAVICON_URL' %}">
     <link rel="stylesheet" href="{% static 'imageboard/style.css' %}">
 
-    {# Lightbox #}
-    <link rel="stylesheet" href="{% static "imageboard/libs/lightbox/css/lightbox.css" %}">
     {% block page_style %}{% endblock %}
 </head>
 <body>
@@ -41,24 +39,14 @@
         </div>
     {% endblock %}
 
+    {% include 'imageboard/parts/lightbox.html' %}
+
     <div id="templates">
         {% include 'imageboard/parts/js_templates.html' %}
         {% block js_templates %}{% endblock %}
     </div>
 
     <div id="scripts">
-        {# Lightbox #}
-        <script src="{% static "imageboard/libs/jquery/jquery.min.js" %}"></script>
-        <script src="{% static "imageboard/libs/lightbox/js/lightbox.min.js" %}"></script>
-        <script>
-            // Lightbox config
-            var lb = lightbox.option({
-                resizeDuration: 300,
-                fadeDuration: 300,
-                imageFadeDuration: 300,
-            });
-        </script>
-
         {# Project scripts #}
         <script src="{% static "imageboard/hexchan.js" %}"></script>
 
