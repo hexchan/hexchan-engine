@@ -30,15 +30,15 @@ export default class Lightbox {
     }
 
     onThumbnailClick(ev) {
-        ev.preventDefault();
-
         let target = ev.target;
 
-        while (!target.matches('.js-lightbox-link') && target !== window) {
+        while (target && !target.matches('.js-lightbox-link')) {
             target = target.parentElement;
         }
 
         if (target) {
+            ev.preventDefault();
+
             let url = target.getAttribute('href');
             let title = target.getAttribute('data-title');
             let alt = target.getAttribute('data-alt');
@@ -114,7 +114,7 @@ export default class Lightbox {
     toggleLoader(isVisible) {
         this.loader.classList.toggle('lightbox__loader--hidden', !isVisible);
     }
-    
+
     toggleImage(isVisible) {
         this.imageWrap.classList.toggle('lightbox__image-wrap--hidden', !isVisible);
     }
