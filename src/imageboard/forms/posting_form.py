@@ -13,6 +13,7 @@ import bleach
 
 # App imports
 from imageboard.forms.textarea_widget import TextareaWidget
+from imageboard.forms.images_widget import ImagesWidget
 from captcha.widget import CaptchaField
 from captcha.interface import check_captcha
 from imageboard.models import Board, Thread, Post
@@ -43,10 +44,7 @@ class PostingForm(forms.ModelForm):
 
     images = forms.FileField(
         required=False, label=pgettext_lazy('posting form', 'Images'),
-        widget=forms.ClearableFileInput(attrs={
-            'multiple': True,
-            'accept': ','.join(config.FILE_MIME_TYPES)
-        })
+        widget=ImagesWidget()
     )
 
     ERROR_MISSING_THREAD_ID = 'ERROR_MISSING_THREAD_ID'

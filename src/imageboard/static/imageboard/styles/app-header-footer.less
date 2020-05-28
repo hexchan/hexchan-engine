@@ -1,0 +1,203 @@
+@import 'variables';
+@import 'mixins';
+
+.app {
+    width: @base-width;
+    margin: 0 auto;
+    position: relative;
+    padding: calc(3rem + 0.25rem) 0 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+
+    &__header {
+        flex: 0 0 auto;
+    }
+
+    &__content {
+        flex: 1 0 auto;
+    }
+
+    &__footer {
+        flex: 0 0 auto;
+    }
+
+    &__admin {
+        position: fixed;
+        top: 100px;
+        right: 0;
+        background: @admin-color;
+        color: @button-color;
+        z-index: 2;
+        text-decoration: none;
+        font-size: 24px;
+        padding: 0 9px;
+        border: 1px solid #333;
+        height: 32px;
+        line-height: 30px;
+        transform: rotate(270deg);
+        transform-origin: 100% 100%;
+        opacity: 0.5;
+        font-weight: bold;
+    }
+}
+
+.header {
+    .fixed-rect(0, 0, 100%, calc(3rem + 0.25rem));
+    border-top: 0.25rem solid @accent-color;
+    line-height: 3rem;
+    z-index: 2;
+    background: @grey-color-200;
+    color: @grey-color-600;
+    box-shadow: @shadow-elevation-2;
+    text-shadow: 0 1px 0 #fff;
+
+    &__inner {
+        margin: 0 auto;
+        width: @base-width;
+        height: 100%;
+        display: flex;
+        padding: 0 0.25rem;
+    }
+
+    a {
+        color: inherit;
+    }
+
+    &__logo {
+        display: inline-block;
+        padding: 0 0.25rem;
+        border-right: @grey-color-500;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        text-transform: lowercase;
+
+        &:hover {
+            color: @accent-color;
+        }
+    }
+
+    &__board-selector {
+        border-right: @grey-color-500;
+    }
+
+    &__catalog-link {
+        padding-left: calc(0.5rem + @large-icon-size);
+        //padding: 0 0.25rem;
+        position: relative;
+        text-decoration: none;
+
+        &:hover {
+            color: @accent-color;
+        }
+    }
+
+    &__catalog-link-icon {
+        .rect(0.25rem, 50%, @large-icon-size, @large-icon-size);
+        transform: translateY(-50%);
+        font-size: @large-icon-size;
+        margin-right: 0.25rem;
+    }
+
+    &__spacer {
+        flex: 1 1 auto;
+        border-right: @grey-color-500;
+    }
+
+    &__thread-hid {
+        font-size: 24px;
+        font-weight: bold;
+        padding: 0 0.25rem;
+        border-right: @grey-color-500;
+    }
+
+    &__separator {
+        font-size: 24px;
+        font-weight: bold;
+        padding: 0 0.25rem;
+        border-right: @grey-color-500;
+    }
+}
+
+.board-selector {
+    position: relative;
+
+    &__button {
+        padding: 0 0.25rem;
+        font-size: 24px;
+        font-weight: bold;
+        position: relative;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+        text-transform: lowercase;
+
+        &:hover {
+            color: @accent-color;
+        }
+    }
+
+    &__list {
+        line-height: initial;
+        position: absolute;
+        background: @grey-color-200;
+        box-shadow: @shadow-elevation-2;
+        border-radius: 0 0 0.25rem 0.25rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    &__item {
+        padding: 0.5rem 1rem;
+        display: block;
+        text-decoration: none;
+        white-space: nowrap;
+        border-top: @grey-color-500;
+
+        &[data-current] {
+            color: @accent-color;
+            font-weight: bold;
+        }
+
+        &:hover {
+            color: @accent-color;
+        }
+    }
+}
+.board-selector:hover .board-selector__list {
+    opacity: 1;
+    visibility: visible;
+}
+
+.footer {
+    padding: 0.5rem;
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-bottom: 0.25rem solid @accent-color;
+    height: calc(2rem + 0.25rem);
+    line-height: 1rem;
+    background: @grey-color-200;
+    color: @grey-color-600;
+    box-shadow: @shadow-elevation-2;
+    text-shadow: 0 1px 0 #fff;
+    border-top: 1px solid #fff;
+
+    &__inner {
+        margin: 0 auto;
+        width: @base-width;
+    }
+
+    a {
+        color: inherit;
+    }
+
+    &__page {
+        margin-right: 0.5rem;
+
+        &--current {
+            font-weight: bold;
+        }
+    }
+}

@@ -1,0 +1,178 @@
+@import 'variables';
+@import 'mixins';
+
+.posting-form {
+    display: flex;
+    width: 100%;
+    background: @grey-color-200;
+    color: @grey-color-600;
+    text-shadow: 0 1px 0 #fff;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 0.25rem;
+    box-shadow: @block-shadow;
+
+    &__inner {
+        width: 75%;
+        flex: 1 1 auto;
+    }
+
+    &__header {
+        height: 2rem;
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+
+    &__rules {
+        width: 25%;
+        flex: 1 1 auto;
+        padding-left: calc(1rem - 1px);
+        border-left: @separator-border;
+        margin-left: 1rem;
+
+        *:first-child {
+            margin-top: 0;
+        }
+
+        *:last-child {
+            margin-bottom: 0;
+        }
+
+        p {
+            margin: 0.5rem 0;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        ul,
+        ol {
+            padding: 0 0 0 1rem;
+            margin: 0.5rem 0;
+        }
+    }
+
+    &__rules-header {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: bold;
+        padding-left: 0;
+    }
+
+    &__fields {
+        display: flex;
+        margin: -0.25rem;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    &__field {
+        margin: 0.25rem;
+        flex: 0 0 auto;
+
+        &[data-type='title'] {
+            width: calc(50% - 0.5rem);
+        }
+
+        &[data-type='author'] {
+            width: calc(50% - 0.5rem);
+        }
+
+        &[data-type='text'] {
+            width: calc(100% - 0.5rem);
+        }
+
+        &[data-type='images'] {
+            width: calc(50% - 0.5rem);
+        }
+
+        &[data-type='captcha'] {
+            width: calc(50% - 0.5rem);
+        }
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    input,
+    textarea {
+        font-family: inherit;
+        font-size: inherit;
+    }
+
+    input[type='text'],
+    textarea {
+        font-size: 14px;
+        line-height: 1.4;
+        padding: 6px 8px;
+        //border: 1px solid @field-border;
+        border: 0;
+        border-radius: 0.25rem;
+        background: @grey-color-100;
+        box-shadow: @shadow-deepening-1;
+        color: @main-color;
+        margin-top: 0;
+        margin-bottom: 0;
+        flex: 1 0 auto;
+        width: 100%;
+
+        &:focus {
+            border-color: @field-focus;
+        }
+    }
+
+    input[type='file'] {
+        flex: 0 0 auto;
+        width: 100%;
+        background: @field-bg;
+        color: @main-color;
+        border: 1px solid @field-border;
+        border-radius: 0 @input-border-radius @input-border-radius 0;
+    }
+
+    textarea {
+        resize: vertical;
+        height: calc(8rem + 4px);
+        width: 100%;
+    }
+
+    &__buttons {
+        border-top: @separator-border;
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        text-align: center;
+    }
+
+    &__submit {
+        .rectr(0, 0, auto, auto);
+        //font: inherit;
+        //position: absolute;
+        //right: 0;
+        //top: 0;
+        //display: block;
+        //color: @grey-color-100;
+        //background: @grey-color-500;
+        //border-radius: 0.25rem;
+        //padding: 0.5rem 1rem;
+        //line-height: 1rem !important;
+        //height: 2rem;
+        //border: none;
+        //cursor: pointer;
+        //text-shadow: 0 1px 0 @grey-color-600;
+        //box-shadow: @shadow-elevation-1;
+        //
+        //&:hover {
+        //  background: @accent-color;
+        //}
+    }
+}

@@ -2,17 +2,15 @@
 
 
 <span class="captcha-widget">
-    <img
-        class="captcha-widget__image js-captcha-image"
-        {# src="{{ widget.image }}" #}
-        alt="{% trans "Captcha code" %}"
-        width="190"
-        height="46"
-    />
-
     {% for subwidget in widget.subwidgets %}
         {% include subwidget.template_name with widget=subwidget %}
     {% endfor %}
 
-    <button class="captcha-widget__button js-captcha-refresh icon" type="button">refresh</button>
+    <img
+        class="captcha-widget__image js-captcha-image"
+        alt="{% trans "Captcha code" %}"
+        width="128"
+        height="32"
+        title="{% trans "Click to refresh CAPTCHA" %}"
+    />
 </span>

@@ -10,19 +10,24 @@
     <div class="catalog-item__header">
         <span class="catalog-item__hid hid js-thread-hid" data-id="{{ thread.id }}">{{ thread.hid2hex }}</span>
 
-        <span class="catalog-item__info">
+        <span class="spacer"></span>
+
+        <span class="catalog-item__icons">
+            <span
+                class="catalog-item__icon icon is-hidden js-user-thread-icon"
+                title="{% trans "My thread" %}"
+                data-id="{{ op_post.id }}"
+            >
+                person_outline
+            </span>
+
             {% if thread.is_sticky %}
-                <i class="catalog-item__icon icon" title="{% trans "Sticky" %}">bookmark_border</i>
+                <i class="catalog-item__icon icon" title="{% trans "Sticky" %}">publish_top</i>
             {% endif %}
 
             {% if thread.is_locked %}
                 <i class="catalog-item__icon icon" title="{% trans "Locked" %}">lock</i>
             {% endif %}
-
-            <span class="catalog-item__posts-count" title="{% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}">
-                <i class="catalog-item__posts-count-icon icon">chat_bubble_outline</i>
-                {{ thread.posts_count }}
-            </span>
         </span>
     </div>
 
@@ -36,18 +41,28 @@
                     width="{{ image.thumb_width }}"
                     height="{{ image.thumb_height }}"
                 />
-            {% else %}
-                <div class="catalog-item__image catalog-item__image--empty">
-                    {% trans "No image available" %}
-                </div>
             {% endif %}
         {% endwith %}
 
-        <div class="catalog-item__text">
-            <span class="catalog-item__title">
-                {{ op_post.title }}
-            </span>
-            {% markup text=op_post.text post=op_post make_refs=False make_links=False %}
-        </div>
+        {% if op_post.text or op_post.title %}
+            <div class="catalog-item__text">
+                <span class="catalog-item__title">
+                    {{ op_post.title }}
+                </span>
+                {% markup text=op_post.text post=op_post make_refs=False make_links=False %}
+            </div>
+        {% endif %}
     </div>
+
+{#    TODO: do we really need this #}
+{#    <div class="catalog-item__info">#}
+{#        <div class="catalog-item__info-line">#}
+{#            <span class="catalog-item__info-icon icon">chat_bubble_outline</span>#}
+{#            {{ thread.posts_count }}#}
+{#        </div>#}
+{#        <div class="catalog-item__info-line">#}
+{#            <span class="catalog-item__info-icon icon">update</span>#}
+{#            {{ op_post.created_at|date:config.DATE_TIME_FORMAT }}#}
+{#        </div>#}
+{#    </div>#}
 </a>

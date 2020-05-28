@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<div class="images-widget js-images-widget">
+    <input
+        id="{{ widget.attrs.id }}"
+        name="{{ widget.name }}"
+        type="file"
+        class="images-widget__input js-images-widget-input"
+        multiple="multiple"
+        accept="{{ widget.accepted_file_types }}"
+        {% if widget.value != None %}
+            value="{{ widget.value|stringformat:'s' }}"
+        {% endif %}
+        data-max-file-size="{{ widget.max_file_size }}"
+        data-max-file-num="{{ widget.max_file_num }}"
+    />
+
+    <label
+        for="{{ widget.attrs.id }}"
+        class="images-widget__add-button button"
+        title="{% trans "Select images" %}"
+    >
+        {% trans "Selected" %}: <span class="images-widget__num js-images-widget-num">0</span>
+    </label>
+
+    <div class="images-widget__previews js-images-widget-previews"></div>
+
+    <div class="js-images-widget-error is-hidden" data-error="bad_format">
+        {% trans "Bad file format" %}
+    </div>
+
+    <div class="js-images-widget-error is-hidden" data-error="too_many">
+        {% trans "Too many images attached" %}
+    </div>
+
+    <div class="js-images-widget-error is-hidden" data-error="too_large">
+        {% trans "File is too large" %}
+    </div>
+</div>

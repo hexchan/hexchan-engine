@@ -7,15 +7,22 @@
 
     <div class="post__header">
         {# HID #}
-        <a class="post__hid hid js-post-hid" data-id="{{ post.id }}" href="{{ post.get_absolute_url }}" >{{ post.hid2hex }}</a>
-
-        {# Title #}
-        {% if post.title %}
-            <span class="post__title">{{ post.title }}</span>
-        {% endif %}
+        <a
+            class="post__hid hid"
+            data-id="{{ post.id }}"
+            href="{% if post.is_op %}{{ thread.get_absolute_url }}{% else %}{{ post.get_absolute_url }}{% endif %}"
+            title="{% trans "Reply" %}"
+        >
+            {{ post.hid2hex }}
+        </a>
 
         {# Author #}
-        <span class="post__author {% if post.created_by %}post__author--admin{% endif %}">
+        <span
+            class="post__author {% if post.created_by %}post__author--admin{% endif %}"
+            {% if post.created_by %}
+                title="{% trans "Administrator" %}"
+            {% endif %}
+        >
             {% if post.created_by %}
                  {{ post.created_by }}
             {% elif post.author %}
@@ -30,14 +37,52 @@
             {{ post.created_at|date:config.DATE_TIME_FORMAT }}
         </span>
 
+        <div class="spacer"></div>
+
         {# Buttons and icons #}
-        <span class="post__icons-and-buttons">
-            {% if not is_popup %}
+        {% if not is_popup %}
+            <span class="post__icons-and-buttons">
                 {% if post.is_op %}
+                    <span
+                        class="post__icon icon is-hidden js-user-thread-icon"
+                        title="{% trans "My thread" %}"
+                        data-id="{{ post.id }}"
+                    >
+                        person_outline
+                    </span>
+
+                    {% if thread.is_sticky %}
+                        <span class="post__icon icon" title="{% trans "Sticky" %}">
+                            publish_top
+                        </span>
+                    {% endif %}
+
+                    {% if thread.is_locked %}
+                        <span class="post__icon icon" title="{% trans "Locked" %}">
+                            lock
+                        </span>
+                    {% endif %}
+
+{#                    <button#}
+{#                        class="post__button post__button--toggle icon js-favorite"#}
+{#                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Favorite" %}"#}
+{#                    >#}
+{#                        star_outline#}
+{#                    </button>#}
+{##}
+{#                    <button#}
+{#                        class="post__button post__button--toggle icon js-expand"#}
+{#                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Expand thread" %}"#}
+{#                    >#}
+{#                        unfold_more#}
+{#                    </button>#}
+
                     <button
                         class="post__button post__button--toggle icon js-toggle-thread"
                         data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Hide thread" %}"
-                    >close</button>
+                    >
+                        close
+                    </button>
 
                     {% if request.user.is_superuser %}
                         <a
@@ -47,10 +92,13 @@
                         >T</a>
                     {% endif %}
                 {% else %}
-                    <button
-                        class="post__button post__button--toggle icon js-toggle-post"
-                        data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}" title="{% trans "Hide post" %}"
-                    >close</button>
+                    <span
+                        class="post__icon icon is-hidden js-user-post-icon"
+                        title="{% trans "My post" %}"
+                        data-id="{{ post.id }}"
+                    >
+                        person_outline
+                    </span>
 
                     {% if request.user.is_superuser %}
                         <a
@@ -60,8 +108,8 @@
                         >P</a>
                     {% endif %}
                 {% endif %}
-            {% endif %}
-        </span>
+            </span>
+        {% endif %}
     </div>
 
 
@@ -92,6 +140,10 @@
 
         {% if post.text %}
             <div class="post__text">
+                {% if post.title %}
+                    <div class="post__title">{{ post.title }}</div>
+                {% endif %}
+
                 {% markup text=post.text post=post %}
             </div>
         {% endif %}
@@ -118,40 +170,4 @@
             </div>
         {% endif %}
     </div>
-
-    {% if post.is_op %}
-        <div class="thread-info">
-            {% if page_type == 'board_page' %}
-                <a class="thread-info__item" href="{{ thread.get_absolute_url }}">
-                    <span class="thread-info__icon icon">subdirectory_arrow_right</span>
-                    {% trans "Open thread" %}
-                </a>
-            {% endif %}
-
-            <span class="thread-info__item">
-                <i class="thread-info__icon icon">chat_bubble_outline</i>
-                {% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}
-            </span>
-
-            <span class="thread-info__item">
-                <i class="thread-info__icon icon">arrow_upward</i>
-                {% trans "Limit" %}: {{ thread.max_posts_num }}
-            </span>
-
-            {% if thread.is_sticky %}
-                <span class="thread-info__item">
-                    <i class="thread-info__icon icon">bookmark_border</i>
-                    {% trans "Sticky" %}
-                </span>
-            {% endif %}
-
-            {% if thread.is_locked %}
-                <span class="thread-info__item">
-                    <i class="thread-info__icon icon">lock</i>
-                    {% trans "Locked" %}
-                </span>
-            {% endif %}
-        </div>
-    {% endif %}
-
 </div>

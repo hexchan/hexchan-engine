@@ -1,14 +1,13 @@
 class Captcha {
     constructor() {
-        this.captchaRefreshButton = document.querySelector('.js-captcha-refresh');
         this.captchaImage = document.querySelector('.js-captcha-image');
         this.captchaHiddenInput = document.querySelector('.js-captcha-id');
 
-        if (!this.captchaRefreshButton || !this.captchaImage || !this.captchaHiddenInput) {
+        if (!this.captchaImage || !this.captchaHiddenInput) {
             return;
         }
 
-        this.captchaRefreshButton.addEventListener('click', () => {
+        this.captchaImage.addEventListener('click', () => {
             this.requestCaptcha(true);
         });
 

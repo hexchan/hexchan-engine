@@ -14,10 +14,10 @@ class Highlighter {
             .then((response) => response.json())
             .then((sessionData) => {
                 userThreadsCollection.concat(sessionData['user_threads']);
-                this.markElements(userThreadsCollection, '.js-thread-hid');
+                this.markElements(userThreadsCollection, '.js-user-thread-icon');
     
                 userPostsCollection.concat(sessionData['user_posts']);
-                this.markElements(userPostsCollection, '.js-post-hid');
+                this.markElements(userPostsCollection, '.js-user-post-icon');
             })
             .catch((error) => {
                 console.error('Failed to fetch user session data', error);
@@ -29,7 +29,7 @@ class Highlighter {
             let elementId = parseInt(element.getAttribute('data-id'));
             
             if (collection.check(elementId)) {
-                element.setAttribute('data-user', true);
+                element.classList.remove('is-hidden');
             }            
         });
     }

@@ -1,0 +1,227 @@
+@import "variables";
+@import "mixins";
+
+@post-spacing: 0.5rem;
+
+.post {
+  padding: @post-spacing;
+  position: relative;
+  background: @grey-color-100;
+  border-radius: 0.25rem;
+  box-shadow: @shadow-elevation-2;
+  margin: 1rem 0;
+
+  &--hidden {
+    display: none;
+  }
+
+  &--deleted {
+    color: @dimmed-color;
+  }
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: @post-spacing;
+  }
+
+  &--op &__header {
+    border-top: 1px solid #fff;
+    margin: -@post-spacing -@post-spacing @post-spacing;
+    padding: calc(@post-spacing - 1px) @post-spacing @post-spacing;
+    border-radius: 0.25rem 0.25rem 0 0;
+    background: @grey-color-200;
+    //background: linear-gradient(to bottom, @grey-color-100, @grey-color-200);
+    text-shadow: 0 1px 0 white;
+    color: @grey-color-600;
+    box-shadow: @shadow-elevation-1;
+  }
+
+  &--op &__hid {
+    box-shadow: 0 1px 0 white;
+  }
+
+  &__header-inner {
+  }
+
+  &__body {
+    margin-top: @post-spacing;
+
+    &--flexible {
+      display: flex;
+    }
+  }
+
+  &__hid {
+    margin-right: @post-spacing;
+  }
+
+  &__date {
+    margin-right: @post-spacing;
+  }
+
+  &__author {
+    font-weight: bold;
+    display: inline-block;
+    margin-right: @post-spacing;
+
+    &--admin {
+      background: @admin-color;
+      color: #fff;
+      text-shadow: 0 1px 0 @grey-color-600;
+      border-radius: 0.25rem;
+      padding: 0 0.5rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      text-decoration: none;
+    }
+  }
+
+  &__icons-and-buttons {
+    display: inline-flex;
+    margin: 0 -0.25rem;
+  }
+
+  &__button {
+    display: inline-block;
+    background: @grey-color-500;
+    //background: linear-gradient(to bottom, @grey-color-400, @grey-color-500);
+    text-shadow: 0 1px 0 @grey-color-600;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    border-radius: @input-border-radius;
+    color: @grey-color-100;
+    margin: 0 0.25rem;
+    box-shadow: @shadow-elevation-1;
+    font-size: @large-icon-size;
+    line-height: 1.5rem;
+
+    &:hover {
+      background: @accent-color;
+    }
+
+    &--admin {
+      background: @admin-color;
+      line-height: 1;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
+
+  &__icon {
+    display: inline-block;
+    //color: @grey-color-500;
+    color: @accent-color;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: @large-icon-size;
+    line-height: 1.5rem;
+    margin: 0 0.25rem;
+    padding: 0;
+    text-align: center;
+    cursor: default;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: @post-spacing;
+  }
+
+  &__images {
+    flex: 0 0 auto;
+    margin-right: @post-spacing;
+
+    &--multiple {
+      width: 100%;
+      margin-bottom: 1rem;
+      margin-right: 0;
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+
+  &__image-wrap {
+    text-decoration: none;
+    margin: 0 @post-spacing 0 0;
+    display: block;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__image {
+    display: block;
+    margin: 0;
+    padding: 0;
+    box-shadow: @shadow-elevation-1;
+    border-radius: 0.25rem;
+  }
+
+  &__footer {
+  }
+
+  &__admin-message {
+    margin-top: @post-spacing;
+    color: @admin-color;
+    font-style: italic;
+  }
+
+  &__deleted-label {
+  }
+
+  &__anchor {
+    position: absolute;
+    top: -2rem;
+    left: 0;
+  }
+
+  &__text {
+    flex: 1 1;
+    max-height: 20rem;
+    overflow-y: auto;
+
+    *:first-child {
+      margin-top: 0;
+    }
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__replies {
+    margin-top: @post-spacing;
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+
+  &__reply {
+    &:hover {
+      .link-hover-effect();
+    }
+  }
+
+  // Rendered post elements:
+  p {
+    margin: 0.5rem 0;
+    word-wrap: break-word;
+  }
+
+  blockquote {
+    color: @ref-color;
+    margin: 0.5rem 0;
+  }
+
+  a.ref {
+    &:hover {
+      .link-hover-effect();
+    }
+  }
+}

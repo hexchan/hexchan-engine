@@ -1,0 +1,52 @@
+@import "variables";
+
+.link-hover-effect() {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.rect(@left, @top, @width, @height) {
+  position: absolute;
+  left: @left;
+  top: @top;
+  width: @width;
+  height: @height;
+}
+
+.rectr(@right, @top, @width, @height) {
+  position: absolute;
+  right: @right;
+  top: @top;
+  width: @width;
+  height: @height;
+}
+
+.fixed-rect(@left, @top, @width, @height) {
+  position: fixed;
+  left: @left;
+  top: @top;
+  width: @width;
+  height: @height;
+}
+
+.block {
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+.color-bg {
+  color: @grey-color-700;
+  background: @grey-color-100;
+}
+
+.darker-color-bg {
+  color: @grey-color-600;
+  background: @grey-color-200;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.darkest-color-bg {
+  color: @grey-color-100;
+  background: @grey-color-500;
+  text-shadow: 0 1px 0 @grey-color-600;
+}

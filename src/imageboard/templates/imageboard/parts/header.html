@@ -1,18 +1,15 @@
 {% load i18n %}
 {% load settings_value %}
 
-
 <header class="header">
     <div class="header__inner">
         <a class="header__logo" href="{% url 'start_page' %}">{% settings_value 'SITE_NAME' %}</a>
 
         {% if board %}
+            <div class="header__separator">/</div>
             <div class="header__board-selector">
                 <div class="board-selector">
-{#                    <a href="{% url 'board_page' board_hid=board.hid %}" class="board-selector__button">#}
-{#                        /{{ board.hid }}/#}
-{#                    </a>#}
-                    <span class="board-selector__button">/{{ board.hid }}/</span>
+                    <span class="board-selector__button">{{ board.hid }}</span>
                     <div class="board-selector__list">
                         {% for a_board in boards %}
                             {% if not a_board.is_hidden and not a_board.is_deleted %}
@@ -23,19 +20,21 @@
                                         data-current
                                     {% endif %}
                                 >
-                                    /{{ a_board.hid }}/ :: {{ a_board.name }}
+                                    {{ a_board.hid }} :: {{ a_board.name }}
                                 </a>
                             {% endif %}
                         {% endfor %}
                     </div>
                 </div>
             </div>
+            <div class="header__separator">/</div>
 
             {% if thread %}
+
                 <span class="header__thread-hid" >{{ thread.hid2hex }}</span>
             {% endif %}
 
-            <span class="header__spacer"></span>
+            <span class="spacer"></span>
 
             <a class="header__catalog-link" href="{% url 'catalog_page' board_hid=board.hid %}">
                 <i class="header__catalog-link-icon icon">apps</i>

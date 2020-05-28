@@ -11,19 +11,18 @@ from captcha.wakabawords import make_word
 
 
 COLOR_MODE = 'RGBA'
-BACKGROUND_COLOR = '#FFF'
-MAIN_COLOR = '#000'
-TRANSPARENT_COLOR = (0, 0, 0, 0)
+BACKGROUND_COLOR = (255, 255, 255, 0)  # Transparent white
+MAIN_COLOR = (0, 0, 0, 255)  # Solid black
+TRANSPARENT_COLOR = (0, 0, 0, 0)  # Transparent black
 
-FONT_SIZE = 24
+FONT_SIZE = 20
 VERTICAL_LETTER_CROP = 7
 
-BORDER_WIDTH = 1
-CAPTCHA_WIDTH = 192 - 2 * BORDER_WIDTH
-CAPTCHA_HEIGHT = 48 - 2 * BORDER_WIDTH
+CAPTCHA_WIDTH = 128
+CAPTCHA_HEIGHT = 32
 
 HORIZONTAL_SHIFT_RATIO = 0.5
-HORIZONTAL_PADDING = 20
+HORIZONTAL_PADDING = 10
 MAX_VERTICAL_SHIFT = 5
 VERTICAL_PADDING = int((CAPTCHA_HEIGHT - FONT_SIZE) / 2)
 
@@ -105,7 +104,7 @@ def draw_test_sheet():
 def draw_single_captcha(image_size=(CAPTCHA_WIDTH, CAPTCHA_HEIGHT)):
     image = PIL.Image.new(COLOR_MODE, image_size, BACKGROUND_COLOR)
     solution = make_word().upper()
-    draw_distored_text(image, solution, 10, 5)
+    draw_distored_text(image, solution, 0, 0)
 
     return image, solution
 
