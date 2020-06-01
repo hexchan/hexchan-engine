@@ -14,19 +14,19 @@
     }
 
     .hid {
+        padding: 0 0.25rem;
+        height: @icon-size;
     }
 
     .app {
         width: calc(100% - 0.5rem);
         margin: 0 0.25rem;
+        font-size: 12px;
     }
 
     .header {
         &__logo {
             font-size: 1rem;
-            //padding: 0 1rem;
-            //width: calc(32px + 2rem);
-            //background-position: 50% 50%;
         }
 
         &__inner {
@@ -36,7 +36,6 @@
         &__catalog-link {
             font-size: 0;
             padding: 0 1rem;
-            //width: 3rem;
             width: calc(@large-icon-size + 1rem);
             text-align: center;
         }
@@ -63,16 +62,6 @@
     }
 
     .board-header {
-        //border-radius: 0;
-        //margin: 0;
-        //
-        //&__title {
-        //    display: block;
-        //}
-        //
-        //&__description {
-        //    display: block;
-        //}
     }
 
     .threads {
@@ -86,8 +75,6 @@
     }
 
     .post {
-        //border-radius: 0;
-        //box-shadow: none;
         margin: 0.25rem 0;
 
         &__image {
@@ -101,6 +88,18 @@
 
         &__images {
             max-width: 100%;
+        }
+
+        &__button,
+        &__icon {
+            width: @icon-size;
+            height: @icon-size;
+            line-height: @icon-size;
+            font-size: @icon-size;
+        }
+
+        &__icon {
+            margin: 0;
         }
     }
 
@@ -161,6 +160,13 @@
     .catalog-item {
         width: calc(50% - 0.5rem);
         height: auto;
+
+        &__icon {
+            width: @icon-size;
+            height: @icon-size;
+            line-height: @icon-size;
+            font-size: @icon-size;
+        }
     }
 
     .placeholder-item {
