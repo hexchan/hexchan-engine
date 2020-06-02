@@ -4,6 +4,7 @@ import RefPopup from './scripts/ref_popup';
 import Captcha from './scripts/captcha';
 import Lightbox from './scripts/lightbox';
 import ImagesWidget from './scripts/images_widget';
+import PostExpander from './scripts/post_expander';
 
 // Post and threads hiders
 let threadHider = new Hider({
@@ -30,3 +31,6 @@ let lightbox = new Lightbox();
 
 // Images file input
 let imagesWidget = new ImagesWidget();
+
+// Long post expander
+let postExpander = new PostExpander();

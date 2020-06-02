@@ -176,8 +176,7 @@
 
   &__text {
     flex: 1 1;
-    max-height: 20rem;
-    overflow-y: auto;
+    position: relative;
 
     *:first-child {
       margin-top: 0;
@@ -185,6 +184,36 @@
 
     *:last-child {
       margin-bottom: 0;
+    }
+
+    &[data-collapsed="true"] {
+      height: 200px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+  }
+
+  &__text-expander {
+    background: linear-gradient(to bottom, transparent 0, @grey-color-100 32px , @grey-color-100 50px);
+    position: absolute;
+    content: '';
+    padding-top: 32px;
+    height: 50px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__text-expander-label {
+    height: 18px;
+    border-bottom: 1px dashed;
+
+    &:hover {
+      color: @accent-color;
     }
   }
 
