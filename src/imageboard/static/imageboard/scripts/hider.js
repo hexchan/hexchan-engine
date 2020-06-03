@@ -28,9 +28,10 @@ class Hider {
 
 
     setItemState(itemId, itemHid, isHidden) {
-        let item = document.querySelector(`#${this.type}-${itemId}`);
+        let itemSelector = `.js-${this.type}[data-id="${itemId}"]`;
+        let item = document.querySelector(itemSelector);
 
-        if (item.classList.contains(this.hiddenClass) !== isHidden) {
+        if (item && item.classList.contains(this.hiddenClass) !== isHidden) {
             item.classList.toggle(this.hiddenClass, isHidden);
 
             if (isHidden) {
