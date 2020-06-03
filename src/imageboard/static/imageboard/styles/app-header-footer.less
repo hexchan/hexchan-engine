@@ -5,7 +5,6 @@
     width: @base-width;
     margin: 0 auto;
     position: relative;
-    padding: calc(3rem + 0.25rem) 0 0;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -44,7 +43,7 @@
 }
 
 .header {
-    .fixed-rect(0, 0, 100%, calc(3rem + 0.25rem));
+    height: 3rem;
     border-top: 0.25rem solid @accent-color;
     line-height: 3rem;
     z-index: 2;
@@ -52,6 +51,7 @@
     color: @grey-color-600;
     box-shadow: @shadow-elevation-2;
     text-shadow: 0 1px 0 #fff;
+    border-radius: 0 0 0.25rem 0.25rem;
 
     &__inner {
         margin: 0 auto;
@@ -85,6 +85,7 @@
 
     &__catalog-link {
         padding-left: calc(0.5rem + @large-icon-size);
+        padding-right: 0.25rem;
         //padding: 0 0.25rem;
         position: relative;
         text-decoration: none;
