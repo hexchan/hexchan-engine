@@ -138,7 +138,7 @@
             </div>
         {% endif %}
 
-        {% if post.text %}
+        {% if post.text or post.title %}
             <div class="post__text js-post-text">
                 {% if post.title %}
                     <div class="post__title">{{ post.title }}</div>
