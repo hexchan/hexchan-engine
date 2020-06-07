@@ -2,7 +2,7 @@
 {% load i18n %}
 
 
-<form action="{% url 'posting_view' %}" method="post" class="posting-form js-posting-form" enctype="multipart/form-data">
+<form id="posting-form" action="{% url 'posting_view' %}" method="post" class="posting-form js-posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
         <div class="posting-form__header">
             <span class="posting-form__title">
@@ -38,12 +38,5 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
-
-    <div class="posting-form__rules">
-        <div class="posting-form__rules-header">
-            {% trans "Board rules" %}
-        </div>
-        {{ board.rules|markdown|safe }}
     </div>
 </form>
