@@ -9,6 +9,48 @@ class FormMover {
         this.el.addEventListener('mousedown', this.onMouseDown.bind(this));
         document.addEventListener('mousemove', this.onMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
+        document.addEventListener('click', this.onReplyButtonClick.bind(this));
+    }
+
+    toggleVisibility(isHidden) {
+        this.el.classList.toggle('is-hidden', isHidden);
+    }
+
+    onReplyButtonClick(e) {
+        let target = e.target;
+        if (target && target.matches('.js-reply-button')) {
+            e.preventDefault();
+
+            // Show form
+            this.toggleVisibility(false);
+
+            // Move form to the reply button
+            this.el.style.left = target.offsetLeft + target.offsetWidth + 'px';
+            this.el.style.top = target.offsetTop + target.offsetHeight + 'px';
+
+            // Insert post HID to the main textarea
+            let textarea = this.el.querySelector('textarea');
+            let strToInsert = `>>${target.textContent.trim()}\n`;
+            if (textarea.selectionStart || textarea.selectionStart == '0') {
+                let startPos = textarea.selectionStart;
+                let endPos = textarea.selectionEnd;
+                textarea.value =
+                    textarea.value.substring(0, startPos) +
+                    strToInsert +
+                    textarea.value.substring(endPos, textarea.value.length);
+            } else {
+                textarea.value += strToInsert;
+            }
+        }
+    }
+
+    onNewThreadButtonClick() {
+        let target = e.target;
+        if (target && target.matches('.js-new-thread-button')) {
+            e.preventDefault();
+
+            this.toggleVisibility(false);
+        }
     }
 
     onMouseDown(e) {

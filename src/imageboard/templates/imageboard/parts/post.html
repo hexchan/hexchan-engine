@@ -6,7 +6,7 @@
     <div class="post__header">
         {# HID #}
         <a
-            class="post__hid hid"
+            class="post__hid hid js-reply-button"
             data-id="{{ post.id }}"
             href="{% if post.is_op %}{{ thread.get_absolute_url }}{% else %}{{ post.get_absolute_url }}{% endif %}"
             title="{% trans "Reply" %}"
