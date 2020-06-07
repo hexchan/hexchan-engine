@@ -1,32 +1,36 @@
 class FormMover {
-    constructor(el) {
-        this.el = el;
+    constructor() {
+        this.el = document.querySelector('.js-posting-form');
         this.mouseInElX = 0;
         this.mouseInElY = 0;
 
-        this.el.onmousedown = this.dragMouseDown.bind(this);
+        this.isMoving = false;
+
+        this.el.addEventListener('mousedown', this.onMouseDown.bind(this));
+        document.addEventListener('mousemove', this.onMouseMove.bind(this));
+        document.addEventListener('mouseup', this.onMouseUp.bind(this));
     }
 
-    dragMouseDown(e) {
+    onMouseDown(e) {
         e.preventDefault();
+
+        this.isMoving = true;
 
         this.mouseInElX = this.el.offsetLeft - e.clientX;
         this.mouseInElY = this.el.offsetTop - e.clientY;
-        
-        document.onmouseup = this.closeDragElement.bind(this);
-        document.onmousemove = this.elementDrag.bind(this);
     }
 
-    elementDrag(e) {
+    onMouseMove(e) {
         e.preventDefault();
 
-        this.el.style.left = e.clientX + this.mouseInElX + 'px';
-        this.el.style.top = e.clientY + this.mouseInElY + 'px';
+        if (this.isMoving) {
+            this.el.style.left = e.clientX + this.mouseInElX + 'px';
+            this.el.style.top = e.clientY + this.mouseInElY + 'px';
+        }
     }
 
-    closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
+    onMouseUp() {
+        this.isMoving = false;
     }
 }
 
