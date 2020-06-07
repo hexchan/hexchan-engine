@@ -1,3 +1,11 @@
+// TODO: position fixed
+// TODO: good looks on mobile
+// TODO: header as dragging handle
+// TODO: rename to PostingForm or something
+// TODO: closing button
+// TODO: add visibility toggling button at the top of the page, display form as attached there, detach on reply
+// TODO: quick reply to any thread from the board page
+
 class FormMover {
     constructor() {
         this.el = document.querySelector('.js-posting-form');
