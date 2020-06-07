@@ -28,19 +28,25 @@ class FormMover {
             this.el.style.left = target.offsetLeft + target.offsetWidth + 'px';
             this.el.style.top = target.offsetTop + target.offsetHeight + 'px';
 
-            // Insert post HID to the main textarea
+            // Message textarea
             let textarea = this.el.querySelector('textarea');
+
+            // Post ref to insert
             let strToInsert = `>>${target.textContent.trim()}\n`;
-            if (textarea.selectionStart || textarea.selectionStart == '0') {
-                let startPos = textarea.selectionStart;
-                let endPos = textarea.selectionEnd;
-                textarea.value =
-                    textarea.value.substring(0, startPos) +
-                    strToInsert +
-                    textarea.value.substring(endPos, textarea.value.length);
-            } else {
-                textarea.value += strToInsert;
-            }
+
+            // Focus into textarea
+            textarea.focus();
+
+            // Insert post HID to the main textarea
+            let startPos = textarea.selectionStart;
+            let endPos = textarea.selectionEnd;
+            textarea.value =
+                textarea.value.substring(0, startPos) +
+                strToInsert +
+                textarea.value.substring(endPos, textarea.value.length);
+
+            // Move cursor after insertion
+            textarea.selectionEnd = startPos + strToInsert.length;
         }
     }
 
@@ -54,8 +60,6 @@ class FormMover {
     }
 
     onMouseDown(e) {
-        e.preventDefault();
-
         this.isMoving = true;
 
         this.mouseInElX = this.el.offsetLeft - e.clientX;
@@ -63,8 +67,6 @@ class FormMover {
     }
 
     onMouseMove(e) {
-        e.preventDefault();
-
         if (this.isMoving) {
             this.el.style.left = e.clientX + this.mouseInElX + 'px';
             this.el.style.top = e.clientY + this.mouseInElY + 'px';
