@@ -4,33 +4,29 @@
 .posting-form {
     width: 512px;
     padding: 0.5rem;
-    //margin: 1rem auto;
     border-radius: 0.25rem;
     box-shadow: @shadow-elevation-4;
-    .darker-color-bg;
-
+    .color-bg;
     position: absolute;
     z-index: 2;
-    cursor: move;
 
     &__inner {
     }
 
     &__header {
-        height: 2rem;
+        //height: 2rem;
         position: relative;
-        margin-bottom: 0.5rem;
-    }
-
-    &__rules-header {
-        font-size: 1.5rem;
-        line-height: 2rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
+        margin: -0.5rem -0.5rem 0.5rem;
+        padding: 0.5rem;
+        box-shadow: @shadow-elevation-2;
+        .darker-color-bg;
+        border-top: 1px solid #fff;
+        border-radius: 0.25rem 0.25rem 0 0;
+        cursor: move;
     }
 
     &__title {
-        font-size: 1.5rem;
+        font-size: @font-size-20;
         line-height: 2rem;
         font-weight: bold;
         padding-left: 0;
@@ -83,11 +79,11 @@
     textarea {
         font-size: 14px;
         line-height: 1.4;
-        padding: 6px 8px;
+        padding: 5px 7px;
         //border: 1px solid @field-border;
-        border: 0;
+        border: 1px solid @grey-color-500;
         border-radius: 0.25rem;
-        background: @grey-color-100;
+        background: #fff;
         box-shadow: @shadow-deepening-1;
         color: @main-color;
         margin-top: 0;
@@ -96,7 +92,7 @@
         width: 100%;
 
         &:focus {
-            border-color: @field-focus;
+            border-color: @accent-color;
         }
     }
 
@@ -123,7 +119,8 @@
     }
 
     &__submit {
-        .rectr(0, 0, auto, auto);
+        .rectr(0.5rem, 50%, auto, auto);
+        transform: translateY(-50%);
         //font: inherit;
         //position: absolute;
         //right: 0;
