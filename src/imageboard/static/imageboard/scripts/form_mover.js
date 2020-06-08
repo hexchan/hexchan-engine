@@ -1,6 +1,5 @@
 // TODO: position fixed
 // TODO: good looks on mobile
-// TODO: header as dragging handle
 // TODO: rename to PostingForm or something
 // TODO: closing button
 // TODO: add visibility toggling button at the top of the page, display form as attached there, detach on reply
@@ -9,12 +8,16 @@
 class FormMover {
     constructor() {
         this.el = document.querySelector('.js-posting-form');
+        this.headerEl = this.el.querySelector('.js-posting-form-header');
         this.mouseInElX = 0;
         this.mouseInElY = 0;
 
         this.isMoving = false;
 
-        this.el.addEventListener('mousedown', this.onMouseDown.bind(this));
+        this.headerEl.addEventListener(
+            'mousedown',
+            this.onMouseDown.bind(this)
+        );
         document.addEventListener('mousemove', this.onMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
         document.addEventListener('click', this.onReplyButtonClick.bind(this));

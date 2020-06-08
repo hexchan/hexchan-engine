@@ -4,7 +4,7 @@
 
 <form id="posting-form" action="{% url 'posting_view' %}" method="post" class="posting-form is-hidden js-posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
-        <div class="posting-form__header">
+        <div class="posting-form__header js-posting-form-header">
             <span class="posting-form__title">
                 {% if form_type == 'new_thread' %}
                     {% trans "Create a new thread" %}
