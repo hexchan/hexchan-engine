@@ -71,6 +71,9 @@ class FormMover {
     }
 
     onMouseDown(e) {
+        // Prevent default to prevent text selection
+        e.preventDefault();
+
         this.isMoving = true;
 
         this.mouseInElX = this.el.offsetLeft - e.clientX;
@@ -78,6 +81,9 @@ class FormMover {
     }
 
     onMouseMove(e) {
+        // Prevent default to prevent text selection
+        e.preventDefault();
+
         if (this.isMoving) {
             this.el.style.left = e.clientX + this.mouseInElX + 'px';
             this.el.style.top = e.clientY + this.mouseInElY + 'px';
