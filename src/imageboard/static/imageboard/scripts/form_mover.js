@@ -1,4 +1,4 @@
-// TODO: position fixed
+// TODO: window attach to right
 // TODO: good looks on mobile
 // TODO: rename to PostingForm or something
 // TODO: closing button
@@ -13,6 +13,7 @@ class FormMover {
         this.mouseInElY = 0;
 
         this.isMoving = false;
+        this.isHidden = true;
 
         this.headerEl.addEventListener(
             'mousedown',
@@ -24,7 +25,21 @@ class FormMover {
     }
 
     toggleVisibility(isHidden) {
-        this.el.classList.toggle('is-hidden', isHidden);
+        if (this.isHidden !== isHidden) {
+            // Set visibility flag
+            this.isHidden = isHidden;
+
+            // Toggle visibility class
+            this.el.classList.toggle('is-hidden', isHidden);
+
+            // If dialog became visiblie - move it to the right middle
+            if (!isHidden) {
+                this.el.style.left =
+                    (window.innerWidth - this.el.offsetWidth) * 0.9 + 'px';
+                this.el.style.top =
+                    (window.innerHeight - this.el.offsetHeight) / 2 + 'px';
+            }
+        }
     }
 
     onReplyButtonClick(e) {
@@ -34,10 +49,6 @@ class FormMover {
 
             // Show form
             this.toggleVisibility(false);
-
-            // Move form to the reply button
-            this.el.style.left = target.offsetLeft + target.offsetWidth + 'px';
-            this.el.style.top = target.offsetTop + target.offsetHeight + 'px';
 
             // Message textarea
             let textarea = this.el.querySelector('textarea');
