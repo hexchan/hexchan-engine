@@ -10,7 +10,6 @@ class ImagesWidget {
         this.previewsList = document.querySelector(
             '.js-images-widget-previews'
         );
-        this.fileNum = document.querySelector('.js-images-widget-num');
 
         this.maxFileSize = parseInt(this.fileInput.dataset.maxFileSize);
         this.maxFileNum = parseInt(this.fileInput.dataset.maxFileNum);
@@ -84,9 +83,6 @@ class ImagesWidget {
             })(preview);
             reader.readAsDataURL(file);
         }
-
-        // Show number of images in button label
-        this.fileNum.innerHTML = files.length.toString();
     }
 
     clearWidget() {

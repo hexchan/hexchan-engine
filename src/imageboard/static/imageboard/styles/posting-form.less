@@ -56,11 +56,11 @@
         }
 
         &[data-type='images'] {
-            width: calc(100% - 0.5rem);
+            width: calc(50% - 0.5rem);
         }
 
         &[data-type='captcha'] {
-            width: calc(100% - 0.5rem);
+            width: calc(50% - 0.5rem);
         }
     }
 
@@ -88,8 +88,10 @@
         color: @main-color;
         margin-top: 0;
         margin-bottom: 0;
-        flex: 1 0 auto;
+        flex: 1 1 auto;
         width: 100%;
+        min-width: 0;
+        max-width: 100%;
 
         &:focus {
             border-color: @accent-color;
