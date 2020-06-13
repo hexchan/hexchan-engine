@@ -11,13 +11,18 @@
                 {% elif form_type == 'new_post' %}
                     {% trans "Reply to the thread" %}
                     {% if thread %}
-                        {{thread.hid2hex}}
+                        {{ thread.hid2hex }}
                     {% endif %}
                 {% endif %}
             </span>
 
-            <button type="submit" class="posting-form__submit button">
-                {% trans "Submit" %}
+            <div class="spacer"></div>
+
+            <button
+                    class="posting-form__close-button button button--icon js-posting-form-close"
+                    title="{% trans "Close form" %}"
+            >
+                close
             </button>
         </div>
 
@@ -37,6 +42,12 @@
                     {{ field.label_tag }} {{ field }}
                 </div>
             {% endfor %}
+
+            <div class="posting-form__field">
+                <button type="submit" class="posting-form__submit button">
+                    {% trans "Submit" %}
+                </button>
+            </div>
         </div>
     </div>
 </form>

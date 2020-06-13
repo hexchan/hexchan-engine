@@ -23,13 +23,12 @@
         border-top: 1px solid #fff;
         border-radius: 0.25rem 0.25rem 0 0;
         cursor: move;
+        display: flex;
+        align-items: center;
     }
 
     &__title {
-        font-size: @font-size-20;
-        line-height: 2rem;
         font-weight: bold;
-        padding-left: 0;
     }
 
     &__fields {
@@ -121,26 +120,9 @@
     }
 
     &__submit {
-        .rectr(0.5rem, 50%, auto, auto);
-        transform: translateY(-50%);
-        //font: inherit;
-        //position: absolute;
-        //right: 0;
-        //top: 0;
-        //display: block;
-        //color: @grey-color-100;
-        //background: @grey-color-500;
-        //border-radius: 0.25rem;
-        //padding: 0.5rem 1rem;
-        //line-height: 1rem !important;
-        //height: 2rem;
-        //border: none;
-        //cursor: pointer;
-        //text-shadow: 0 1px 0 @grey-color-600;
-        //box-shadow: @shadow-elevation-1;
-        //
-        //&:hover {
-        //  background: @accent-color;
-        //}
+    }
+
+    &__close-button {
+        line-height: 1.5rem;
     }
 }
