@@ -1,6 +1,5 @@
 // TODO: good looks on mobile
 // TODO: rename to PostingForm or something
-// TODO: closing button
 // TODO: add visibility toggling button at the top of the page, display form as attached there, detach on reply
 // TODO: quick reply to any thread from the board page
 
@@ -8,6 +7,7 @@ class FormMover {
     constructor() {
         this.el = document.querySelector('.js-posting-form');
         this.headerEl = this.el.querySelector('.js-posting-form-header');
+        this.closeButtonEl = this.el.querySelector('.js-posting-form-close');
         this.mouseInElX = 0;
         this.mouseInElY = 0;
 
@@ -17,6 +17,10 @@ class FormMover {
         this.headerEl.addEventListener(
             'mousedown',
             this.onMouseDown.bind(this)
+        );
+        this.closeButtonEl.addEventListener(
+            'click',
+            this.onCloseButtonClick.bind(this)
         );
         document.addEventListener('mousemove', this.onMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
@@ -111,6 +115,10 @@ class FormMover {
 
     onWindowResize() {
         this.placeWindow();
+    }
+
+    onCloseButtonClick() {
+        this.toggleVisibility(true);
     }
 }
 
