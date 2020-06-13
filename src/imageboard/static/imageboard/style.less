@@ -3,7 +3,9 @@
 
 @import 'styles/material-icons';
 
-*, ::before, ::after {
+*,
+::before,
+::after {
     box-sizing: border-box;
 }
 
@@ -191,27 +193,7 @@ a {
     }
 }
 
-.captcha-widget {
-    display: flex;
-    //margin-right: 1rem;
-    align-items: flex-start;
-    //padding-right: 128px;
-    position: relative;
-
-    &__image {
-        width: 128px;
-        height: 32px;
-        //.rectr(0, -5px, 128px, 32px);
-        display: block;
-        color: transparent;
-        cursor: pointer;
-    }
-
-    &__input {
-        width: auto !important;
-        margin-right: 1rem;
-    }
-}
+@import 'styles/captcha-widget';
 
 .popup-container {
     position: absolute;
@@ -273,39 +255,6 @@ a {
     }
 }
 
-.images-widget {
-    display: flex;
-    align-items: center;
-
-    &__input {
-        display: none;
-    }
-
-    &__add-button {
-        height: 2rem;
-        line-height: 2rem;
-        font-weight: normal !important;
-        margin-right: 0.5rem;
-
-        &--error {
-            background: @error-color;
-        }
-    }
-
-    &__previews {
-        display: flex;
-    }
-
-    &__preview {
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-color: @grey-color-300;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 0.25rem;
-        margin-right: 0.5rem;
-        box-shadow: @shadow-elevation-1;
-    }
-}
+@import 'styles/images-widget';
 
 @import 'styles/mobile-hacks';
