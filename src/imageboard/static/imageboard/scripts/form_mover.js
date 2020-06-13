@@ -1,4 +1,3 @@
-// TODO: window attach to right
 // TODO: good looks on mobile
 // TODO: rename to PostingForm or something
 // TODO: closing button
@@ -22,6 +21,7 @@ class FormMover {
         document.addEventListener('mousemove', this.onMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
         document.addEventListener('click', this.onReplyButtonClick.bind(this));
+        window.addEventListener('resize', this.onWindowResize.bind(this));
     }
 
     toggleVisibility(isHidden) {
@@ -34,12 +34,16 @@ class FormMover {
 
             // If dialog became visiblie - move it to the right middle
             if (!isHidden) {
-                this.el.style.left =
-                    (window.innerWidth - this.el.offsetWidth) * 0.9 + 'px';
-                this.el.style.top =
-                    (window.innerHeight - this.el.offsetHeight) / 2 + 'px';
+                this.placeWindow();
             }
         }
+    }
+
+    placeWindow() {
+        this.el.style.left =
+            (window.innerWidth - this.el.offsetWidth) * 0.9 + 'px';
+        this.el.style.top =
+            (window.innerHeight - this.el.offsetHeight) / 2 + 'px';
     }
 
     onReplyButtonClick(e) {
@@ -103,6 +107,10 @@ class FormMover {
 
     onMouseUp() {
         this.isMoving = false;
+    }
+
+    onWindowResize() {
+        this.placeWindow();
     }
 }
 
