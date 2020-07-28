@@ -30,8 +30,8 @@ build_frontend:
 	@echo $(separator)
 	@echo '$(cyan)Build frontend$(sgr0)'
 	@echo '$(cyan)==============$(sgr0)'	
-	npx rollup --sourcemap --silent --config src/imageboard/static/imageboard/rollup.config.js
-	npx lessc --source-map --math=strict src/imageboard/static/imageboard/style.less src/imageboard/static/imageboard/style.css
+	npm run build:styles
+	npm run build:scripts
 
 create_database:
 	@echo $(separator)
