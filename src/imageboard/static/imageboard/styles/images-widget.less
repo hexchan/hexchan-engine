@@ -1,0 +1,39 @@
+@import 'variables';
+@import 'mixins';
+
+.images-widget {
+    display: flex;
+    align-items: center;
+
+    &__input {
+        display: none;
+    }
+
+    &__add-button {
+        width: 2rem;
+        height: 2rem;
+        line-height: 2rem;
+        font-weight: normal !important;
+        margin-right: 0.5rem;
+        text-align: center;
+
+        &--error {
+            background: @error-color;
+        }
+    }
+
+    &__previews {
+        display: flex;
+    }
+
+    &__preview {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: @grey-color-300;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.25rem;
+        margin-right: 0.5rem;
+        box-shadow: @shadow-elevation-1;
+    }
+}

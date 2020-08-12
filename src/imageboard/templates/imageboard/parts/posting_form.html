@@ -2,23 +2,29 @@
 {% load i18n %}
 
 
-<form action="{% url 'posting_view' %}" method="post" class="posting-form js-posting-form" enctype="multipart/form-data">
+<form id="posting-form" action="{% url 'posting_view' %}" method="post" class="posting-form {# is-hidden #} js-posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
-        <div class="posting-form__header">
+        <div class="posting-form__header js-posting-form-header">
             <span class="posting-form__title">
                 {% if form_type == 'new_thread' %}
                     {% trans "Create a new thread" %}
                 {% elif form_type == 'new_post' %}
                     {% trans "Reply to the thread" %}
                     {% if thread %}
-                        {{thread.hid2hex}}
+                        {{ thread.hid2hex }}
                     {% endif %}
                 {% endif %}
             </span>
 
-            <button type="submit" class="posting-form__submit button">
-                {% trans "Submit" %}
-            </button>
+            <div class="spacer"></div>
+
+{#            <button#}
+{#                    class="posting-form__close-button button button--icon js-posting-form-close"#}
+{#                    title="{% trans "Close form" %}"#}
+{#                    type="button"#}
+{#            >#}
+{#                close#}
+{#            </button>#}
         </div>
 
         <div class="posting-form__fields">
@@ -37,13 +43,12 @@
                     {{ field.label_tag }} {{ field }}
                 </div>
             {% endfor %}
-        </div>
-    </div>
 
-    <div class="posting-form__rules">
-        <div class="posting-form__rules-header">
-            {% trans "Board rules" %}
+            <div class="posting-form__field">
+                <button type="submit" class="posting-form__submit button">
+                    {% trans "Submit" %}
+                </button>
+            </div>
         </div>
-        {{ board.rules|markdown|safe }}
     </div>
 </form>
