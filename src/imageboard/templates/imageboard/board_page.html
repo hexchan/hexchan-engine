@@ -20,6 +20,9 @@
     {% if board.is_locked %}
         {% include 'imageboard/parts/lockdown.html' with type='board' %}
     {% else %}
+        <div class="new-thread-block">
+            <button class="button js-new-thread-button">{% trans "Create a new thread" %}</button>
+        </div>
         {% include 'imageboard/parts/posting_form.html' with form_type='new_thread' %}
     {% endif %}
 

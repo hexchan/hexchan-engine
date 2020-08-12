@@ -6,6 +6,11 @@
 class FormMover {
     constructor() {
         this.el = document.querySelector('.js-posting-form');
+
+        if (!this.el) {
+            return;
+        }
+
         this.headerEl = this.el.querySelector('.js-posting-form-header');
         this.closeButtonEl = this.el.querySelector('.js-posting-form-close');
         this.mouseInElX = 0;
@@ -26,6 +31,14 @@ class FormMover {
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
         document.addEventListener('click', this.onReplyButtonClick.bind(this));
         window.addEventListener('resize', this.onWindowResize.bind(this));
+
+        this.newThreadButtonEl = document.querySelector('.js-new-thread-button');
+        if (this.newThreadButtonEl) {
+            this.newThreadButtonEl.addEventListener(
+                'click',
+                this.onNewThreadButtonClick.bind(this)
+            );
+        }
     }
 
     toggleVisibility(isHidden) {
@@ -80,7 +93,7 @@ class FormMover {
         }
     }
 
-    onNewThreadButtonClick() {
+    onNewThreadButtonClick(e) {
         let target = e.target;
         if (target && target.matches('.js-new-thread-button')) {
             e.preventDefault();
