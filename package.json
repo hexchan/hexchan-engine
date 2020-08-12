@@ -6,8 +6,8 @@
   "scripts": {
     "build:styles": "npx lessc --source-map --math=strict src/imageboard/static/imageboard/style.less src/imageboard/static/imageboard/style.css",
     "build:scripts": "npx rollup --sourcemap --silent --config src/imageboard/static/imageboard/rollup.config.js",
-    "watch:styles": "npx chokidar \"src/imageboard/static/imageboard/styles/**/*.less\" -c \"npm run build:styles\"",
-    "watch:scripts": "npx chokidar \"src/imageboard/static/imageboard/scripts/**/*.js\" -c \"npm run build:scripts\""
+    "watch:styles": "npx chokidar \"src/imageboard/static/imageboard/style.less\" \"src/imageboard/static/imageboard/styles/**/*.less\" -c \"npm run build:styles\"",
+    "watch:scripts": "npx chokidar \"src/imageboard/static/imageboard/main.js\" \"src/imageboard/static/imageboard/scripts/**/*.js\" -c \"npm run build:scripts\""
   },
   "author": "",
   "license": "MIT",
