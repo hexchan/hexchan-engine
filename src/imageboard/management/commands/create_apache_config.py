@@ -1,14 +1,12 @@
-from pathlib import Path
-
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
 CONFIG_TEMPLATE = '''
 <VirtualHost {host}:80>
     ServerName {host}
 
-    WSGIDaemonProcess hexchan python-path={install_path}/src python-home={install_path}/python_modules
-    WSGIProcessGroup hexchan
+    WSGIDaemonProcess hexchan_engine python-path={install_path}/src python-home={install_path}/python_modules
+    WSGIProcessGroup hexchan_engine
     WSGIScriptAlias / {install_path}/src/hexchan/wsgi.py
 
     <Directory {install_path}/src/hexchan>
@@ -27,7 +25,7 @@ CONFIG_TEMPLATE = '''
         Require all granted
     </Directory>
 
-    LimitRequestBody 10240000
+    LimitRequestBody 10485760
 
     ErrorLog ${{APACHE_LOG_DIR}}/error.log
     CustomLog ${{APACHE_LOG_DIR}}/access.log combined
