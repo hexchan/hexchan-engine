@@ -6,6 +6,7 @@ import Lightbox from './scripts/lightbox';
 import ImagesWidget from './scripts/images_widget';
 import PostExpander from './scripts/post_expander';
 import FormMover from './scripts/form_mover';
+import RefInserter from './scripts/ref_inserter';
 
 // Post and threads hiders
 let threadHider = new Hider({
@@ -36,4 +37,8 @@ let imagesWidget = new ImagesWidget();
 // Long post expander
 let postExpander = new PostExpander();
 
-let formMover = new FormMover(document.getElementById('posting-form'));
+// Move posting form with mouse
+// let formMover = new FormMover(document.getElementById('posting-form'));
+
+// Insert ref when clicking on post number
+let refInserter = new RefInserter();

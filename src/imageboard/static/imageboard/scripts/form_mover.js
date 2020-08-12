@@ -29,7 +29,6 @@ class FormMover {
         );
         document.addEventListener('mousemove', this.onMouseMove.bind(this));
         document.addEventListener('mouseup', this.onMouseUp.bind(this));
-        document.addEventListener('click', this.onReplyButtonClick.bind(this));
         window.addEventListener('resize', this.onWindowResize.bind(this));
 
         this.newThreadButtonEl = document.querySelector('.js-new-thread-button');
@@ -63,35 +62,7 @@ class FormMover {
             (window.innerHeight - this.el.offsetHeight) / 2 + 'px';
     }
 
-    onReplyButtonClick(e) {
-        let target = e.target;
-        if (target && target.matches('.js-reply-button')) {
-            e.preventDefault();
 
-            // Show form
-            this.toggleVisibility(false);
-
-            // Message textarea
-            let textarea = this.el.querySelector('textarea');
-
-            // Post ref to insert
-            let strToInsert = `>>${target.textContent.trim()}\n`;
-
-            // Focus into textarea
-            textarea.focus();
-
-            // Insert post HID to the main textarea
-            let startPos = textarea.selectionStart;
-            let endPos = textarea.selectionEnd;
-            textarea.value =
-                textarea.value.substring(0, startPos) +
-                strToInsert +
-                textarea.value.substring(endPos, textarea.value.length);
-
-            // Move cursor after insertion
-            textarea.selectionEnd = startPos + strToInsert.length;
-        }
-    }
 
     onNewThreadButtonClick(e) {
         let target = e.target;

@@ -2,7 +2,7 @@
 {% load i18n %}
 
 
-<form id="posting-form" action="{% url 'posting_view' %}" method="post" class="posting-form is-hidden js-posting-form" enctype="multipart/form-data">
+<form id="posting-form" action="{% url 'posting_view' %}" method="post" class="posting-form {# is-hidden #} js-posting-form" enctype="multipart/form-data">
     <div class="posting-form__inner">
         <div class="posting-form__header js-posting-form-header">
             <span class="posting-form__title">
@@ -18,13 +18,13 @@
 
             <div class="spacer"></div>
 
-            <button
-                    class="posting-form__close-button button button--icon js-posting-form-close"
-                    title="{% trans "Close form" %}"
-                    type="button"
-            >
-                close
-            </button>
+{#            <button#}
+{#                    class="posting-form__close-button button button--icon js-posting-form-close"#}
+{#                    title="{% trans "Close form" %}"#}
+{#                    type="button"#}
+{#            >#}
+{#                close#}
+{#            </button>#}
         </div>
 
         <div class="posting-form__fields">

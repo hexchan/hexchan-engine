@@ -5,16 +5,18 @@
     width: 512px;
     padding: 0.5rem;
     border-radius: 0.25rem;
-    box-shadow: @shadow-elevation-4;
+    //box-shadow: @shadow-elevation-4;
+    box-shadow: @shadow-elevation-2;
     .color-bg;
-    position: fixed;
-    z-index: 2;
+    //position: fixed;
+    //z-index: 2;
+    margin: 0 auto;
 
     &__inner {
     }
 
     &__header {
-        //height: 2rem;
+        height: calc(1rem + @large-icon-size);
         position: relative;
         margin: -0.5rem -0.5rem 0.5rem;
         padding: 0.5rem;
@@ -22,7 +24,7 @@
         .darker-color-bg;
         border-top: 1px solid #fff;
         border-radius: 0.25rem 0.25rem 0 0;
-        cursor: move;
+        //cursor: move;
         display: flex;
         align-items: center;
     }
