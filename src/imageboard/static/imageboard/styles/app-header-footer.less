@@ -83,23 +83,23 @@
         border-right: @grey-color-500;
     }
 
-    &__catalog-link {
-        padding-left: calc(0.5rem + @large-icon-size);
-        padding-right: 0.25rem;
-        //padding: 0 0.25rem;
-        position: relative;
+    &__button {
+        margin: 0 0.25rem;
         text-decoration: none;
+        cursor: pointer;
+        line-height: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
             color: @accent-color;
         }
     }
 
-    &__catalog-link-icon {
-        .rect(0.25rem, 50%, @large-icon-size, @large-icon-size);
-        transform: translateY(-50%);
+    &__button-icon {
         font-size: @large-icon-size;
-        margin-right: 0.25rem;
     }
 
     &__spacer {

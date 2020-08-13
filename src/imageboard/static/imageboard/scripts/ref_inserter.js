@@ -20,6 +20,9 @@ class RefInserter {
             // Post ref to insert
             let strToInsert = `>>${target.textContent.trim()}\n`;
 
+            // Show posting form
+            this.postingFormEl.classList.remove('is-hidden');
+
             // Focus into textarea
             textarea.focus();
 

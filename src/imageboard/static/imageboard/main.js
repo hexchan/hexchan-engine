@@ -7,6 +7,7 @@ import ImagesWidget from './scripts/images_widget';
 import PostExpander from './scripts/post_expander';
 import FormMover from './scripts/form_mover';
 import RefInserter from './scripts/ref_inserter';
+import FormHider from './scripts/form_hider';
 
 // Post and threads hiders
 let threadHider = new Hider({
@@ -42,3 +43,6 @@ let postExpander = new PostExpander();
 
 // Insert ref when clicking on post number
 let refInserter = new RefInserter();
+
+// Toggle posting form
+let formHider = new FormHider();
