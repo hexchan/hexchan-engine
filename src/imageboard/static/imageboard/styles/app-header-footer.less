@@ -177,8 +177,8 @@
     padding: 0.5rem;
     border-radius: 0.25rem 0.25rem 0 0;
     border-bottom: 0.25rem solid @accent-color;
-    height: calc(2rem + 0.25rem);
-    line-height: 1rem;
+    //height: calc(2rem + 0.25rem);
+    //line-height: 1rem;
     background: @grey-color-200;
     color: @grey-color-600;
     box-shadow: @shadow-elevation-2;
@@ -190,15 +190,17 @@
         width: @base-width;
     }
 
-    a {
-        color: inherit;
+    &__page {
+        margin: 0 0.25rem;
+        text-decoration: none;
     }
 
-    &__page {
-        margin-right: 0.5rem;
+    &__paginator {
+        display: flex;
+        align-items: center;
+    }
 
-        &--current {
-            font-weight: bold;
-        }
+    &__paginator-label {
+        font-weight: bold;
     }
 }

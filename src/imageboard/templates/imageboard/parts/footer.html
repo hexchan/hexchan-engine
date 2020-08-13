@@ -5,15 +5,17 @@
     <div class="footer__inner">
         {% if board_pages %}
             <div class="footer__paginator">
-                {% trans "Pages" %}:
+                <span class="footer__paginator-label">
+                    {% trans "Pages" %}:
+                </span>
                 {% for num in board_pages.paginator.page_range %}
                     {% if num != board_pages.number %}
                         <a
-                            class="footer__page"
+                            class="footer__page button button--squared"
                             href="{% url 'board_page_num' board_hid=board.hid page_num=num %}"
                         >{{ num }}</a>
                     {% else %}
-                        <span class="footer__page footer__page--current">{{ num }}</span>
+                        <span class="footer__page button button--squared button--active">{{ num }}</span>
                     {% endif %}
                 {% endfor %}
             </div>
