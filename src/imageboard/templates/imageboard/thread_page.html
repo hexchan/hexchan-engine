@@ -39,14 +39,3 @@
 {% block page_style %}
     <style>{{ board.custom_style }}</style>
 {% endblock %}
-
-
-{% block metadata %}
-    {% if cache_data %}
-        <div class="cache-data">
-            {% trans "Page generated at" %} {{ cache_data.generated_at|date:config.DATE_TIME_FORMAT }}.
-            {% trans "Board" %} {{ cache_data.board }}.
-            {% trans "Thread" %} {{ cache_data.thread.hid2hex }} {% trans "updated at" context "thread" %} {{ cache_data.updated_at|date:config.DATE_TIME_FORMAT }}.
-        </div>
-    {% endif %}
-{% endblock %}
