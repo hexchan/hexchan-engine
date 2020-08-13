@@ -16,7 +16,7 @@ class BoardPage(TemplateView):
         context = super().get_context_data(**kwargs)
 
         board_hid = self.kwargs['board_hid']
-        page_num = self.kwargs.get('page_num', 0)
+        page_num = self.kwargs.get('page_num', 1)
 
         boards = Board.active_objects.all()
 
