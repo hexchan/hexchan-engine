@@ -48,6 +48,9 @@ src/manage.py compilemessages --verbosity 0
 echo -e "${CYAN}* Create site admin user${NC}"
 src/manage.py createsuperuser --verbosity 0
 
+echo -e "${CYAN}* Load initial data${NC}"
+src/manage.py content_blocks --verbosity 0
+
 echo -e "${CYAN}* Generate captchas${NC}"
 src/manage.py makecaptchas 1000
 

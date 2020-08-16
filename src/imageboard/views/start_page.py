@@ -3,7 +3,7 @@ from django.db.models import Prefetch, OuterRef, Subquery
 from django.views.generic import TemplateView
 
 # App imports
-from imageboard.models import Board, Thread
+from imageboard.models import Board, Thread, ContentBlock
 
 
 class StartPage(TemplateView):
@@ -33,5 +33,8 @@ class StartPage(TemplateView):
 
         # Get boards with threads and OP posts
         context['boards'] = Board.active_objects.prefetch_related(threads_prefetch)
+
+        # Get index page content
+        context['index_page_text'] = ContentBlock.objects.get(is_active=True, hid='index_page_text')
 
         return context

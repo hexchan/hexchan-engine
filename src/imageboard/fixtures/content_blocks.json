@@ -1,0 +1,11 @@
+[
+  {
+    "model": "imageboard.contentblock",
+    "pk": 1,
+    "fields": {
+      "hid": "index_page_text",
+      "text": "#Hello world!",
+      "is_active": true
+    }
+  }
+]

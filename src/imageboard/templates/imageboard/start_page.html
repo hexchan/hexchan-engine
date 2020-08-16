@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% load settings_value %}
+{% load markdown %}
 
 
 {% block page_title %}
@@ -15,6 +16,12 @@
 
 
 {% block content %}
+    {% if index_page_text %}
+        <div class="index-page-text">
+            {{ index_page_text.text|markdown|safe }}
+        </div>
+    {% endif %}
+
     {% for board in boards %}
         {% if not board.is_hidden and not board.is_deleted %}
             <div class="board-block">
