@@ -204,9 +204,11 @@ a {
 .ref-popup {
     width: @base-width;
     position: absolute;
-    box-shadow: 0 0 0 1px @main-color, 2px 2px 2px rgba(0, 0, 0, 0.2);
-    border-radius: @block-border-radius;
-    //box-shadow: @block-shadow;
+}
+
+.ref-popup .post {
+    margin: 0;
+    box-shadow: @shadow-elevation-3;
 }
 
 .textarea-wrapper {
