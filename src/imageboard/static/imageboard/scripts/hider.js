@@ -10,12 +10,7 @@ class Hider {
         this.multiSelector = `.${this.type}`;
 
         // Create LocalStorage array interface
-        this.localCollection = new LocalCollection({
-            key: props.storageKey,
-            callback: () => {
-                this.applyLocalCollectionState();
-            }
-        });
+        this.localCollection = new LocalCollection({key: props.storageKey});
 
         // Load template string and create template function
         let templateItem = document.querySelector('#placeholder-item-template');
@@ -51,7 +46,7 @@ class Hider {
     // Apply DOM state from localStorage
     applyLocalCollectionState() {
         Array.from(document.querySelectorAll(this.multiSelector)).forEach((item) => {
-            let itemId = item.getAttribute('data-id');
+            let itemId = parseInt(item.getAttribute('data-id'));
             let itemHid = item.getAttribute('data-hid');
             let isHidden = this.localCollection.check(itemId);
 
@@ -63,7 +58,7 @@ class Hider {
     onGlobalClick(ev) {
         if (ev.target.classList.contains(this.toggleClass)) {
             let toggler = ev.target;
-            let itemId = toggler.getAttribute('data-id');
+            let itemId = parseInt(toggler.getAttribute('data-id'));
             let itemHid = toggler.getAttribute('data-hid');
             let isHidden = this.localCollection.toggle(itemId);
     

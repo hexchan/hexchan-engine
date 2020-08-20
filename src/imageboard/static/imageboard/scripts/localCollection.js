@@ -1,7 +1,7 @@
 class LocalCollection {
-    constructor(key, callback) {
-        this.key = key;
-        this.callback = callback;
+    constructor(props) {
+        this.key = props.key;
+        this.callback = props.callback;
         this.collection = new Set();
 
         this.readFromStorage();
