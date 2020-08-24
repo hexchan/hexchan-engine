@@ -158,6 +158,10 @@ FIXTURE_DIRS = [
     str(STORAGE_DIR / 'fixtures')
 ]
 
+# Mail
+EMAIL_CONFIG = env.email_url('EMAIL_URL', default='dummymail://')
+vars().update(EMAIL_CONFIG)
+
 # Admins
 # TODO: configurable from env
 ADMINS = [
