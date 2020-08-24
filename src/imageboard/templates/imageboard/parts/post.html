@@ -130,6 +130,7 @@
                             width="{{ image.thumb_width }}"
                             height="{{ image.thumb_height }}"
                             title="{{ image.original_name }} :: {{ image.width }}x{{ image.height }} :: {{ image.size|filesizeformat }}"
+                            loading="lazy"
                         />
                     </a>
                 {% endfor %}
