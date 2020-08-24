@@ -123,11 +123,33 @@ class PostingView(FormView):
             # Create thumbnail with PIL library
             # Convert image to RGBA format when needed (for example, if image has indexed pallette 8bit per pixel mode)
             thumbnail_pil_object = image_pil_object.convert('RGBA')
-            thumbnail_pil_object.thumbnail(config.IMAGE_THUMB_SIZE, PIL.Image.ANTIALIAS)
+            thumbnail_pil_object.thumbnail(
+                size=config.IMAGE_THUMB_SIZE,
+                resample=PIL.Image.BICUBIC,
+            )
+
+            # Background image
+            bg_pil_object = PIL.Image.new(
+                mode='RGBA',
+                size=thumbnail_pil_object.size,
+                color=config.THUMB_ALPHA_COLOR
+            )
+
+            # Apply background
+            thumbnail_pil_object = PIL.Image\
+                .alpha_composite(
+                    bg_pil_object,
+                    thumbnail_pil_object
+                )\
+                .convert('RGB')
 
             # Save thumbnail to in-memory file as BytesIO
             thumb_file = BytesIO()
-            thumbnail_pil_object.save(thumb_file, config.THUMB_TYPE)
+            thumbnail_pil_object.save(
+                thumb_file,
+                config.THUMB_TYPE,
+                **config.THUMB_OPTIONS,
+            )
             thumb_file.seek(0)
 
             # Set save=False, otherwise it will run in an infinite loop

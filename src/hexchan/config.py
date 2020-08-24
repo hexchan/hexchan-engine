@@ -17,8 +17,13 @@ IMAGE_THUMB_SIZE = 200, 200
 
 
 # Thumbs
-THUMB_EXTENSION = 'png'
-THUMB_TYPE = 'PNG'
+THUMB_EXTENSION = 'jpg'
+THUMB_TYPE = 'JPEG'
+THUMB_OPTIONS = {
+    'quality': 90,
+    'subsampling': '4:4:4',
+}
+THUMB_ALPHA_COLOR = '#ffffff'
 
 
 # Uploads
