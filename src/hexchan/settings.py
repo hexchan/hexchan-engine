@@ -157,3 +157,9 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 days in seconds
 FIXTURE_DIRS = [
     str(STORAGE_DIR / 'fixtures')
 ]
+
+# Admins
+# TODO: configurable from env
+ADMINS = [
+    ('Hexchan', 'hexchan16@gmail.com'),
+]
