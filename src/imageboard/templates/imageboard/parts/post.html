@@ -56,13 +56,13 @@
                         close
                     </button>
 
-                    {% if request.user.is_superuser %}
-                        <a
-                            class="post__button post__button--admin button button--squared"
-                            href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}"
-                            title="{% trans "Open admin panel" %}"
-                        >T</a>
-                    {% endif %}
+{#                    {% if request.user.is_superuser %}#}
+{#                        <a#}
+{#                            class="post__button post__button--admin button button--squared"#}
+{#                            href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}"#}
+{#                            title="{% trans "Open admin panel" %}"#}
+{#                        >T</a>#}
+{#                    {% endif %}#}
                 {% else %}
                     <span
                         class="post__icon icon is-hidden js-user-post-icon"
@@ -72,13 +72,13 @@
                         person_outline
                     </span>
 
-                    {% if request.user.is_superuser %}
-                        <a
-                            class="post__button post__button--admin button button--squared"
-                            href="{% url 'admin:imageboard_post_change' object_id=post.id %}"
-                            title="{% trans "Open admin panel" %}"
-                        >P</a>
-                    {% endif %}
+{#                    {% if request.user.is_superuser %}#}
+{#                        <a#}
+{#                            class="post__button post__button--admin button button--squared"#}
+{#                            href="{% url 'admin:imageboard_post_change' object_id=post.id %}"#}
+{#                            title="{% trans "Open admin panel" %}"#}
+{#                        >P</a>#}
+{#                    {% endif %}#}
                 {% endif %}
             </span>
         {% endif %}
