@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IMAGEBOARD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-20 10:15+0000\n"
-"PO-Revision-Date: 2020-08-20 13:17+0300\n"
+"POT-Creation-Date: 2020-08-24 17:43+0000\n"
+"PO-Revision-Date: 2020-08-24 20:46+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: ru\n"
@@ -290,15 +290,15 @@ msgstr "Текст"
 
 #: imageboard/models/content_block.py:22
 msgid "Is active"
-msgstr ""
+msgstr "Активно"
 
 #: imageboard/models/content_block.py:28
 msgid "Content block"
-msgstr ""
+msgstr "Блок контента"
 
 #: imageboard/models/content_block.py:29
 msgid "Content blocks"
-msgstr ""
+msgstr "Блоки контента"
 
 #: imageboard/models/image.py:21 imageboard/models/post.py:157
 msgid "Post"
@@ -377,12 +377,12 @@ msgid "Is OP"
 msgstr "ОП"
 
 #: imageboard/models/post.py:105
-#: imageboard/templates/imageboard/parts/post.html:156
+#: imageboard/templates/imageboard/parts/post.html:181
 msgid "User was warned"
 msgstr "Пользователь предупрежден"
 
 #: imageboard/models/post.py:110
-#: imageboard/templates/imageboard/parts/post.html:152
+#: imageboard/templates/imageboard/parts/post.html:177
 msgid "User was banned"
 msgstr "Пользователь забанен"
 
@@ -452,12 +452,14 @@ msgid "My thread"
 msgstr "Мой тред"
 
 #: imageboard/templates/imageboard/parts/catalog_item.html:25
-#: imageboard/templates/imageboard/parts/post.html:53
+#: imageboard/templates/imageboard/parts/post.html:149
+#: imageboard/templates/imageboard/parts/post.html:152
 msgid "Sticky"
 msgstr "Закреплен"
 
 #: imageboard/templates/imageboard/parts/catalog_item.html:29
-#: imageboard/templates/imageboard/parts/post.html:59
+#: imageboard/templates/imageboard/parts/post.html:158
+#: imageboard/templates/imageboard/parts/post.html:161
 msgid "Locked"
 msgstr "Закрыт"
 
@@ -508,7 +510,7 @@ msgstr "Показать"
 
 #: imageboard/templates/imageboard/parts/js_templates.html:27
 msgid "Show collapsed text"
-msgstr ""
+msgstr "Развернуть текст"
 
 #: imageboard/templates/imageboard/parts/lightbox.html:10
 msgid "Close"
@@ -534,22 +536,33 @@ msgstr "Доска закрыта для новых тредов и постов
 msgid "Administrator"
 msgstr "Администратор"
 
-#: imageboard/templates/imageboard/parts/post.html:80
+#: imageboard/templates/imageboard/parts/post.html:54
 msgid "Hide thread"
 msgstr "Скрыть тред"
 
-#: imageboard/templates/imageboard/parts/post.html:89
-#: imageboard/templates/imageboard/parts/post.html:105
+#: imageboard/templates/imageboard/parts/post.html:63
+#: imageboard/templates/imageboard/parts/post.html:79
 msgid "Open admin panel"
 msgstr "Открыть админ-панель"
 
-#: imageboard/templates/imageboard/parts/post.html:95
+#: imageboard/templates/imageboard/parts/post.html:69
 msgid "My post"
 msgstr "Мой пост"
 
-#: imageboard/templates/imageboard/parts/post.html:161
+#: imageboard/templates/imageboard/parts/post.html:128
 msgid "Replies"
 msgstr "Ответы"
+
+#: imageboard/templates/imageboard/parts/post.html:141
+#: imageboard/templates/imageboard/parts/post.html:144
+msgctxt "number of posts"
+msgid "Posts"
+msgstr "Постов"
+
+#: imageboard/templates/imageboard/parts/post.html:168
+#: imageboard/templates/imageboard/parts/post.html:171
+msgid "Open thread"
+msgstr "Открыть тред"
 
 #: imageboard/templates/imageboard/parts/posting_form.html:10
 msgid "Create a new thread"
@@ -606,10 +619,6 @@ msgstr "Ошибка"
 
 #~ msgid "Updated"
 #~ msgstr "Обновлен"
-
-#~ msgctxt "number of posts"
-#~ msgid "Posts"
-#~ msgstr "Постов"
 
 #~ msgid "Limit"
 #~ msgstr "Лимит"

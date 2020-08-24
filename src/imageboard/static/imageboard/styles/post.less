@@ -234,6 +234,31 @@
     }
   }
 
+  &__thread-info {
+    display: flex;
+  }
+
+  &__thread-info-item {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__thread-info-icon {
+    color: @grey-color-500;
+    vertical-align: center;
+    margin-right: 0.25rem;
+
+    &--in-link {
+      color: @accent-color;
+    }
+  }
+
   // Rendered post elements:
   p {
     margin: 0.5rem 0;

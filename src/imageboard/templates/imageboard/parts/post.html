@@ -49,32 +49,6 @@
                         person_outline
                     </span>
 
-                    {% if thread.is_sticky %}
-                        <span class="post__icon icon" title="{% trans "Sticky" %}">
-                            publish_top
-                        </span>
-                    {% endif %}
-
-                    {% if thread.is_locked %}
-                        <span class="post__icon icon" title="{% trans "Locked" %}">
-                            lock
-                        </span>
-                    {% endif %}
-
-{#                    <button#}
-{#                        class="post__button post__button--toggle icon js-favorite"#}
-{#                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Favorite" %}"#}
-{#                    >#}
-{#                        star_outline#}
-{#                    </button>#}
-{##}
-{#                    <button#}
-{#                        class="post__button post__button--toggle icon js-expand"#}
-{#                        data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Expand thread" %}"#}
-{#                    >#}
-{#                        unfold_more#}
-{#                    </button>#}
-
                     <button
                         class="post__button post__button--toggle icon js-toggle-thread"
                         data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Hide thread" %}"
@@ -158,6 +132,44 @@
                         href="{{ reply.get_absolute_url }}"
                     >&gt;&gt;{{ reply.hid2hex }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if post.is_op %}
+            <div class="post__thread-info post__footer-item">
+                <span class="post__thread-info-item">
+                    <span class="post__thread-info-icon icon icon--squared" title="{% trans "Posts" context "number of posts" %}">
+                        chat_bubble_outline
+                    </span>
+                    {% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}
+                </span>
+
+                {% if thread.is_sticky %}
+                    <span class="post__thread-info-item">
+                        <span class="post__thread-info-icon icon icon--squared" title="{% trans "Sticky" %}">
+                            bookmark_outline
+                        </span>
+                        {% trans "Sticky" %}
+                    </span>
+                {% endif %}
+
+                {% if thread.is_locked %}
+                    <span class="post__thread-info-item">
+                        <span class="post__thread-info-icon icon icon--squared" title="{% trans "Locked" %}">
+                            lock
+                        </span>
+                        {% trans "Locked" %}
+                    </span>
+                {% endif %}
+
+                <div class="spacer"></div>
+
+                <a class="post__thread-info-item" href="{{ thread.get_absolute_url }}">
+                    <span class="post__thread-info-icon post__thread-info-icon--in-link icon icon--squared" title="{% trans "Open thread" %}">
+                        subdirectory_arrow_right
+                    </span>
+                    {% trans "Open thread" %}
+                </a>
             </div>
         {% endif %}
 
