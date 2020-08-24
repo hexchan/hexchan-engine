@@ -50,7 +50,7 @@
                     </span>
 
                     <button
-                        class="post__button post__button--toggle icon js-toggle-thread"
+                        class="post__button button button--icon js-toggle-thread"
                         data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Hide thread" %}"
                     >
                         close
@@ -58,7 +58,7 @@
 
                     {% if request.user.is_superuser %}
                         <a
-                            class="post__button post__button--admin"
+                            class="post__button post__button--admin button button--squared"
                             href="{% url 'admin:imageboard_thread_change' object_id=thread.id %}"
                             title="{% trans "Open admin panel" %}"
                         >T</a>
@@ -74,7 +74,7 @@
 
                     {% if request.user.is_superuser %}
                         <a
-                            class="post__button post__button--admin"
+                            class="post__button post__button--admin button button--squared"
                             href="{% url 'admin:imageboard_post_change' object_id=post.id %}"
                             title="{% trans "Open admin panel" %}"
                         >P</a>
