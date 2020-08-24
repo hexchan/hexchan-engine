@@ -175,9 +175,7 @@
 
         {% if post.user_was_banned %}
             <div class="post__footer-item post__admin-message">{% trans "User was banned" %}</div>
-        {% endif %}
-
-        {% if post.user_was_warned %}
+        {% elif post.user_was_warned %}
             <div class="post__footer-item post__admin-message">{% trans "User was warned" %}</div>
         {% endif %}
     </div>
