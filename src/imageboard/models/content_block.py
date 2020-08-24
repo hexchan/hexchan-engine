@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from markdownx.models import MarkdownxField
-
 
 class ContentBlock(models.Model):
     hid = models.CharField(
@@ -13,7 +11,7 @@ class ContentBlock(models.Model):
         max_length=32,
     )
 
-    text = MarkdownxField(
+    text = models.TextField(
         _('Text'),
         blank=True
     )
