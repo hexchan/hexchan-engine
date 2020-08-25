@@ -165,4 +165,4 @@ EMAIL_CONFIG = env.email_url('EMAIL_URL', default='dummymail://')
 vars().update(EMAIL_CONFIG)
 
 # Admins
-ADMINS = getaddresses([env('DJANGO_ADMINS')])
+ADMINS = getaddresses([env('DJANGO_ADMINS', default='root@localhost')])
