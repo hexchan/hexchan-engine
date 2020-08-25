@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load settings_value %}
 
 
 <div class="footer">
@@ -20,5 +21,25 @@
                 {% endfor %}
             </div>
         {% endif %}
+
+        <div class="footer__credits">
+            <span class="footer__copyright">
+                © {% settings_value 'SITE_NAME' %}, {% now 'Y' %}
+            </span>
+
+            <span class="spacer"></span>
+
+            <span class="footer__email-block is-hidden js-email-block">
+                {% trans 'Site administrator' %}:
+                <a
+                    class="footer__email js-email-address"
+                    data-foo="foofoofoo"
+                    data-uuu="{{ admin_email_user }}"
+                    data-bar="barbarbar"
+                    data-hhh="{{ admin_email_host }}"
+                    data-baz="bazbazbaz"
+                ></a>
+            </span>
+        </div>
     </div>
 </div>

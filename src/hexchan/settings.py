@@ -1,6 +1,7 @@
 # Standard libs
 import os
 from pathlib import Path
+from email.utils import getaddresses
 
 # Third party libs
 from environ import Env
@@ -95,6 +96,7 @@ TEMPLATES = [
 
                 # App processors
                 'imageboard.context_processors.config',
+                'imageboard.context_processors.admin_email',
             ],
         },
     },
@@ -163,7 +165,4 @@ EMAIL_CONFIG = env.email_url('EMAIL_URL', default='dummymail://')
 vars().update(EMAIL_CONFIG)
 
 # Admins
-# TODO: configurable from env
-ADMINS = [
-    ('Hexchan', 'hexchan16@gmail.com'),
-]
+ADMINS = getaddresses([env('DJANGO_ADMINS')])

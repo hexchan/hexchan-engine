@@ -198,9 +198,30 @@
     &__paginator {
         display: flex;
         align-items: center;
+        border-bottom: 1px solid @grey-color-300;
+        padding: 0.5rem;
+        margin: -0.5rem -0.5rem 0;
     }
 
     &__paginator-label {
+        font-weight: bold;
+    }
+
+    &__credits {
+        padding: 0.5rem;
+        margin: 0 -0.5rem -0.5rem;
+        display: flex;
+        width: 100%;
+
+        &:only-child {
+            margin-top: -0.5rem;
+        }
+    }
+
+    &__email {
+    }
+
+    &__copyright {
         font-weight: bold;
     }
 }

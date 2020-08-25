@@ -8,6 +8,7 @@ import PostExpander from './scripts/post_expander';
 import FormMover from './scripts/form_mover';
 import RefInserter from './scripts/ref_inserter';
 import FormHider from './scripts/form_hider';
+import EmailRevealer from './scripts/email_revealer';
 
 // Post and threads hiders
 let threadHider = new Hider({
@@ -46,3 +47,6 @@ let refInserter = new RefInserter();
 
 // Toggle posting form
 let formHider = new FormHider();
+
+// Reveal admin email
+let emailRevealer = new EmailRevealer();
