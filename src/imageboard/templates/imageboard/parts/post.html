@@ -163,13 +163,15 @@
                 {% endif %}
 
                 <div class="spacer"></div>
-
-                <a class="post__thread-info-item" href="{{ thread.get_absolute_url }}">
-                    <span class="post__thread-info-icon post__thread-info-icon--in-link icon icon--squared" title="{% trans "Open thread" %}">
-                        subdirectory_arrow_right
-                    </span>
-                    {% trans "Open thread" %}
-                </a>
+            
+                {% if page_type == 'board_page' %}
+                    <a class="post__thread-info-item" href="{{ thread.get_absolute_url }}">
+                        <span class="post__thread-info-icon post__thread-info-icon--in-link icon icon--squared" title="{% trans "Open thread" %}">
+                            subdirectory_arrow_right
+                        </span>
+                        {% trans "Open thread" %}
+                    </a>
+                {% endif %}
             </div>
         {% endif %}
 

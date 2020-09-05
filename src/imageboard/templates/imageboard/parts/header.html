@@ -41,16 +41,14 @@
             </a>
 
             <span class="header__button js-toggle-posting-form-button">
-                {% if thread %}
+                {% if page == 'thread_page' and not thread.is_locked and not board.is_locked %}
                     <i class="header__button-icon icon">edit</i>
                     <span class="header__button-label">{% trans "Reply" %}</span>
-                {% else %}
+                {% elif page == 'board_page' and not board.is_locked %}
                     <i class="header__button-icon icon">add</i>
                     <span class="header__button-label">{% trans "New thread" %}</span>
                 {% endif %}
             </span>
-
-
         {% endif %}
 
     </div>
