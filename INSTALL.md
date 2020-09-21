@@ -9,7 +9,7 @@ Other software combinations are not supported.
 You can adapt this guide and `install.sh` script if needed at your own risk.
 
 1.  Install required system dependencies:
-    `sudo apt install python3 python3-venv git apache2 libapache2-mod-wsgi-py3 postgresql nodejs npm`
+    `sudo apt install python3 python3-venv git apache2 libapache2-mod-wsgi-py3 postgresql nodejs npm gettext`
 2.  Create new system user, login as him and switch to the homedir.
 3.  Clone this repository and switch to the project dir.
 4.  Copy `.env.example` file to `.env` and open it with your favorite editor.
