@@ -25,7 +25,7 @@
 
     <div class="threads">
         {% for thread in threads %}
-            {% include 'imageboard/parts/thread.html' with posts=thread.latest_posts page_type='board_page' %}
+            {% include 'imageboard/parts/thread.html' with page_type='board_page' %}
 
             {% if not forloop.last %}
                 <div class="threads__thread-separator"></div>

@@ -25,7 +25,7 @@
         {% include 'imageboard/parts/posting_form.html' with form_type='new_post' %}
     {% endif %}
 
-    {% include 'imageboard/parts/thread.html' with posts=thread.other_posts page_type='thread_page' %}
+    {% include 'imageboard/parts/thread.html' with page_type='thread_page' %}
 
     <div class="popup-container js-popup-container"></div>
 {% endblock %}

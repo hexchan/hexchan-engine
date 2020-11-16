@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Prefetch, F
+from django.db.models import Prefetch, F, Subquery, OuterRef, Q
 from django.utils.functional import cached_property
 
 from hexchan import config
@@ -11,22 +11,53 @@ from hexchan import config
 class RefReplyManager(models.Manager):
     def get_queryset(self):
         return (
-            super().get_queryset()
+            super()
+                .get_queryset()
                 .select_related('thread', 'thread__board')
                 .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+        )
+
+
+class PostQuerySet(models.QuerySet):
+    def filter_op(self):
+        return self.filter(is_op=True)
+
+    def filter_op_and_latest(self):
+        latest_posts_queryset = (
+            Post.objects
+                .filter(
+                    thread=OuterRef('thread'),
+                    is_deleted=False,
+                    is_op=False
+                )
+                .order_by('-id')
+                .values_list('id', flat=True)
+                [:5]  # TODO NO MAGIC ALLOWED
+        )
+
+        return self.filter(
+            Q(is_op=True) |
+            Q(id__in=Subquery(latest_posts_queryset))
         )
 
 
 class PostManager(models.Manager):
     def get_queryset(self):
         return (
-            super().get_queryset()
+            PostQuerySet(self.model, using=self._db)
                 .filter(is_deleted=False)
                 .select_related('thread', 'thread__board')
                 .prefetch_related(
                     Prefetch('images'),
-                    Prefetch('refs', queryset=Post.ref_and_reply_objects.all()),
-                    Prefetch('post_set', to_attr='replies', queryset=Post.ref_and_reply_objects.all()),
+                    Prefetch(
+                        'refs',
+                        queryset=Post.refs_and_replies.all()
+                    ),
+                    Prefetch(
+                        'post_set',
+                        to_attr='replies',
+                        queryset=Post.refs_and_replies.all()
+                    ),
                     Prefetch('created_by'),
                 )
                 .annotate(
@@ -34,6 +65,12 @@ class PostManager(models.Manager):
                     board_hid=F('thread__board__hid'),
                 )
         )
+
+    def filter_op(self):
+        return self.get_queryset().filter_op()
+
+    def filter_op_and_latest(self):
+        return self.get_queryset().filter_op_and_latest()
 
 
 class Post(models.Model):
@@ -148,10 +185,8 @@ class Post(models.Model):
     )
 
     objects = models.Manager()
-
-    active_objects = PostManager()
-
-    ref_and_reply_objects = RefReplyManager()
+    posts = PostManager()
+    refs_and_replies = RefReplyManager()
 
     class Meta:
         verbose_name = _('Post')

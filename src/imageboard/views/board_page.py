@@ -1,5 +1,5 @@
 # Django imports
-from django.db.models import Prefetch, Subquery, OuterRef
+from django.db.models import Prefetch
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
@@ -22,26 +22,20 @@ class BoardPage(TemplateView):
 
         board = get_object_or_404(Board, hid=board_hid)
 
-        # Queryset for latest posts
-        latest_posts_queryset = (
-            Post.objects
-                .filter(thread=OuterRef('thread'), is_deleted=False, is_op=False)
-                .order_by('-id')
-                .values_list('id', flat=True)[:board.posts_per_thread_per_page]
-        )
-
         # Threads queryset
         threads = (
-            Thread.objects_with_op
-                .filter(board__hid=board_hid)
+            Thread.threads
+                .filter(
+                    board__hid=board_hid
+                )
                 .prefetch_related(
                     Prefetch(
                         'posts',
-                        queryset=Post.active_objects.filter(id__in=Subquery(latest_posts_queryset)),
-                        to_attr='latest_posts'
+                        queryset=Post.posts.filter_op_and_latest(),
                     )
-            )
-            .order_by('-is_sticky', '-updated_at')[:board.max_threads_num]
+                )
+                .order_by('-is_sticky', '-updated_at')
+                [:board.max_threads_num]
         )
 
         # Paginate threads

@@ -1,24 +1,35 @@
 from django.db import models
-from django.db.models import Prefetch, Count
+from django.db.models import Prefetch, Count, Subquery, OuterRef
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from hexchan import config
-from imageboard.models import Post
 
 
-class ThreadWithOpManager(models.Manager):
+class ThreadQuerySet(models.QuerySet):
+    def filter_last_updated(self):
+        updated_threads_queryset = (
+            Thread.objects
+                .filter(board=OuterRef('board'), is_deleted=False)
+                .order_by('-is_sticky', '-updated_at')
+                .values_list('id', flat=True)[:5]
+        )
+
+        return self.filter(id__in=Subquery(updated_threads_queryset))
+
+
+class ThreadManager(models.Manager):
     def get_queryset(self):
         return (
-            super().get_queryset()
+            ThreadQuerySet(self.model, using=self._db)
                 .filter(is_deleted=False)
                 .select_related('board')
-                .prefetch_related(
-                    Prefetch('op', queryset=Post.active_objects.filter(is_op=True))
-                )
                 .annotate(posts_count=Count('posts'))
         )
+
+    def filter_last_updated(self):
+        return self.get_queryset().filter_last_updated()
 
 
 class Thread(models.Model):
@@ -84,8 +95,7 @@ class Thread(models.Model):
     )
 
     objects = models.Manager()
-
-    objects_with_op = ThreadWithOpManager()
+    threads = ThreadManager()
 
     class Meta:
         verbose_name = _('Thread')
@@ -104,4 +114,3 @@ class Thread(models.Model):
         )
 
         return thread_url
-

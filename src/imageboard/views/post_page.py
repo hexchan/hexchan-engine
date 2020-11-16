@@ -20,7 +20,7 @@ class PostPage(TemplateView):
 
         # Don't use get_object_or_404 for getting post to simplify frontend
         try:
-            post = Post.active_objects.get(hid=post_hid, thread__hid=thread_hid, thread__board__hid=board_hid)
+            post = Post.posts.get(hid=post_hid, thread__hid=thread_hid, thread__board__hid=board_hid)
         except Post.DoesNotExist:
             post = None
 

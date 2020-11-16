@@ -2,23 +2,12 @@
 
 
 <div class="thread js-thread" id="thread-{{ thread.id }}" data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}">
-    <div class="thread__op-post">
-        {% include 'imageboard/parts/post.html' with post=thread.op  page_type=page_type %}
-    </div>
+    {% for post in thread.posts.all %}
+        {% include 'imageboard/parts/post.html' %}
 
-
-    {% if thread.posts.count > 1 %}
-        <div class="thread__op-separator"></div>
-
-        <div class="thread__posts">
-            {% for post in posts %}
-                {% include 'imageboard/parts/post.html' %}
-
-                {% if not forloop.last %}
-                    <div class="thread__post-separator"></div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
+        {% if not forloop.last %}
+            <div class="thread__post-separator"></div>
+        {% endif %}
+    {% endfor %}
 </div>
 

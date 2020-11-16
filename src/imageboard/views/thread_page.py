@@ -21,10 +21,13 @@ class ThreadPage(TemplateView):
 
         board = get_object_or_404(Board, hid=board_hid)
 
-        other_posts_prefetch = Prefetch('posts', queryset=Post.active_objects.filter(is_op=False), to_attr='other_posts')
-
         thread = get_object_or_404(
-            Thread.objects_with_op.prefetch_related(other_posts_prefetch),
+            Thread.threads.prefetch_related(
+                Prefetch(
+                    'posts',
+                    queryset=Post.posts.all(),
+                )
+            ),
             board__hid=board_hid,
             hid=thread_hid,
         )

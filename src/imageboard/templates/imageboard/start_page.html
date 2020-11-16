@@ -29,7 +29,7 @@
 
                 <div class="catalog">
                     <div class="catalog__items">
-                        {% for thread in board.updated_threads %}
+                        {% for thread in board.threads.all %}
                             {% include 'imageboard/parts/catalog_item.html' with op_post=thread.op %}
                         {% endfor %}
                     </div>

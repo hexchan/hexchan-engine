@@ -1,9 +1,10 @@
 # Django imports
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
 # App imports
-from imageboard.models import Board, Thread
+from imageboard.models import Board, Thread, Post
 
 
 class CatalogPage(TemplateView):
@@ -20,9 +21,18 @@ class CatalogPage(TemplateView):
         board = get_object_or_404(Board, hid=board_hid)
 
         threads = (
-            Thread.objects_with_op
-                  .filter(board=board)
-                  .order_by('-is_sticky', '-updated_at')[:board.max_threads_num]
+            Thread.threads
+                .prefetch_related(
+                    Prefetch(
+                        'op',
+                        queryset=Post.posts.filter_op()
+                    )
+                )
+                .filter(
+                    board=board
+                )
+                .order_by('-is_sticky', '-updated_at')
+                [:board.max_threads_num]
         )
 
         context.update({
