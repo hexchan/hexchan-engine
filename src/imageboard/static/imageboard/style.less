@@ -52,11 +52,15 @@ a {
 
 .threads {
     &__thread-separator {
+        height: 2px;
+        background: @separator-bg;
+        border-bottom: 1px solid rgba(255,255,255, 0.7);
+        margin: 0 40%;
     }
 }
 
 .thread {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 
     &--hidden {
         display: none;
