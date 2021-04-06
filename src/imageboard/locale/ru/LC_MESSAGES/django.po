@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: IMAGEBOARD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-24 17:43+0000\n"
-"PO-Revision-Date: 2020-08-24 20:46+0300\n"
+"POT-Creation-Date: 2021-04-06 19:17+0000\n"
+"PO-Revision-Date: 2021-04-06 22:25+0300\n"
 "Last-Translator: Hexchan <hexchan16@gmail.com>\n"
 "Language-Team: русский <>\n"
 "Language: ru\n"
@@ -89,7 +89,23 @@ msgstr ""
 "Вам необходимо подождать около {timeout} секунд чтобы отправить новое "
 "сообщение."
 
-#: imageboard/forms/posting_form.py:42
+#: imageboard/exceptions.py:110
+msgid "Captcha DB is empty"
+msgstr "Таблица капчи в БД не заполнена"
+
+#: imageboard/exceptions.py:116 imageboard/forms/posting_form.py:155
+msgid "Captcha is invalid"
+msgstr "Некорректная каптча"
+
+#: imageboard/exceptions.py:122 imageboard/forms/posting_form.py:158
+msgid "Captcha has expired"
+msgstr "Каптча истекла"
+
+#: imageboard/exceptions.py:128
+msgid "Captcha not found"
+msgstr "Капча не найдена в БД"
+
+#: imageboard/forms/posting_form.py:42 imageboard/models/captcha.py:21
 msgid "Captcha"
 msgstr "Капча"
 
@@ -105,14 +121,6 @@ msgstr "Пользователь забанен"
 #: imageboard/forms/posting_form.py:108
 msgid "Incorrect form type"
 msgstr "Некорректный тип формы"
-
-#: imageboard/forms/posting_form.py:155
-msgid "Captcha is invalid"
-msgstr "Некорректная каптча"
-
-#: imageboard/forms/posting_form.py:158
-msgid "Captcha has expired"
-msgstr "Каптча истекла"
 
 #: imageboard/forms/posting_form.py:168
 msgid "Text rejected"
@@ -152,8 +160,8 @@ msgstr "Прикрепленный файл имеет неверный тип, 
 msgid "Thread ID is not specified when creating a new post"
 msgstr "Не указан ID треда при создании поста"
 
-#: imageboard/models/board.py:15 imageboard/models/content_block.py:9
-#: imageboard/models/post.py:41 imageboard/models/thread.py:26
+#: imageboard/models/board.py:15 imageboard/models/content_block.py:7
+#: imageboard/models/post.py:78 imageboard/models/thread.py:37
 msgid "HID"
 msgstr "HID"
 
@@ -245,7 +253,7 @@ msgid ""
 "Is this board hidden from boards list. Can still be accessed by direct URL."
 msgstr "Эта доска скрыта из списка. Она все еще доступна по прямой ссылке."
 
-#: imageboard/models/board.py:81 imageboard/models/thread.py:57
+#: imageboard/models/board.py:81 imageboard/models/thread.py:68
 msgid "Is locked"
 msgstr "Заблокировано"
 
@@ -254,7 +262,7 @@ msgid "New posts and threads can't be created on locked board."
 msgstr "Новые посты и треды не могут быть созданы на заблокированной доске."
 
 #: imageboard/models/board.py:87 imageboard/models/image.py:79
-#: imageboard/models/post.py:115 imageboard/models/thread.py:63
+#: imageboard/models/post.py:152 imageboard/models/thread.py:74
 msgid "Is deleted"
 msgstr "Удалено"
 
@@ -267,16 +275,16 @@ msgid "Last post HID"
 msgstr "Последний HID поста"
 
 #: imageboard/models/board.py:98 imageboard/models/image.py:49
-#: imageboard/models/post.py:56 imageboard/models/thread.py:73
+#: imageboard/models/post.py:93 imageboard/models/thread.py:84
 msgid "Created at"
 msgstr "Дата создания"
 
-#: imageboard/models/board.py:104 imageboard/models/post.py:63
-#: imageboard/models/thread.py:80
+#: imageboard/models/board.py:104 imageboard/models/post.py:100
+#: imageboard/models/thread.py:91
 msgid "Updated at"
 msgstr "Дата обновления"
 
-#: imageboard/models/board.py:114 imageboard/models/thread.py:33
+#: imageboard/models/board.py:114 imageboard/models/thread.py:44
 msgid "Board"
 msgstr "Доска"
 
@@ -284,23 +292,39 @@ msgstr "Доска"
 msgid "Boards"
 msgstr "Доски"
 
-#: imageboard/models/content_block.py:17 imageboard/models/post.py:70
+#: imageboard/models/captcha.py:7
+msgid "Public ID"
+msgstr "Публичный ID"
+
+#: imageboard/models/captcha.py:12
+msgid "Solution"
+msgstr "Решение"
+
+#: imageboard/models/captcha.py:17
+msgid "Encoded image"
+msgstr "Кодированное изображение"
+
+#: imageboard/models/captcha.py:22
+msgid "Captchas"
+msgstr "Капчи"
+
+#: imageboard/models/content_block.py:15 imageboard/models/post.py:107
 msgid "Text"
 msgstr "Текст"
 
-#: imageboard/models/content_block.py:22
+#: imageboard/models/content_block.py:20
 msgid "Is active"
 msgstr "Активно"
 
-#: imageboard/models/content_block.py:28
+#: imageboard/models/content_block.py:26
 msgid "Content block"
 msgstr "Блок контента"
 
-#: imageboard/models/content_block.py:29
+#: imageboard/models/content_block.py:27
 msgid "Content blocks"
 msgstr "Блоки контента"
 
-#: imageboard/models/image.py:21 imageboard/models/post.py:157
+#: imageboard/models/image.py:21 imageboard/models/post.py:192
 msgid "Post"
 msgstr "Пост"
 
@@ -352,73 +376,73 @@ msgstr "Высота превью"
 msgid "Images"
 msgstr "Изображения"
 
-#: imageboard/models/post.py:48 imageboard/models/thread.py:91
+#: imageboard/models/post.py:85 imageboard/models/thread.py:101
 msgid "Thread"
 msgstr "Тред"
 
-#: imageboard/models/post.py:76
+#: imageboard/models/post.py:113
 msgid "Title"
 msgstr "Тема"
 
-#: imageboard/models/post.py:82
+#: imageboard/models/post.py:119
 msgid "Author"
 msgstr "Автор"
 
-#: imageboard/models/post.py:88
+#: imageboard/models/post.py:125
 msgid "E-mail"
 msgstr "E-mail"
 
-#: imageboard/models/post.py:94
+#: imageboard/models/post.py:131
 msgid "Password"
 msgstr "Пароль"
 
-#: imageboard/models/post.py:100
+#: imageboard/models/post.py:137
 msgid "Is OP"
 msgstr "ОП"
 
-#: imageboard/models/post.py:105
+#: imageboard/models/post.py:142
 #: imageboard/templates/imageboard/parts/post.html:181
 msgid "User was warned"
 msgstr "Пользователь предупрежден"
 
-#: imageboard/models/post.py:110
-#: imageboard/templates/imageboard/parts/post.html:177
+#: imageboard/models/post.py:147
+#: imageboard/templates/imageboard/parts/post.html:179
 msgid "User was banned"
 msgstr "Пользователь забанен"
 
-#: imageboard/models/post.py:122
+#: imageboard/models/post.py:159
 msgid "Created by"
 msgstr "Создано пользователем"
 
-#: imageboard/models/post.py:130
+#: imageboard/models/post.py:167
 msgid "Refs"
 msgstr "Ссылки"
 
-#: imageboard/models/post.py:137
+#: imageboard/models/post.py:174
 msgid "IP address"
 msgstr "IP-адрес"
 
-#: imageboard/models/post.py:144
+#: imageboard/models/post.py:181
 msgid "Session ID"
 msgstr "ID сессии"
 
-#: imageboard/models/post.py:158
+#: imageboard/models/post.py:193
 msgid "Posts"
 msgstr "Посты"
 
-#: imageboard/models/thread.py:43
+#: imageboard/models/thread.py:54
 msgid "OP"
 msgstr "ОП"
 
-#: imageboard/models/thread.py:51
+#: imageboard/models/thread.py:62
 msgid "Is sticky"
 msgstr "Закреплено"
 
-#: imageboard/models/thread.py:69
+#: imageboard/models/thread.py:80
 msgid "Maximum posts number"
 msgstr "Максимальное число постов"
 
-#: imageboard/models/thread.py:92
+#: imageboard/models/thread.py:102
 msgid "Threads"
 msgstr "Треды"
 
@@ -442,6 +466,14 @@ msgstr "Путь"
 msgid "Server error"
 msgstr "Ошибка сервера"
 
+#: imageboard/templates/imageboard/captcha_widget.html:11
+msgid "Captcha code"
+msgstr "Капча"
+
+#: imageboard/templates/imageboard/captcha_widget.html:14
+msgid "Click to refresh CAPTCHA"
+msgstr "Нажмите чтобы обновить каптчу"
+
 #: imageboard/templates/imageboard/catalog_page.html:8
 msgid "Thread catalog"
 msgstr "Каталог тредов"
@@ -463,9 +495,13 @@ msgstr "Закреплен"
 msgid "Locked"
 msgstr "Закрыт"
 
-#: imageboard/templates/imageboard/parts/footer.html:9
+#: imageboard/templates/imageboard/parts/footer.html:10
 msgid "Pages"
 msgstr "Страницы"
+
+#: imageboard/templates/imageboard/parts/footer.html:33
+msgid "Site administrator"
+msgstr "Администратор"
 
 #: imageboard/templates/imageboard/parts/header.html:40
 msgid "Catalog"
@@ -540,11 +576,6 @@ msgstr "Администратор"
 msgid "Hide thread"
 msgstr "Скрыть тред"
 
-#: imageboard/templates/imageboard/parts/post.html:63
-#: imageboard/templates/imageboard/parts/post.html:79
-msgid "Open admin panel"
-msgstr "Открыть админ-панель"
-
 #: imageboard/templates/imageboard/parts/post.html:69
 msgid "My post"
 msgstr "Мой пост"
@@ -559,8 +590,8 @@ msgctxt "number of posts"
 msgid "Posts"
 msgstr "Постов"
 
-#: imageboard/templates/imageboard/parts/post.html:168
-#: imageboard/templates/imageboard/parts/post.html:171
+#: imageboard/templates/imageboard/parts/post.html:169
+#: imageboard/templates/imageboard/parts/post.html:172
 msgid "Open thread"
 msgstr "Открыть тред"
 
@@ -587,6 +618,9 @@ msgstr "Пост не найден."
 #: imageboard/templates/imageboard/posting_error_page.html:6
 msgid "Error"
 msgstr "Ошибка"
+
+#~ msgid "Open admin panel"
+#~ msgstr "Открыть админ-панель"
 
 #~ msgid "Page generated at"
 #~ msgstr "Страница сгенерирована"
