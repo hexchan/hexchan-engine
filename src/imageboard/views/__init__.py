@@ -6,3 +6,4 @@ from .catalog_page import CatalogPage
 from .thread_page import ThreadPage
 from .post_page import PostPage
 from .posting_view import PostingView
+from .captcha_view import captcha_view

@@ -1,8 +1,8 @@
 import datetime
 import random
 
-from captcha.models import Captcha
-from captcha import exceptions
+import imageboard.exceptions
+from imageboard.models.captcha import Captcha
 
 
 def set_captcha(request):
@@ -11,7 +11,7 @@ def set_captcha(request):
     captcha_count = len(captcha_ids)
 
     if captcha_count == 0:
-        raise exceptions.CaptchaDbIsEmpty
+        raise imageboard.exceptions.CaptchaDbIsEmpty
 
     random_id = random.choice(captcha_ids)
     captcha = Captcha.objects.get(pk=random_id)
@@ -42,7 +42,7 @@ def get_captcha(request, do_force_update=False):
         try:
             captcha = Captcha.objects.get(pk=captcha_id)
         except Captcha.DoesNotExist:
-            raise exceptions.CaptchaNotFound
+            raise imageboard.exceptions.CaptchaNotFound
 
     return captcha
 
@@ -55,16 +55,16 @@ def check_captcha(request, public_id, solution):
     try:
         captcha = Captcha.objects.get(pk=captcha_id)
     except Captcha.DoesNotExist:
-        raise exceptions.CaptchaNotFound
+        raise imageboard.exceptions.CaptchaNotFound
 
     # Check if captcha in session has expired
     if datetime.datetime.fromtimestamp(captcha_expires) < datetime.datetime.now():
-        raise exceptions.CaptchaHasExpired
+        raise imageboard.exceptions.CaptchaHasExpired
 
     # Check if user responses to correct captcha
     if public_id != captcha.public_id:
-        raise exceptions.CaptchaHasExpired
+        raise imageboard.exceptions.CaptchaHasExpired
 
     # Check user response value (case insensitive)
     if solution.lower() != captcha.solution.lower():
-        raise exceptions.CaptchaIsInvalid
+        raise imageboard.exceptions.CaptchaIsInvalid

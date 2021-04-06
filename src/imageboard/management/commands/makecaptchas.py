@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import Error as DbError
 
-from captcha.models import Captcha
-from captcha.captchamaker import make_captcha_create_kwargs
+from imageboard.models.captcha import Captcha
+from imageboard.utils.captchamaker import make_captcha_create_kwargs
 
 
 class Command(BaseCommand):

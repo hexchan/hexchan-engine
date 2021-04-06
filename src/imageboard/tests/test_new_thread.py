@@ -3,8 +3,8 @@ from django.test import TestCase
 from django.test import Client
 
 # App imports
-from imageboard.models import Board, Thread, Post
-from captcha.models import Captcha
+from imageboard.models import Board
+from imageboard.models.captcha import Captcha
 
 
 class NewThreadTestCase(TestCase):

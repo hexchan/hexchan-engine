@@ -1,8 +1,6 @@
 # Standard imports
 import os.path
 import datetime
-import functools
-import time
 
 # Django imports
 from django.test import TestCase
@@ -10,17 +8,14 @@ from django.test import Client
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import NON_FIELD_ERRORS
-from django.http import HttpResponseNotAllowed
 
 # App imports
-from imageboard.models import Board, Thread, Post
-import imageboard.exceptions as i_ex
+from imageboard.models import Board, Thread
 from imageboard.forms import PostingForm
 
-from captcha.models import Captcha
+from imageboard.models.captcha import Captcha
 
 from moderation.models import Ban, BanReason, ImageFilter, WordFilter
-import moderation.exceptions as m_ex
 
 
 class PostingExceptionsTestCase(TestCase):

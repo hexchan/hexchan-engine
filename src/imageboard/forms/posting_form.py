@@ -14,14 +14,14 @@ import bleach
 # App imports
 from imageboard.forms.textarea_widget import TextareaWidget
 from imageboard.forms.images_widget import ImagesWidget
-from captcha.widget import CaptchaField
-from captcha.interface import check_captcha
+from imageboard.forms.captcha_widget import CaptchaField
+from imageboard.utils.captcha_interface import check_captcha
 from imageboard.models import Board, Thread, Post
 import moderation.interface
 import moderation.exceptions
-from captcha.exceptions import CaptchaIsInvalid, CaptchaHasExpired
+from imageboard.exceptions import CaptchaIsInvalid, CaptchaHasExpired
 from hexchan import config
-from imageboard.utils import get_pretty_file_size
+from imageboard.utils.get_pretty_file_size import get_pretty_file_size
 
 
 class PostingForm(forms.ModelForm):

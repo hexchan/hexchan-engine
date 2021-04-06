@@ -21,8 +21,8 @@ from imageboard.models import Board, Thread, Post, Image
 from imageboard.forms import PostingForm
 from imageboard.views.parts import push_to_session_list
 from imageboard.wakabamark import extract_refs
-from imageboard.utils import get_client_ip
-from captcha.interface import set_captcha
+from imageboard.utils.get_client_ip import get_client_ip
+from imageboard.utils.captcha_interface import set_captcha
 
 
 class PostingView(FormView):

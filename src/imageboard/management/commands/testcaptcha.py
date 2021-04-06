@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from captcha.captchamaker import draw_test_sheet
+from imageboard.utils.captchamaker import draw_test_sheet
 
 
 class Command(BaseCommand):

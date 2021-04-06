@@ -3,7 +3,7 @@ from django.forms import Widget, MultiWidget, MultiValueField, HiddenInput
 
 
 class CaptchaWidget(MultiWidget):
-    template_name = 'captcha/captcha_widget.html'
+    template_name = 'imageboard/captcha_widget.html'
 
     def __init__(self, attrs=None):
         widgets = (

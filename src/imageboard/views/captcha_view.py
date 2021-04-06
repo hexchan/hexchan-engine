@@ -2,8 +2,8 @@
 from django.http import JsonResponse
 
 # App imports
-from .interface import get_captcha
-from .exceptions import CaptchaError
+from imageboard.utils.captcha_interface import get_captcha
+from imageboard.exceptions import CaptchaError
 
 
 def captcha_view(request):

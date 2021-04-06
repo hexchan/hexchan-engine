@@ -10,7 +10,7 @@ from django.db.models import Q
 from moderation.models import Ban, WordFilter, ImageFilter
 from moderation.exceptions import Banned, BadMessage, BadImage
 
-from imageboard.utils import get_client_ip
+from imageboard.utils.get_client_ip import get_client_ip
 
 
 def check_bans(request):

@@ -25,6 +25,11 @@ urlpatterns = [
         name='posting_view'
     ),
     path(
+        'captcha/',
+        views.captcha_view,
+        name='captcha_view'
+    ),
+    path(
         '<str:board_hid>/',
         views.BoardPage.as_view(),
         name='board_page'

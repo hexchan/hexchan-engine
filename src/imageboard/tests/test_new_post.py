@@ -11,7 +11,7 @@ from django.conf import settings
 # App imports
 from hexchan import config
 from imageboard.models import Board, Thread, Post, Image
-from captcha.models import Captcha
+from imageboard.models.captcha import Captcha
 
 
 class NewPostTestCase(TestCase):

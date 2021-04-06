@@ -54,7 +54,6 @@ INSTALLED_APPS = [
 
     # Project apps
     'imageboard',
-    'captcha',
     'moderation',
 
     # Third party

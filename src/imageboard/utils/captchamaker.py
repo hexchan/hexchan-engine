@@ -5,9 +5,9 @@ import hashlib
 import os
 
 import PIL
-from PIL import Image, ImageFont, ImageDraw, ImageFilter, ImageOps
+from PIL import Image, ImageFont, ImageDraw
 
-from captcha.wakabawords import make_word
+from imageboard.utils.wakabawords import make_word
 
 
 COLOR_MODE = 'RGBA'

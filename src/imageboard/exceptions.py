@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from hexchan import config
-from imageboard.utils import get_pretty_file_size
+from imageboard.utils.get_pretty_file_size import get_pretty_file_size
 
 
 class ImageboardError(Exception):
@@ -98,4 +98,32 @@ class NotSoFast(ImageboardError):
         self.message = _('You have to wait for about {timeout} seconds to post again.').format(
             timeout=config.POSTING_TIMEOUT
         )
+        super().__init__(self.message)
+
+
+class CaptchaError(ImageboardError):
+    pass
+
+
+class CaptchaDbIsEmpty(CaptchaError):
+    def __init__(self):
+        self.message = _('Captcha DB is empty')
+        super().__init__(self.message)
+
+
+class CaptchaIsInvalid(CaptchaError):
+    def __init__(self):
+        self.message = _('Captcha is invalid')
+        super().__init__(self.message)
+
+
+class CaptchaHasExpired(CaptchaError):
+    def __init__(self):
+        self.message = _('Captcha has expired')
+        super().__init__(self.message)
+
+
+class CaptchaNotFound(CaptchaError):
+    def __init__(self):
+        self.message = _('Captcha not found')
         super().__init__(self.message)

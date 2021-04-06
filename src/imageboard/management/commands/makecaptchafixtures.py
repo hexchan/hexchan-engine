@@ -1,10 +1,10 @@
 import os
 import json
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from captcha.captchamaker import make_captcha_create_kwargs
+from imageboard.utils.captchamaker import make_captcha_create_kwargs
 
 
 class Command(BaseCommand):
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         for i in range(1, num + 1):
             captcha_kwargs = make_captcha_create_kwargs()
             captcha_fixture = {
-                "model": "captcha.captcha",
+                "model": "imageboard.captcha",
                 "pk": i,
                 "fields": captcha_kwargs,
             }
