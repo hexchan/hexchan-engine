@@ -48,6 +48,8 @@ class BoardPage(TemplateView):
                 'form_type': 'new_thread',
                 'board_id': board.id,
             },
+            board_id=board.id,
+            thread_id=None,
         )
 
         context.update({

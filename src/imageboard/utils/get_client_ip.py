@@ -1,4 +1,7 @@
-def get_client_ip(request) -> str:
+from django.http.request import HttpRequest
+
+
+def get_client_ip(request: HttpRequest) -> str:
     """Get real client IP address."""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:

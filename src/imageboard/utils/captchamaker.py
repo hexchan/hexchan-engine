@@ -101,23 +101,30 @@ def draw_test_sheet():
     image.show()
 
 
-def draw_single_captcha(image_size=(CAPTCHA_WIDTH, CAPTCHA_HEIGHT)):
+def draw_single_captcha(solution, image_size=(CAPTCHA_WIDTH, CAPTCHA_HEIGHT)):
     image = PIL.Image.new(COLOR_MODE, image_size, BACKGROUND_COLOR)
-    solution = make_word().upper()
     draw_distored_text(image, solution, 0, 0)
+    return image
 
-    return image, solution
 
-
-def make_captcha_create_kwargs():
-    image, solution = draw_single_captcha()
+def image_to_bytes(image):
     bytes_virtual_file = io.BytesIO()
     image.save(bytes_virtual_file, format='PNG')
     image_bytes = bytes_virtual_file.getvalue()
-    image_base64 = 'data:image/png;base64,' + base64.b64encode(image_bytes).decode('ascii')
+    return image_bytes
 
+
+def image_to_base64(image):
+    image_bytes = image_to_bytes(image)
+    image_base64 = 'data:image/png;base64,' + base64.b64encode(image_bytes).decode('ascii')
+    return image_base64
+
+
+def make_captcha_create_kwargs():
+    solution = make_word().upper()
+    image = draw_single_captcha(solution)
+    image_base64 = image_to_base64(image)
     return {
-        'public_id': hashlib.md5(image_bytes).hexdigest(),
         'solution': solution,
         'image': image_base64,
     }

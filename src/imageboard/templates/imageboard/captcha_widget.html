@@ -2,15 +2,14 @@
 
 
 <span class="captcha-widget">
-    {% for subwidget in widget.subwidgets %}
-        {% include subwidget.template_name with widget=subwidget %}
-    {% endfor %}
+    {% include 'django/forms/widgets/input.html' %}
 
     <img
         class="captcha-widget__image js-captcha-image"
+        src="{% url 'captcha_view' %}?board={{ widget.board_id }}{% if widget.thread_id %}&thread={{widget.thread_id}}{% endif %}"
         alt="{% trans "Captcha code" %}"
         width="128"
         height="32"
-        title="{% trans "Click to refresh CAPTCHA" %}"
+        title="{% trans "Captcha" %}"
     />
 </span>
