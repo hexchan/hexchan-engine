@@ -17,12 +17,11 @@ import PIL.Image
 # App imports
 from hexchan import config
 
-from imageboard.models import Board, Thread, Post, Image
+from imageboard.models import Board, Thread, Post, Image, Captcha
 from imageboard.forms import PostingForm
 from imageboard.views.parts import push_to_session_list
 from imageboard.wakabamark import extract_refs
 from imageboard.utils.get_client_ip import get_client_ip
-from imageboard.utils.captcha_interface import set_captcha
 
 
 class PostingView(FormView):
@@ -52,6 +51,7 @@ class PostingView(FormView):
             board.save()
             board.refresh_from_db()
 
+            # TODO: Merge new thread and reply code routes
             if form_type == 'new_thread':
                 thread = self.create_thread(self.request, board)
                 post = self.create_post(self.request, board, thread, form.cleaned_data, is_op=True)
@@ -62,6 +62,7 @@ class PostingView(FormView):
                 self.flush_old_threads(self.request, board)
                 push_to_session_list(self.request, 'user_posts', post.id)
                 push_to_session_list(self.request, 'user_threads', thread.id)
+                self.delete_used_captcha(self.request, board)
             else:
                 thread_id = form.cleaned_data['thread_id']
                 thread = Thread.objects.select_for_update().get(id=thread_id, is_deleted=False)
@@ -69,6 +70,7 @@ class PostingView(FormView):
                 self.create_images(post, form.cleaned_data['images'])
                 self.create_refs(self.request, board, thread, post)
 
+                # TODO: move this logic to the thread model
                 # Close thread if post limit is reached
                 if thread.posts.count() >= thread.max_posts_num:
                     thread.is_locked = True
@@ -76,20 +78,17 @@ class PostingView(FormView):
                 thread.save()
                 push_to_session_list(self.request, 'user_posts', post.id)
                 push_to_session_list(self.request, 'user_thread_replies', thread.id)
+                self.delete_used_captcha(self.request, board, thread)
 
             # Write latest posting time to the session
             self.request.session['latest_post_at'] = timezone.now().timestamp()
-
-        # Update captcha
-        set_captcha(self.request)
 
         # Redirect to the current thread
         # TODO: make a form checkbox for selecting destination - board or thread
         return redirect('thread_page', board_hid=board.hid, thread_hid=thread.hid)
 
     def form_invalid(self, form):
-        # Update captcha
-        set_captcha(self.request)
+        # TODO: delete used captcha on failed validations?
 
         return render(
             self.request,
@@ -205,3 +204,14 @@ class PostingView(FormView):
                 thread.is_locked = True
                 thread.is_deleted = True
                 thread.save()
+
+    def delete_used_captcha(self, request, board, thread=None):
+        ip_address = get_client_ip(request)
+
+        Captcha.objects\
+            .filter(
+                board=board,
+                thread=thread,
+                ip_address=ip_address,
+            )\
+            .delete()

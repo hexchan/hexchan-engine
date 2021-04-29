@@ -1,5 +1,9 @@
+# Standard library imports
+import datetime
+
 # Django imports
 from django.http import HttpResponse
+from django.utils import timezone
 
 # App imports
 from imageboard.models import Captcha
@@ -11,6 +15,12 @@ def captcha_view(request):
     board_id = request.GET.get('board')
     thread_id = request.GET.get('thread')
     client_ip = get_client_ip(request)
+
+    # Delete old captchas from database
+    # TODO: celery task for that?
+    Captcha.objects\
+        .filter(created_at__lt=timezone.now() - datetime.timedelta(minutes=10))\
+        .delete()
 
     try:
         captcha = Captcha.objects.get(

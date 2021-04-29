@@ -1,7 +1,6 @@
 # Standard library imports
 import hashlib
 import datetime
-# from django.utils import timezone
 
 # Django imports
 from django import forms
@@ -271,11 +270,10 @@ class PostingForm(forms.ModelForm):
             except Captcha.DoesNotExist:
                 raise CaptchaNotFound
 
-            # TODO: uncomment
-            # # Check if captcha has expired
-            # # TODO: Move delta to the constants
-            # if (timezone.now() - captcha.created_at) > datetime.timedelta(minutes=10):
-            #     raise CaptchaHasExpired
+            # Check if captcha has expired
+            # TODO: Move delta to the constants
+            if (timezone.now() - captcha.created_at) > datetime.timedelta(minutes=10):
+                raise CaptchaHasExpired
 
             # Check user response value (case insensitive)
             if solution.lower() != captcha.solution.lower():
@@ -284,7 +282,7 @@ class PostingForm(forms.ModelForm):
         # TODO: do we really need captcha exceptions?
 
         except CaptchaNotFound:
-            raise ValidationError(_('Captcha not found'), code=self.ERROR_CAPTCHA_NOT_FOUND)
+            raise ValidationError(_('Captcha not found or expired'), code=self.ERROR_CAPTCHA_NOT_FOUND)
 
         except CaptchaIsInvalid:
             raise ValidationError(_('Captcha is invalid'), code=self.ERROR_CAPTCHA_IS_INVALID)
