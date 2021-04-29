@@ -48,3 +48,4 @@ class Captcha(models.Model):
     class Meta:
         verbose_name = _('Captcha')
         verbose_name_plural = _('Captchas')
+        unique_together = ['board', 'thread', 'ip_address']
