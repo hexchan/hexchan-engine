@@ -51,6 +51,13 @@ class PostingView(FormView):
             board.save()
             board.refresh_from_db()
 
+            # Try to save session storage to create one if needed
+            # TODO: I wonder if this is an unsafe operation
+            self.request.session.save()
+
+            # Write latest posting time to the session
+            self.request.session['latest_post_at'] = timezone.now().timestamp()
+
             # TODO: Merge new thread and reply code routes
             if form_type == 'new_thread':
                 thread = self.create_thread(self.request, board)
@@ -79,9 +86,6 @@ class PostingView(FormView):
                 push_to_session_list(self.request, 'user_posts', post.id)
                 push_to_session_list(self.request, 'user_thread_replies', thread.id)
                 self.delete_used_captcha(self.request, board, thread)
-
-            # Write latest posting time to the session
-            self.request.session['latest_post_at'] = timezone.now().timestamp()
 
         # Redirect to the current thread
         # TODO: make a form checkbox for selecting destination - board or thread
