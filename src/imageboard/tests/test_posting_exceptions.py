@@ -39,21 +39,18 @@ class PostingExceptionsTestCase(TestCase):
 
         # Create a captcha
         Captcha.objects.create(
-            public_id='100500',
             solution='swordfish',
-            image='null',
+            thread=self.thread,
+            board=self.board,
+            ip_address='127.0.0.1',
         )
-
-        # Update session with captcha info with this request
-        self.client.get('/captcha/')
 
         # Base post content dict
         self.base_post_content = {
             'form_type': 'new_post',
             'board_id': self.board.id,
             'thread_id': self.thread.id,
-            'captcha_0': 'swordfish',
-            'captcha_1': '100500',
+            'captcha': 'swordfish',
             'title': 'Test title',
             'author': 'Tester',
             'email': '',
@@ -76,9 +73,6 @@ class PostingExceptionsTestCase(TestCase):
         self.assertTemplateUsed(response, 'imageboard/posting_error_page.html')
 
         form = response.context['form']
-
-        if field is None:
-            field = NON_FIELD_ERRORS
 
         error_code_found = form.has_error(field, code=error_code)
 
