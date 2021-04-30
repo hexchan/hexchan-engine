@@ -1,23 +1,45 @@
+# Standard library imports
+import datetime
+
 # Django imports
-from django.http import JsonResponse
+from django.http import HttpResponse
+from django.utils import timezone
 
 # App imports
-from imageboard.utils.captcha_interface import get_captcha
-from imageboard.exceptions import CaptchaError
+from imageboard.models import Captcha
+from imageboard.utils.get_client_ip import get_client_ip
+from imageboard.utils.captchamaker import make_word, draw_single_captcha, image_to_bytes
 
 
 def captcha_view(request):
-    do_force_update = request.GET.get('update', False)
+    board_id = request.GET.get('board')
+    thread_id = request.GET.get('thread')
+    client_ip = get_client_ip(request)
+
+    # Delete old captchas from database
+    # TODO: celery task for that?
+    Captcha.objects\
+        .filter(created_at__lt=timezone.now() - datetime.timedelta(minutes=10))\
+        .delete()
 
     try:
-        captcha = get_captcha(request, do_force_update)
-    except CaptchaError as e:
-        return JsonResponse({'status': 'error'}, status=500)
+        captcha = Captcha.objects.get(
+            board_id=board_id,
+            thread_id=thread_id,
+            ip_address=client_ip,
+        )
+        
+    except Captcha.DoesNotExist:
+        solution = make_word().upper()
+        image = draw_single_captcha(solution)
+        image_bytes = image_to_bytes(image)
 
-    response_data = {
-        'status': 'ok',
-        'publicId': captcha.public_id,
-        'image': captcha.image,
-    }
+        captcha = Captcha.objects.create(
+            board_id=board_id,
+            thread_id=thread_id,
+            ip_address=client_ip,
+            solution=solution,
+            image=image_bytes
+        )
 
-    return JsonResponse(response_data)
+    return HttpResponse(captcha.image, content_type='image/png')

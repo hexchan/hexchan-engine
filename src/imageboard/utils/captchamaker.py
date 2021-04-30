@@ -1,31 +1,39 @@
+# Standard library imports
 import random
 import base64
 import io
-import hashlib
 import os
 
+# Third party imports
 import PIL
 from PIL import Image, ImageFont, ImageDraw
 
+# App imports
 from imageboard.utils.wakabawords import make_word
 
-
+# Color-related constants
 COLOR_MODE = 'RGBA'
 BACKGROUND_COLOR = (255, 255, 255, 0)  # Transparent white
 MAIN_COLOR = (0, 0, 0, 255)  # Solid black
 TRANSPARENT_COLOR = (0, 0, 0, 0)  # Transparent black
 
+# Font-related constants
 FONT_SIZE = 20
 VERTICAL_LETTER_CROP = 7
 
+# Captcha image size
 CAPTCHA_WIDTH = 128
 CAPTCHA_HEIGHT = 32
 
+# Captcha text distortion tweaks
 HORIZONTAL_SHIFT_RATIO = 0.5
 HORIZONTAL_PADDING = 10
 MAX_VERTICAL_SHIFT = 5
 VERTICAL_PADDING = int((CAPTCHA_HEIGHT - FONT_SIZE) / 2)
 
+# Test sheet image size
+TEST_SHEET_WIDTH = 1920
+TEST_SHEET_HEIGHT = 1080
 
 # Load font object
 module_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,12 +41,12 @@ with open(os.path.join(module_dir, 'OpenSans-Light.ttf'), 'rb') as f:
     font = PIL.ImageFont.truetype(font=f, size=FONT_SIZE)
 
 
-def draw_distored_text(image, text, left, top):
+def draw_distorted_text(image: PIL.Image, text: str, left: int, top: int):
     # Text angle can be random in specified alternating ranges
     angle_ranges = [(-30, -15), (15, 30)]
     current_angle_range = 0
 
-    # Intial character coordinates
+    # Initial character coordinates
     x = left + HORIZONTAL_PADDING
     padded_top = top + VERTICAL_PADDING
     y = padded_top
@@ -77,7 +85,7 @@ def draw_distored_text(image, text, left, top):
 
 
 def draw_test_sheet():
-    image = PIL.Image.new(COLOR_MODE, (1920, 1080), BACKGROUND_COLOR)
+    image = PIL.Image.new(COLOR_MODE, (TEST_SHEET_WIDTH, TEST_SHEET_HEIGHT), BACKGROUND_COLOR)
     image_surface = PIL.ImageDraw.Draw(image)
 
     for x_num in range(10):
@@ -86,7 +94,7 @@ def draw_test_sheet():
             solution = make_word().upper()
 
             # Draw captcha word
-            draw_distored_text(image, solution, x_num * CAPTCHA_WIDTH, y_num * CAPTCHA_HEIGHT)
+            draw_distorted_text(image, solution, x_num * CAPTCHA_WIDTH, y_num * CAPTCHA_HEIGHT)
 
             # Draw a border around captcha
             image_surface.rectangle(
@@ -101,26 +109,22 @@ def draw_test_sheet():
     image.show()
 
 
-def draw_single_captcha(image_size=(CAPTCHA_WIDTH, CAPTCHA_HEIGHT)):
-    image = PIL.Image.new(COLOR_MODE, image_size, BACKGROUND_COLOR)
-    solution = make_word().upper()
-    draw_distored_text(image, solution, 0, 0)
-
-    return image, solution
+def draw_single_captcha(solution: str) -> PIL.Image:
+    image = PIL.Image.new(COLOR_MODE, (CAPTCHA_WIDTH, CAPTCHA_HEIGHT), BACKGROUND_COLOR)
+    draw_distorted_text(image, solution, 0, 0)
+    return image
 
 
-def make_captcha_create_kwargs():
-    image, solution = draw_single_captcha()
+def image_to_bytes(image: PIL.Image) -> bytes:
     bytes_virtual_file = io.BytesIO()
     image.save(bytes_virtual_file, format='PNG')
     image_bytes = bytes_virtual_file.getvalue()
-    image_base64 = 'data:image/png;base64,' + base64.b64encode(image_bytes).decode('ascii')
+    return image_bytes
 
-    return {
-        'public_id': hashlib.md5(image_bytes).hexdigest(),
-        'solution': solution,
-        'image': image_base64,
-    }
+
+def bytes_to_base64(image_bytes: bytes) -> str:
+    image_base64 = 'data:image/png;base64,' + base64.b64encode(image_bytes).decode('ascii')
+    return image_base64
 
 
 if __name__ == '__main__':

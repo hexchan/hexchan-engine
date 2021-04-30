@@ -21,20 +21,17 @@ class NewThreadTestCase(TestCase):
 
         # Create a captcha
         Captcha.objects.create(
-            public_id='100500',
             solution='swordfish',
-            image='null',
+            thread=None,
+            board=self.board,
+            ip_address='127.0.0.1',
         )
-
-        # Update session with captcha info with this request
-        self.client.get('/captcha/')
 
         # Base post content dict
         self.base_post_content = {
             'form_type': 'new_thread',
             'board_id': self.board.id,
-            'captcha_0': 'swordfish',
-            'captcha_1': '100500',
+            'captcha': 'swordfish',
             'title': 'Test title',
             'author': 'Tester',
             'email': '',

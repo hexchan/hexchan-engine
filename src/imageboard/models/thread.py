@@ -114,3 +114,6 @@ class Thread(models.Model):
         )
 
         return thread_url
+
+    def __str__(self):
+        return self.hid2hex()

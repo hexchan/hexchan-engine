@@ -39,21 +39,18 @@ class PostingExceptionsTestCase(TestCase):
 
         # Create a captcha
         Captcha.objects.create(
-            public_id='100500',
             solution='swordfish',
-            image='null',
+            thread=self.thread,
+            board=self.board,
+            ip_address='127.0.0.1',
         )
-
-        # Update session with captcha info with this request
-        self.client.get('/captcha/')
 
         # Base post content dict
         self.base_post_content = {
             'form_type': 'new_post',
             'board_id': self.board.id,
             'thread_id': self.thread.id,
-            'captcha_0': 'swordfish',
-            'captcha_1': '100500',
+            'captcha': 'swordfish',
             'title': 'Test title',
             'author': 'Tester',
             'email': '',
@@ -76,9 +73,6 @@ class PostingExceptionsTestCase(TestCase):
         self.assertTemplateUsed(response, 'imageboard/posting_error_page.html')
 
         form = response.context['form']
-
-        if field is None:
-            field = NON_FIELD_ERRORS
 
         error_code_found = form.has_error(field, code=error_code)
 
@@ -191,9 +185,16 @@ class PostingExceptionsTestCase(TestCase):
 
         banned_ip = '93.184.216.34'
 
+        Captcha.objects.create(
+            solution='swordfish',
+            thread=self.thread,
+            board=self.board,
+            ip_address=banned_ip,
+        )
+
         Ban.objects.create(type=Ban.BAN_TYPE_IP, value=banned_ip, reason=reason, active_until=tomorrow)
 
-        self.make_bad_form_request({}, None, PostingForm.ERROR_BANNED, REMOTE_ADDR=banned_ip)
+        self.make_bad_form_request({}, NON_FIELD_ERRORS, PostingForm.ERROR_BANNED, REMOTE_ADDR=banned_ip)
 
     def test_ban_session(self):
         reason = BanReason.objects.create(description='Trolling')
@@ -205,7 +206,7 @@ class PostingExceptionsTestCase(TestCase):
 
         Ban.objects.create(type=Ban.BAN_TYPE_SESSION, value=banned_session, reason=reason, active_until=tomorrow)
 
-        self.make_bad_form_request({}, None, PostingForm.ERROR_BANNED)
+        self.make_bad_form_request({}, NON_FIELD_ERRORS, PostingForm.ERROR_BANNED)
 
     def test_ban_network(self):
         reason = BanReason.objects.create(description='Trolling')
@@ -216,14 +217,27 @@ class PostingExceptionsTestCase(TestCase):
         banned_network = '93.184.216.0/24'
         banned_ip = '93.184.216.34'
 
+        Captcha.objects.create(
+            solution='swordfish',
+            thread=self.thread,
+            board=self.board,
+            ip_address=banned_ip,
+        )
+
         Ban.objects.create(type=Ban.BAN_TYPE_NET, value=banned_network, reason=reason, active_until=tomorrow)
 
-        self.make_bad_form_request({}, None, PostingForm.ERROR_BANNED, REMOTE_ADDR=banned_ip)
+        self.make_bad_form_request({}, NON_FIELD_ERRORS, PostingForm.ERROR_BANNED, REMOTE_ADDR=banned_ip)
 
     def test_rapid_posting(self):
         post_data = self.base_post_content.copy()
         self.client.post('/create/', post_data)
-        self.make_bad_form_request({}, None, PostingForm.ERROR_NOT_SO_FAST)
+        Captcha.objects.create(
+            solution='swordfish',
+            thread=self.thread,
+            board=self.board,
+            ip_address='127.0.0.1',
+        )
+        self.make_bad_form_request({}, NON_FIELD_ERRORS, PostingForm.ERROR_NOT_SO_FAST)
 
     def test_empty_post(self):
-        self.make_bad_form_request({'text': '', 'images': []}, None, PostingForm.ERROR_MESSAGE_IS_EMPTY)
+        self.make_bad_form_request({'text': '', 'images': []}, NON_FIELD_ERRORS, PostingForm.ERROR_MESSAGE_IS_EMPTY)

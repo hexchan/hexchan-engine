@@ -38,6 +38,8 @@ class ThreadPage(TemplateView):
                 'board_id': board.id,
                 'thread_id': thread.id,
             },
+            board_id=board.id,
+            thread_id=thread.id,
         )
 
         context.update({

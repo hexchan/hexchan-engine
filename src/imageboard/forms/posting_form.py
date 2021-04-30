@@ -14,14 +14,14 @@ import bleach
 # App imports
 from imageboard.forms.textarea_widget import TextareaWidget
 from imageboard.forms.images_widget import ImagesWidget
-from imageboard.forms.captcha_widget import CaptchaField
-from imageboard.utils.captcha_interface import check_captcha
-from imageboard.models import Board, Thread, Post
+from imageboard.forms.captcha_widget import CaptchaWidget
+from imageboard.models import Board, Thread, Post, Captcha
 import moderation.interface
 import moderation.exceptions
-from imageboard.exceptions import CaptchaIsInvalid, CaptchaHasExpired
+from imageboard.exceptions import CaptchaIsInvalid, CaptchaHasExpired, CaptchaNotFound
 from hexchan import config
 from imageboard.utils.get_pretty_file_size import get_pretty_file_size
+from imageboard.utils.get_client_ip import get_client_ip
 
 
 class PostingForm(forms.ModelForm):
@@ -38,8 +38,10 @@ class PostingForm(forms.ModelForm):
         widget=forms.HiddenInput
     )
 
-    captcha = CaptchaField(
-        label=_('Captcha'), required=True
+    captcha = forms.CharField(
+        label=_('Captcha'),
+        required=True,
+        widget=CaptchaWidget
     )
 
     images = forms.FileField(
@@ -61,13 +63,20 @@ class PostingForm(forms.ModelForm):
     ERROR_NOT_SO_FAST = 'ERROR_NOT_SO_FAST'
     ERROR_CAPTCHA_IS_INVALID = 'ERROR_CAPTCHA_IS_INVALID'
     ERROR_CAPTHCA_HAS_EXPIRED = 'ERROR_CAPTHCA_HAS_EXPIRED'
+    ERROR_CAPTCHA_NOT_FOUND = 'ERROR_CAPTCHA_NOT_FOUND'
     ERROR_BANNED = 'ERROR_BANNED'
     ERROR_BAD_IMAGE = 'ERROR_BAD_IMAGE'
     ERROR_BAD_MESSAGE = 'ERROR_BAD_MESSAGE'
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
+        self.board_id = kwargs.pop('board_id', None)
+        self.thread_id = kwargs.pop('thread_id', None)
+
         super(PostingForm, self).__init__(*args, **kwargs)
+
+        self.fields['captcha'].widget.board_id = self.board_id
+        self.fields['captcha'].widget.thread_id = self.thread_id
 
     field_order = ['author', 'title', 'text', 'images', 'captcha']
 
@@ -93,6 +102,7 @@ class PostingForm(forms.ModelForm):
 
         self._check_if_thread_id_is_missing(cleaned_data)
         self._check_if_message_is_empty(cleaned_data)
+        self._check_captcha(cleaned_data)
 
         try:
             moderation.interface.check_bans(self.request)
@@ -141,23 +151,7 @@ class PostingForm(forms.ModelForm):
 
     def clean_captcha(self):
         captcha = self.cleaned_data['captcha']
-
-        captcha_public_id = captcha.get('public_id')
-        captcha_solution = captcha.get('solution')
-
-        if self.request.user.is_authenticated:
-            pass
-        else:
-            try:
-                check_captcha(self.request, captcha_public_id, captcha_solution)
-
-            except CaptchaIsInvalid:
-                raise ValidationError(_('Captcha is invalid'), code=self.ERROR_CAPTCHA_IS_INVALID)
-
-            except CaptchaHasExpired:
-                raise ValidationError(_('Captcha has expired'), code=self.ERROR_CAPTHCA_HAS_EXPIRED)
-
-        return captcha
+        return bleach.clean(captcha)
 
     def clean_text(self):
         text = self.cleaned_data['text']
@@ -258,3 +252,40 @@ class PostingForm(forms.ModelForm):
                 _('Thread ID is not specified when creating a new post'),
                 code=self.ERROR_MISSING_THREAD_ID
             )
+
+    def _check_captcha(self, cleaned_data):
+        solution = cleaned_data.get('captcha')
+        board_id = cleaned_data.get('board_id')
+        thread_id = cleaned_data.get('thread_id')
+        ip_address = get_client_ip(self.request)
+
+        try:
+            # Get captcha object from DB by board, thread and ip address
+            try:
+                captcha = Captcha.objects.get(
+                    board_id=board_id,
+                    thread_id=thread_id,
+                    ip_address=ip_address,
+                )
+            except Captcha.DoesNotExist:
+                raise CaptchaNotFound
+
+            # Check if captcha has expired
+            # TODO: Move delta to the constants
+            if (timezone.now() - captcha.created_at) > datetime.timedelta(minutes=10):
+                raise CaptchaHasExpired
+
+            # Check user response value (case insensitive)
+            if solution.lower() != captcha.solution.lower():
+                raise CaptchaIsInvalid
+
+        # TODO: do we really need captcha exceptions?
+
+        except CaptchaNotFound:
+            raise ValidationError(_('Captcha not found or expired'), code=self.ERROR_CAPTCHA_NOT_FOUND)
+
+        except CaptchaIsInvalid:
+            raise ValidationError(_('Captcha is invalid'), code=self.ERROR_CAPTCHA_IS_INVALID)
+
+        except CaptchaHasExpired:
+            raise ValidationError(_('Captcha has expired'), code=self.ERROR_CAPTHCA_HAS_EXPIRED)
