@@ -28,7 +28,7 @@ def captcha_view(request):
             thread_id=thread_id,
             ip_address=client_ip,
         )
-        
+
     except Captcha.DoesNotExist:
         solution = make_word().upper()
         image = draw_single_captcha(solution)

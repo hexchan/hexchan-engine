@@ -1,7 +1,6 @@
 from django.test import TestCase
 
 from imageboard import wakabamark
-from imageboard.models import Board, Thread, Post
 
 
 class NestedTagsTest(TestCase):

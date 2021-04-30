@@ -1,5 +1,4 @@
 # Standard libs
-import os
 from pathlib import Path
 from email.utils import getaddresses
 
@@ -35,8 +34,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 # Branding
-SITE_NAME=env('SITE_NAME', default='HEXCHAN')
-FAVICON_URL=env('FAVICON_URL', default='/static/imageboard/favicon.png')
+SITE_NAME = env('SITE_NAME', default='HEXCHAN')
+FAVICON_URL = env('FAVICON_URL', default='/static/imageboard/favicon.png')
 
 # Hosts
 HOST = env('HOST', default='example.com')

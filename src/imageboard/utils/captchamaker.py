@@ -6,7 +6,7 @@ import os
 
 # Third party imports
 import PIL
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageFont, ImageDraw  # noqa: F401
 
 # App imports
 from imageboard.utils.wakabawords import make_word

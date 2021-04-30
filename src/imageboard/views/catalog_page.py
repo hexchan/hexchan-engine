@@ -22,17 +22,17 @@ class CatalogPage(TemplateView):
 
         threads = (
             Thread.threads
-                .prefetch_related(
-                    Prefetch(
-                        'op',
-                        queryset=Post.posts.filter_op()
-                    )
+            .prefetch_related(
+                Prefetch(
+                    'op',
+                    queryset=Post.posts.filter_op()
                 )
-                .filter(
-                    board=board
-                )
-                .order_by('-is_sticky', '-updated_at')
-                [:board.max_threads_num]
+            )
+            .filter(
+                board=board
+            )
+            .order_by('-is_sticky', '-updated_at')
+            [:board.max_threads_num]
         )
 
         context.update({

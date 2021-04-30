@@ -25,17 +25,17 @@ class BoardPage(TemplateView):
         # Threads queryset
         threads = (
             Thread.threads
-                .filter(
-                    board__hid=board_hid
+            .filter(
+                board__hid=board_hid
+            )
+            .prefetch_related(
+                Prefetch(
+                    'posts',
+                    queryset=Post.posts.filter_op_and_latest(),
                 )
-                .prefetch_related(
-                    Prefetch(
-                        'posts',
-                        queryset=Post.posts.filter_op_and_latest(),
-                    )
-                )
-                .order_by('-is_sticky', '-updated_at')
-                [:board.max_threads_num]
+            )
+            .order_by('-is_sticky', '-updated_at')
+            [:board.max_threads_num]
         )
 
         # Paginate threads

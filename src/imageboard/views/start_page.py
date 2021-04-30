@@ -1,5 +1,5 @@
 # Django imports
-from django.db.models import Prefetch, OuterRef, Subquery
+from django.db.models import Prefetch
 from django.views.generic import TemplateView
 
 # App imports

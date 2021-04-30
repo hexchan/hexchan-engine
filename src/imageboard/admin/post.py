@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from django.conf import settings
 
 from ..models import Post, Image
 from hexchan import config
@@ -23,8 +22,8 @@ class ImageInlineAdmin(admin.TabularInline):
 
     show_change_link = True
 
-    # # Custom fields
-    # # ==================================================================================================================
+    # Custom fields
+    # ==================================================================================================================
     def thumbnail(self, obj):
         return format_html(
             '<a href="{}">'

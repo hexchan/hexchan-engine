@@ -12,9 +12,9 @@ class RefReplyManager(models.Manager):
     def get_queryset(self):
         return (
             super()
-                .get_queryset()
-                .select_related('thread', 'thread__board')
-                .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
+            .get_queryset()
+            .select_related('thread', 'thread__board')
+            .only('is_op', 'hid', 'thread__hid', 'thread__board__hid')
         )
 
 
@@ -25,14 +25,14 @@ class PostQuerySet(models.QuerySet):
     def filter_op_and_latest(self):
         latest_posts_queryset = (
             Post.objects
-                .filter(
-                    thread=OuterRef('thread'),
-                    is_deleted=False,
-                    is_op=False
-                )
-                .order_by('-id')
-                .values_list('id', flat=True)
-                [:5]  # TODO NO MAGIC ALLOWED
+            .filter(
+                thread=OuterRef('thread'),
+                is_deleted=False,
+                is_op=False
+            )
+            .order_by('-id')
+            .values_list('id', flat=True)
+            [:5]  # TODO NO MAGIC ALLOWED
         )
 
         return self.filter(
@@ -45,25 +45,25 @@ class PostManager(models.Manager):
     def get_queryset(self):
         return (
             PostQuerySet(self.model, using=self._db)
-                .filter(is_deleted=False)
-                .select_related('thread', 'thread__board')
-                .prefetch_related(
-                    Prefetch('images'),
-                    Prefetch(
-                        'refs',
-                        queryset=Post.refs_and_replies.all()
-                    ),
-                    Prefetch(
-                        'post_set',
-                        to_attr='replies',
-                        queryset=Post.refs_and_replies.all()
-                    ),
-                    Prefetch('created_by'),
-                )
-                .annotate(
-                    thread_hid=F('thread__hid'),
-                    board_hid=F('thread__board__hid'),
-                )
+            .filter(is_deleted=False)
+            .select_related('thread', 'thread__board')
+            .prefetch_related(
+                Prefetch('images'),
+                Prefetch(
+                    'refs',
+                    queryset=Post.refs_and_replies.all()
+                ),
+                Prefetch(
+                    'post_set',
+                    to_attr='replies',
+                    queryset=Post.refs_and_replies.all()
+                ),
+                Prefetch('created_by'),
+            )
+            .annotate(
+                thread_hid=F('thread__hid'),
+                board_hid=F('thread__board__hid'),
+            )
         )
 
     def filter_op(self):

@@ -1,6 +1,5 @@
 from django.db import models
-from django.db.models import Prefetch, Count, Subquery, OuterRef
-from django.conf import settings
+from django.db.models import Count, Subquery, OuterRef
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -11,9 +10,9 @@ class ThreadQuerySet(models.QuerySet):
     def filter_last_updated(self):
         updated_threads_queryset = (
             Thread.objects
-                .filter(board=OuterRef('board'), is_deleted=False)
-                .order_by('-is_sticky', '-updated_at')
-                .values_list('id', flat=True)[:5]
+            .filter(board=OuterRef('board'), is_deleted=False)
+            .order_by('-is_sticky', '-updated_at')
+            .values_list('id', flat=True)[:5]
         )
 
         return self.filter(id__in=Subquery(updated_threads_queryset))
@@ -23,9 +22,9 @@ class ThreadManager(models.Manager):
     def get_queryset(self):
         return (
             ThreadQuerySet(self.model, using=self._db)
-                .filter(is_deleted=False)
-                .select_related('board')
-                .annotate(posts_count=Count('posts'))
+            .filter(is_deleted=False)
+            .select_related('board')
+            .annotate(posts_count=Count('posts'))
         )
 
     def filter_last_updated(self):

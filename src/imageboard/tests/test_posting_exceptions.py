@@ -150,7 +150,15 @@ class PostingExceptionsTestCase(TestCase):
     def test_attached_too_many_images(self):
         filename = os.path.join(os.path.dirname(__file__), 'noise.png')
         with self.settings(MEDIA_ROOT=str(settings.STORAGE_DIR / 'test')):
-            with open(filename, 'rb') as fp1, open(filename, 'rb') as fp2, open(filename, 'rb') as fp3, open(filename, 'rb') as fp4, open(filename, 'rb') as fp5, open(filename, 'rb') as fp6, open(filename, 'rb') as fp7, open(filename, 'rb') as fp8:
+            with \
+                    open(filename, 'rb') as fp1, \
+                    open(filename, 'rb') as fp2, \
+                    open(filename, 'rb') as fp3, \
+                    open(filename, 'rb') as fp4, \
+                    open(filename, 'rb') as fp5, \
+                    open(filename, 'rb') as fp6, \
+                    open(filename, 'rb') as fp7, \
+                    open(filename, 'rb') as fp8:
                 self.make_bad_form_request(
                     {'images': [fp1, fp2, fp3, fp4, fp5, fp6, fp7, fp8]},
                     'images',

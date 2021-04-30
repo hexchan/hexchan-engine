@@ -29,7 +29,7 @@ CONFIG_TEMPLATE = '''
 
     ErrorLog ${{APACHE_LOG_DIR}}/error.log
     CustomLog ${{APACHE_LOG_DIR}}/access.log combined
-</VirtualHost>    
+</VirtualHost>
 '''.strip()
 
 

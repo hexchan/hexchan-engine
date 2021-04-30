@@ -1,15 +1,12 @@
 # Standard imports
 import os.path
-import time
 
 # Django imports
 from django.test import TestCase
 from django.test import Client
-from django.test import tag
 from django.conf import settings
 
 # App imports
-from hexchan import config
 from imageboard.models import Board, Thread, Post, Image
 from imageboard.models.captcha import Captcha
 

@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.db.models import Count
-from django.conf import settings
 
 from ..models import Thread, Post
 from hexchan import config

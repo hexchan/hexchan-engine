@@ -67,7 +67,9 @@ class Board(models.Model):
 
     max_threads_num = models.IntegerField(
         _('Maximum threads number'),
-        help_text=_('Maximum number of threads on this boards. When reaching this level older threads will be deleted.'),
+        help_text=_(
+            'Maximum number of threads on this boards. When reaching this level older threads will be deleted.'
+        ),
         default=100
     )
 

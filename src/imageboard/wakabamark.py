@@ -41,12 +41,12 @@ def make_em_tags(line: str) -> str:
     """Find emphasis marks in string and replace them with <em> tags."""
     return re.sub(
         r"""
-            (?<![\w*]) 
-            (\*|_) 
-            (?![<>\s*_]) 
-            ([^<>]+?) 
-            (?<![<>\s*_]) 
-            \1 (?![\w*]) 
+            (?<![\w*])
+            (\*|_)
+            (?![<>\s*_])
+            ([^<>]+?)
+            (?<![<>\s*_])
+            \1 (?![\w*])
         """,
         r'<em>\2</em>',
         line,
@@ -58,12 +58,12 @@ def make_strong_tags(line: str) -> str:
     """Find strong marks in string and replace them with <strong> tags."""
     return re.sub(
         r"""
-            (?<![\w*_]) 
-            (\*\*|__) 
-            (?![<>\s\*_]) 
-            ([^<>]+?) 
-            (?<![<>\s*_]) 
-            \1 
+            (?<![\w*_])
+            (\*\*|__)
+            (?![<>\s\*_])
+            ([^<>]+?)
+            (?<![<>\s*_])
+            \1
             (?![\w*_])
         """,
         r'<strong>\2</strong>',
@@ -76,12 +76,12 @@ def make_spoiler_tags(line: str) -> str:
     """Find spoiler marks in string and replace them with <span class="spoiler"> tags."""
     return re.sub(
         r"""
-            (?<![\w%]) 
-            (%%) 
-            (?![<>\s%]) 
-            ([^<>]+?) 
-            (?<![<>\s%]) 
-            \1 
+            (?<![\w%])
+            (%%)
+            (?![<>\s%])
+            ([^<>]+?)
+            (?<![<>\s%])
+            \1
             (?![\w%])
         """,
         r'<span class="spoiler">\2</span>',
@@ -94,12 +94,12 @@ def make_strike_tags(line: str) -> str:
     """Find strike marks in string and replace them with <s> tags."""
     return re.sub(
         r"""
-            (?<![\w-]) 
-            (--) 
-            (?![<>\s-]) 
-            ([^<>]+?) 
-            (?<![<>\s-]) 
-            \1 
+            (?<![\w-])
+            (--)
+            (?![<>\s-])
+            ([^<>]+?)
+            (?<![<>\s-])
+            \1
             (?![\w-])
         """,
         r'<s>\2</s>',

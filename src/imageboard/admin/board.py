@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.db.models import Count
-from django.conf import settings
 
 from ..models import Board
 from hexchan import config
