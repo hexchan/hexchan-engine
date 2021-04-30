@@ -214,3 +214,6 @@ class Post(models.Model):
     @cached_property
     def ref_urls(self):
         return {ref.hid: ref.get_absolute_url() for ref in self.refs.all()}
+
+    def __str__(self):
+        return self.hid2hex()
