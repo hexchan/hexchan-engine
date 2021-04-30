@@ -1,3 +1,2 @@
 pre-commit
-black==21.4b2
 flake8==3.9.1
