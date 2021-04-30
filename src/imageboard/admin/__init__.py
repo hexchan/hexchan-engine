@@ -3,3 +3,4 @@ from .thread import ThreadAdmin
 from .post import PostAdmin
 from .image import ImageAdmin
 from .content_block import ContentBlockAdmin
+from .captcha import CaptchaAdmin
