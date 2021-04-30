@@ -254,9 +254,9 @@ class PostingForm(forms.ModelForm):
             )
 
     def _check_captcha(self, cleaned_data):
-        solution = cleaned_data['captcha']
-        board_id = cleaned_data['board_id']
-        thread_id = cleaned_data['thread_id']
+        solution = cleaned_data.get('captcha')
+        board_id = cleaned_data.get('board_id')
+        thread_id = cleaned_data.get('thread_id')
         ip_address = get_client_ip(self.request)
 
         try:

@@ -124,6 +124,13 @@ class NewPostTestCase(TestCase):
             max_posts_num=1,
         )
 
+        Captcha.objects.create(
+            solution='swordfish',
+            thread=little_thread,
+            board=self.board,
+            ip_address='127.0.0.1',
+        )
+
         # First post should pass
         post_data = self.base_post_content.copy()
         post_data.update({'thread_id': little_thread.id})
@@ -140,18 +147,6 @@ class NewPostTestCase(TestCase):
     def test_refs(self):
         # TODO
         pass
-
-    @tag('slow')
-    def test_posting_timeout(self):
-        post_data = self.base_post_content.copy()
-
-        response_01 = self.client.post('/create/', post_data)
-        self.check_redirect(response_01, '/t/0x000000/')
-
-        time.sleep(config.POSTING_TIMEOUT)
-
-        response_02 = self.client.post('/create/', post_data)
-        self.check_redirect(response_02, '/t/0x000000/')
 
     def test_bleaching(self):
         bad_string = "<script>alert('pwned');</script>"
