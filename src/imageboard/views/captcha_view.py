@@ -4,6 +4,7 @@ import datetime
 # Django imports
 from django.http import HttpResponse
 from django.utils import timezone
+from django.views.decorators.cache import never_cache
 
 # App imports
 from imageboard.models import Captcha
@@ -11,6 +12,7 @@ from imageboard.utils.get_client_ip import get_client_ip
 from imageboard.utils.captchamaker import make_word, draw_single_captcha, image_to_bytes
 
 
+@never_cache
 def captcha_view(request):
     board_id = request.GET.get('board')
     thread_id = request.GET.get('thread')
