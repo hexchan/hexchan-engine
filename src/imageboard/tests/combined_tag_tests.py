@@ -78,3 +78,9 @@ class NestedTagsTest(TestCase):
             '<blockquote>&gt;&gt; some_quote</blockquote>',
             wakabamark.parse_text('&gt;&gt; some_quote'),
         )
+
+    def test_urls_and_whitespaces(self):
+        self.assertEqual(
+            'Please visit <a href="http://example.com" rel="nofollow">http://example.com</a> every day.',
+            wakabamark.make_url_tags('Please visit http://example.com every day.'),
+        )
