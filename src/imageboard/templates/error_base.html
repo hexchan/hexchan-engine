@@ -1,22 +1,6 @@
-{% load static %}
-{% load i18n %}
-{% load settings_value %}
+{% extends 'imageboard/base.html' %}
 
-
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>{% settings_value 'SITE_NAME' %} :: {{ title }}</title>
-
-    <link rel="icon" href="{% static "favicon.png" %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
+{% block main %}
 <div class="error-page">
     <div class="error-page__header">
         {% block header %}
@@ -29,5 +13,4 @@
         {% block message %}{% endblock %}
     </div>
 </div>
-</body>
-</html>
+{% endblock %}

@@ -1,16 +1,21 @@
 {% extends 'error_base.html' %}
 {% load i18n %}
 
+{% block code %}403{% endblock %}
 
-{% block header %}
-    {% trans "Error" %}
-{% endblock %}
-
+{% block title %}{% trans "Error occurred while saving the message" %}{% endblock %}
 
 {% block message %}
-    {{ exception }}
+    {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endfor %}
 
-    {% if exception.data %}
-        {{ exception.data }}
-    {% endif %}
+    <button
+        class="button"
+        onclick="window.history.back();"
+    >
+        {% trans "Go back" %}
+    </button>
 {% endblock %}
