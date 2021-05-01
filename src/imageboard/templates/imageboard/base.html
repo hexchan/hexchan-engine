@@ -2,6 +2,8 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% load settings_value %}
+{% load icon_library %}
+{% load icon %}
 
 
 <!doctype html>
@@ -19,6 +21,37 @@
     {% block page_style %}{% endblock %}
 </head>
 <body>
+    <div style="color: blueviolet;">
+        {% icon 'add-outline' %}
+        {% icon 'apps-outline' %}
+        {% icon 'arrow-back-outline' %}
+        {% icon 'arrow-down-outline' %}
+        {% icon 'arrow-forward-outline' %}
+        {% icon 'arrow-redo-outline' %}
+        {% icon 'arrow-undo-outline' %}
+        {% icon 'arrow-up-outline' %}
+        {% icon 'bookmark-outline' %}
+        {% icon 'bookmarks-outline' %}
+        {% icon 'chatbox-outline' %}
+        {% icon 'chatbubble-outline' %}
+        {% icon 'close-outline' %}
+        {% icon 'create-outline' %}
+        {% icon 'download-outline' %}
+        {% icon 'enter-outline' %}
+        {% icon 'eye-off-outline' %}
+        {% icon 'eye-outline' %}
+        {% icon 'grid-outline' %}
+        {% icon 'image-outline' %}
+        {% icon 'images-outline' %}
+        {% icon 'lock-closed-outline' %}
+        {% icon 'lock-open-outline' %}
+        {% icon 'menu-outline' %}
+        {% icon 'open-outline' %}
+        {% icon 'person-outline' %}
+        {% icon 'refresh-outline' %}
+        {% icon 'warning-outline' %}
+    </div>
+
     {% block main %}
         <div class="app" id="app">
             <div class="app__header">
@@ -52,6 +85,10 @@
 
         {# Page scripts #}
         {% block page_script %}{% endblock %}
+    </div>
+
+    <div id="icon-library">
+        {% icon_library %}
     </div>
 </body>
 </html>

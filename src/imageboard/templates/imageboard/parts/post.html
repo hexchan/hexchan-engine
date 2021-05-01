@@ -1,6 +1,6 @@
 {% load markup %}
 {% load i18n %}
-
+{% load icon %}
 
 <div class="post {% if post.is_op %}post--op{% endif %} js-post" id="{{ post.hid2hex }}" data-id="{{ post.id }}" data-hid="{{ post.hid2hex }}">
     <div class="post__header">
@@ -42,18 +42,18 @@
             <span class="post__icons-and-buttons">
                 {% if post.is_op %}
                     <span
-                        class="post__icon icon is-hidden js-user-thread-icon"
+                        class="post__icon is-hidden js-user-thread-icon"
                         title="{% trans "My thread" %}"
                         data-id="{{ post.id }}"
                     >
-                        person_outline
+                        {% icon 'person-outline' 24 %}
                     </span>
 
                     <button
-                        class="post__button button button--icon js-toggle-thread"
+                        class="post__button button button--squared js-toggle-thread"
                         data-id="{{ thread.id }}" data-hid="{{ thread.hid2hex }}" title="{% trans "Hide thread" %}"
                     >
-                        close
+                        {% icon 'close-outline' 24 %}
                     </button>
 
 {#                    {% if request.user.is_superuser %}#}
@@ -65,11 +65,11 @@
 {#                    {% endif %}#}
                 {% else %}
                     <span
-                        class="post__icon icon is-hidden js-user-post-icon"
+                        class="post__icon is-hidden js-user-post-icon"
                         title="{% trans "My post" %}"
                         data-id="{{ post.id }}"
                     >
-                        person_outline
+                        {% icon 'person-outline' 24 %}
                     </span>
 
 {#                    {% if request.user.is_superuser %}#}
@@ -138,16 +138,16 @@
         {% if post.is_op %}
             <div class="post__thread-info post__footer-item">
                 <span class="post__thread-info-item">
-                    <span class="post__thread-info-icon icon icon--squared" title="{% trans "Posts" context "number of posts" %}">
-                        chat_bubble_outline
+                    <span class="post__thread-info-icon" title="{% trans "Posts" context "number of posts" %}">
+                        {% icon 'chatbox-outline' 24 %}
                     </span>
                     {% trans "Posts" context "number of posts" %}: {{ thread.posts_count }}
                 </span>
 
                 {% if thread.is_sticky %}
                     <span class="post__thread-info-item">
-                        <span class="post__thread-info-icon icon icon--squared" title="{% trans "Sticky" %}">
-                            bookmark_outline
+                        <span class="post__thread-info-icon" title="{% trans "Sticky" %}">
+                            {% icon 'bookmark-outline' 24 %}
                         </span>
                         {% trans "Sticky" %}
                     </span>
@@ -155,8 +155,8 @@
 
                 {% if thread.is_locked %}
                     <span class="post__thread-info-item">
-                        <span class="post__thread-info-icon icon icon--squared" title="{% trans "Locked" %}">
-                            lock
+                        <span class="post__thread-info-icon" title="{% trans "Locked" %}">
+                            {% icon 'lock-open-outline' 24 %}
                         </span>
                         {% trans "Locked" %}
                     </span>
@@ -166,8 +166,8 @@
             
                 {% if page_type == 'board_page' %}
                     <a class="post__thread-info-item" href="{{ thread.get_absolute_url }}">
-                        <span class="post__thread-info-icon post__thread-info-icon--in-link icon icon--squared" title="{% trans "Open thread" %}">
-                            subdirectory_arrow_right
+                        <span class="post__thread-info-icon post__thread-info-icon--in-link" title="{% trans "Open thread" %}">
+                            {% icon 'enter-outline' 24 %}
                         </span>
                         {% trans "Open thread" %}
                     </a>

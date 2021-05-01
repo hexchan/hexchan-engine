@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load icon %}
 
 <div class="images-widget js-images-widget">
     <input
@@ -17,10 +18,10 @@
 
     <label
         for="{{ widget.attrs.id }}"
-        class="images-widget__add-button button button--icon"
+        class="images-widget__add-button button button--squared"
         title="{% trans "Select images" %}"
     >
-        photo_library
+        {% icon 'images-outline' 32 %}
     </label>
 
     <div class="images-widget__previews js-images-widget-previews"></div>
