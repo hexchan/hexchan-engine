@@ -133,40 +133,70 @@ def make_ref_tags(line: str, post=None) -> str:
 def parse_text(text: str, post=None, make_refs=True, make_links=True) -> str:
     """Make all text blocks with inline tags."""
 
-    html_lines = []
+    full_text = ''
 
-    text_lines = re.split('\n', text)
-    for line in text_lines:
+    # TODO: lists and code
+    non_paragraph_block_regex = r'^(?:\s*$|&gt;)'  # empty lines and quotes
+    empty_line_regex = r'^\s*$'
+    quote_line_regex = r'^&gt;'
+    newline_regex = r'(?:\r\n|\n|\r)'
+
+    # Split text line by line
+    text_lines = re.split(newline_regex, text)
+    if len(text_lines) == 0:
+        return ''
+
+    while len(text_lines) > 0:
+        line = text_lines[0]
+
         # Skip empty lines
-        if re.match(r'^\s*$', line):
-            continue
+        if re.match(empty_line_regex, line):
+            del text_lines[0]
 
-        # Get block tag type: blockquote or paragraph
-        if re.match(r'^&gt;', line):
-            block_tag = 'blockquote'
+        # Detect start of quote block (aka "greentext")
+        elif re.match(quote_line_regex, line):
+            full_text += '<blockquote>'
+            quote_lines = []
+            while len(text_lines) > 0:
+                quote_line = text_lines[0]
+                if re.match(quote_line_regex, quote_line):
+                    quote_lines.append(
+                        format_line(quote_line, post, make_refs, make_links)
+                    )
+                    del text_lines[0]
+                else:
+                    break
+            full_text += '<br/>'.join(quote_lines) + '</blockquote>'
+
         else:
-            block_tag = 'p'
-
-        # Format line with inline tags
-        formatted_line = line
-        if make_links:
-            formatted_line = make_url_tags(formatted_line)
-        formatted_line = make_strong_tags(formatted_line)
-        formatted_line = make_em_tags(formatted_line)
-        formatted_line = make_strike_tags(formatted_line)
-        formatted_line = make_spoiler_tags(formatted_line)
-        if make_refs:
-            formatted_line = make_ref_tags(formatted_line, post)
-
-        # Wrap line with the block tag
-        wrapped_line = '<{tag}>{line}</{tag}>'.format(tag=block_tag, line=formatted_line)
-
-        # Push formatted_line to the resulting list
-        html_lines.append(wrapped_line)
-
-    full_text = '\n'.join(html_lines)
+            full_text += '<p>'
+            p_lines = []
+            while len(text_lines) > 0:
+                p_line = text_lines[0]
+                if not re.match(non_paragraph_block_regex, p_line):
+                    p_lines.append(
+                        format_line(p_line, post, make_refs, make_links)
+                    )
+                    del text_lines[0]
+                else:
+                    break
+            full_text += '<br/>'.join(p_lines) + '</p>'
 
     return full_text
+
+
+def format_line(line: str, post=None, make_refs=True, make_links=True) -> str:
+    formatted_line = line
+    if make_links:
+        formatted_line = make_url_tags(formatted_line)
+    formatted_line = make_strong_tags(formatted_line)
+    formatted_line = make_em_tags(formatted_line)
+    formatted_line = make_strike_tags(formatted_line)
+    formatted_line = make_spoiler_tags(formatted_line)
+    if make_refs:
+        formatted_line = make_ref_tags(formatted_line, post)
+
+    return formatted_line
 
 
 def extract_refs(text: str) -> list:
