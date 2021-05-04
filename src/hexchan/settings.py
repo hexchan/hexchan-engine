@@ -39,7 +39,7 @@ FAVICON_URL = env('FAVICON_URL', default='/static/imageboard/favicon.png')
 
 # Hosts
 HOST = env('HOST', default='example.com')
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', HOST]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', HOST]
 INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
