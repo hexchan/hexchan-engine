@@ -21,10 +21,8 @@ class Command(BaseCommand):
 
         try:
             for directory_path in directory_paths:
-                directory_path.mkdir(parents=True)
+                directory_path.mkdir(parents=True, exist_ok=True)
         except PermissionError:
             raise CommandError('Filesystem permission denied')
-        except FileExistsError:
-            raise CommandError('Directory %s already exists' % directory_path)
         except OSError:
             raise CommandError('Failed to create storage directories')

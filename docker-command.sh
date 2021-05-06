@@ -7,6 +7,12 @@ GREEN='\033[1;32m'
 CYAN='\033[1;36m'
 NC='\033[0m'  # No color
 
+echo -e "${CYAN}Make storage directories:${NC}"
+python src/manage.py create_storage_dirs
+
+echo -e "${CYAN}Collect static assets:${NC}"
+python src/manage.py collectstatic --no-input
+
 echo -e "${CYAN}Migrate database:${NC}"
 python src/manage.py migrate
 

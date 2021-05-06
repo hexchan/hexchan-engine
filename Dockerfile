@@ -50,13 +50,13 @@ COPY src ./src
 # Copy env file
 COPY .env .
 
+# Copy command script
+COPY docker-command.sh .
+
 # Copy built frontend assets and some deps
 COPY --from=node /srv/hexchan/src/imageboard/static/imageboard/style.css ./src/imageboard/static/imageboard/
 COPY --from=node /srv/hexchan/src/imageboard/static/imageboard/hexchan.js ./src/imageboard/static/imageboard/
 COPY --from=node /srv/hexchan/node_modules/material-design-icons ./node_modules/material-design-icons
-
-# Collect static assets
-RUN python src/manage.py collectstatic --no-input
 
 # Build locales
 RUN python src/manage.py compilemessages
