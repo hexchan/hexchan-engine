@@ -10,12 +10,6 @@ NC='\033[0m'  # No color
 echo -e "${CYAN}Migrate database:${NC}"
 python src/manage.py migrate
 
-echo -e "${CYAN}Collect static assets:${NC}"
-python src/manage.py collectstatic --no-input
-
-echo -e "${CYAN}Build locales:${NC}"
-python src/manage.py compilemessages
-
 echo -e "${CYAN}Load initial data:${NC}"
 src/manage.py loaddata content_blocks
 

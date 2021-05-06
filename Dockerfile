@@ -1,5 +1,5 @@
 # Base images
-FROM python:3.8 AS main
+FROM python:3.8-slim AS main
 
 # Python variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -54,3 +54,9 @@ COPY .env .
 COPY --from=node /srv/hexchan/src/imageboard/static/imageboard/style.css ./src/imageboard/static/imageboard/
 COPY --from=node /srv/hexchan/src/imageboard/static/imageboard/hexchan.js ./src/imageboard/static/imageboard/
 COPY --from=node /srv/hexchan/node_modules/material-design-icons ./node_modules/material-design-icons
+
+# Collect static assets
+RUN python src/manage.py collectstatic --no-input
+
+# Build locales
+RUN python src/manage.py compilemessages
