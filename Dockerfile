@@ -20,7 +20,7 @@ RUN pip install --no-cache -r requirements.txt
 
 # START OF NODE STAGE
 # ==============================================================================
-FROM node:12 AS node
+FROM node:12-slim AS node
 
 # Set working directory
 WORKDIR /srv/hexchan
