@@ -1,8 +1,16 @@
+# Standard library imports
 import os.path
+from io import BytesIO
 
+# Django imports
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.files.base import ContentFile
 
+# Third party imports
+import PIL.Image
+
+# App imports
 from hexchan import config
 
 
@@ -117,6 +125,10 @@ class Image(models.Model):
         indexes = []
         ordering = ['id']
 
+    def save(self, *args, **kwargs):
+        self.generate_thumbnail()
+        super().save(*args, **kwargs)
+
     def hid(self):
         return config.IMAGE_HID_FORMAT.format(hid=self.id) if self.id is not None else None
 
@@ -139,3 +151,60 @@ class Image(models.Model):
     def delete_files(self):
         os.remove(self.file.path)
         os.remove(self.thumb_file.path)
+
+    def generate_thumbnail(self):
+        # If no file attached - skip this operation
+        if not self.file:
+            return
+
+        # Load image file with PIL
+        image_pil_object = PIL.Image.open(self.file.open())
+
+        # Convert image to RGBA format when needed
+        # (for example, when image has indexed palette 8bit per pixel mode)
+        thumbnail_pil_object = image_pil_object.convert('RGBA')
+
+        # Create thumbnail image
+        thumbnail_pil_object.thumbnail(
+            size=config.IMAGE_THUMB_SIZE,
+            resample=PIL.Image.BICUBIC,
+        )
+
+        # Create background image with matching size
+        # (to merge with transparent images)
+        bg_pil_object = PIL.Image.new(
+            mode='RGBA',
+            size=thumbnail_pil_object.size,
+            color=config.THUMB_ALPHA_COLOR
+        )
+
+        # Merge thumbnail with background, convert to RGB
+        thumbnail_pil_object = PIL.Image \
+            .alpha_composite(
+                bg_pil_object,
+                thumbnail_pil_object
+            ) \
+            .convert('RGB')
+
+        # Save thumbnail to in-memory file as BytesIO
+        thumb_file = BytesIO()
+        thumbnail_pil_object.save(
+            thumb_file,
+            config.THUMB_TYPE,
+            **config.THUMB_OPTIONS,
+        )
+        thumb_file.seek(0)
+
+        # Generate filename for the thumbnail
+        thumb_file_name = self.make_thumb_file_name()
+
+        # Save thumbnail field
+        # Set save=False, otherwise it will run in an infinite loop
+        self.thumb_file.save(
+            thumb_file_name,
+            ContentFile(thumb_file.read()),
+            save=False
+        )
+
+        # Close thumbnail virtual file
+        thumb_file.close()

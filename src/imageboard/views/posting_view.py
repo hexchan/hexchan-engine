@@ -1,6 +1,3 @@
-# Standard library imports
-from io import BytesIO
-
 # Django imports
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user
@@ -8,15 +5,9 @@ from django.db import transaction
 from django.db.models import F
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from django.core.files.base import ContentFile
 from django.views.generic import FormView
 
-# Third party imports
-import PIL.Image
-
 # App imports
-from hexchan import config
-
 from imageboard.models import Board, Thread, Post, Image, Captcha
 from imageboard.forms import PostingForm
 from imageboard.views.parts import push_to_session_list
@@ -116,51 +107,9 @@ class PostingView(FormView):
             # Save image object to the database
             image.save()
 
-            # Update with image
+            # Update with image later,
+            # because to generate file name we need instance id
             image.file = image_file
-
-            # TODO: move thumb generation logic into the Image model
-            # Load image with PIL
-            image_pil_object = PIL.Image.open(image_file)
-
-            # Create thumbnail with PIL library
-            # Convert image to RGBA format when needed (for example, if image has indexed pallette 8bit per pixel mode)
-            thumbnail_pil_object = image_pil_object.convert('RGBA')
-            thumbnail_pil_object.thumbnail(
-                size=config.IMAGE_THUMB_SIZE,
-                resample=PIL.Image.BICUBIC,
-            )
-
-            # Background image
-            bg_pil_object = PIL.Image.new(
-                mode='RGBA',
-                size=thumbnail_pil_object.size,
-                color=config.THUMB_ALPHA_COLOR
-            )
-
-            # Apply background
-            thumbnail_pil_object = PIL.Image\
-                .alpha_composite(
-                    bg_pil_object,
-                    thumbnail_pil_object
-                )\
-                .convert('RGB')
-
-            # Save thumbnail to in-memory file as BytesIO
-            thumb_file = BytesIO()
-            thumbnail_pil_object.save(
-                thumb_file,
-                config.THUMB_TYPE,
-                **config.THUMB_OPTIONS,
-            )
-            thumb_file.seek(0)
-
-            # Set save=False, otherwise it will run in an infinite loop
-            image.thumb_file.save(
-                image.make_thumb_file_name(),
-                ContentFile(thumb_file.read()),
-                save=False
-            )
 
             # Save everything
             image.save()
