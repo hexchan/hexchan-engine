@@ -1,11 +1,5 @@
 from django.conf import settings
 
-import hexchan.config
-
-
-def config(request):
-    return {'config': hexchan.config.__dict__}
-
 
 def admin_email(request):
     emails = [email for name, email in settings.ADMINS]

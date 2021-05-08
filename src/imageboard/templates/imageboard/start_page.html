@@ -1,12 +1,11 @@
 {% extends 'imageboard/base.html' %}
 {% load static %}
 {% load i18n %}
-{% load settings_value %}
 {% load markdown %}
 
 
 {% block page_title %}
-    {% settings_value 'SITE_NAME' %}
+    {{ config.SITE_NAME }}
 {% endblock %}
 
 {% block page_description %}{% endblock %}

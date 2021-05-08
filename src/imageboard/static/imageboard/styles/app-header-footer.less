@@ -55,7 +55,8 @@
     }
 
     &__logo {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
         padding: 0 0.25rem;
         border-right: @grey-color-500;
         font-size: 24px;
@@ -66,6 +67,12 @@
         &:hover {
             color: @accent-color;
         }
+    }
+
+    &__logo-image {
+        margin-right: 0.5rem;
+        max-height: 24px;
+        max-width: 24px;
     }
 
     &__board-selector {

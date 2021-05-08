@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load settings_value %}
 
 
 <footer class="footer">
@@ -24,7 +23,7 @@
 
         <div class="footer__credits">
             <span class="footer__copyright">
-                © {% settings_value 'SITE_NAME' %}, {% now 'Y' %}
+                © {{ config.SITE_NAME }}, {% now 'Y' %}
             </span>
 
             <span class="spacer"></span>

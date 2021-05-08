@@ -1,9 +1,14 @@
 {% load i18n %}
-{% load settings_value %}
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+{% get_media_prefix as MEDIA_URL %}
 
 <header class="header">
     <div class="header__inner">
-        <a class="header__logo" href="{% url 'start_page' %}">{% settings_value 'SITE_NAME' %}</a>
+        <a class="header__logo" href="{% url 'start_page' %}">
+            <img class="header__logo-image" src="{% if config.LOGO %}{{ MEDIA_URL }}{{ config.LOGO }}{% else %}{{ STATIC_PREFIX }}imageboard/favicon.png{% endif %}" alt="">
+            {{ config.SITE_NAME }}
+        </a>
 
         {% if board %}
             <div class="header__separator">/</div>

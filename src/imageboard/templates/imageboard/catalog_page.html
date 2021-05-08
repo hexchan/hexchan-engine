@@ -1,11 +1,10 @@
 {% extends 'imageboard/base.html' %}
 {% load static %}
 {% load i18n %}
-{% load settings_value %}
 
 
 {% block page_title %}
-    {% settings_value 'SITE_NAME' %} :: {{ board.name }} :: {% trans "Thread catalog" %}
+    {{ config.SITE_NAME }} :: {{ board.name }} :: {% trans "Thread catalog" %}
 {% endblock %}
 
 {% block page_description %}{{ board.description }}{% endblock %}

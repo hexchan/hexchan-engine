@@ -1,6 +1,7 @@
 # Standard libs
 from pathlib import Path
 from email.utils import getaddresses
+from collections import OrderedDict
 
 # Third party libs
 from environ import Env
@@ -33,10 +34,6 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-# Branding
-SITE_NAME = env('SITE_NAME', default='HEXCHAN')
-FAVICON_URL = env('FAVICON_URL', default='/static/imageboard/favicon.png')
-
 # Hosts
 HOST = env('HOST', default='example.com')
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', HOST]
@@ -44,6 +41,7 @@ INTERNAL_IPS = ['127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,12 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third party apps
+    'constance',
+    'constance.backends.database',
+    'debug_toolbar',
+
     # Project apps
     'imageboard',
     'moderation',
-
-    # Third party
-    'debug_toolbar',
 ]
 
 # Middleware
@@ -85,6 +85,9 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                # Third party processors
+                'constance.context_processors.config',
+
                 # Django processors
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -93,7 +96,6 @@ TEMPLATES = [
                 'django.template.context_processors.media',
 
                 # App processors
-                'imageboard.context_processors.config',
                 'imageboard.context_processors.admin_email',
             ],
         },
@@ -164,3 +166,56 @@ vars().update(EMAIL_CONFIG)
 
 # Admins
 ADMINS = getaddresses([env('DJANGO_ADMINS', default='root@localhost')])
+
+# Admin-editable constants
+CONSTANCE_CONFIG = OrderedDict([
+    (
+        'SITE_NAME',
+        (
+            'Hexchan',
+            _('Site title'),
+        ),
+    ),
+    (
+        'SITE_DESCRIPTION',
+        (
+            'Yet another anonymous imageboard',
+            _('Site description, used in the main page\'s "description" meta tag content'),
+        ),
+    ),
+    (
+        'SITE_KEYWORDS',
+        (
+            'imageboard, anonymous, fun',
+            _('Site keywords, used as the main page\'s "keywords" meta tag content'),
+        ),
+    ),
+    (
+        'MAIN_PAGE_WELCOMING_TEXT',
+        (
+            '#Hello world!',
+            _('The welcoming text displayed on the main page (Markdown is supported)')
+        ),
+    ),
+    (
+        'LOGO_IMAGE',
+        (
+            '',
+            _('Site logo, displayed in the site header'),
+            'image_field'
+        ),
+    ),
+    (
+        'FAVICON',
+        (
+            '',
+            _('Site favicon, displayed in browser\'s navbar'),
+            'image_field'
+        ),
+    ),
+])
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'image_field': ['django.forms.ImageField', {'required': False}]
+}
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+# CONSTANCE_DATABASE_CACHE_BACKEND = 'default'  // TODO: uncomment me when cache will be enabled

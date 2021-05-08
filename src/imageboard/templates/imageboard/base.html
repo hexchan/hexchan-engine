@@ -1,8 +1,8 @@
 {% load static %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
-{% load settings_value %}
-
+{% get_static_prefix as STATIC_PREFIX %}
+{% get_media_prefix as MEDIA_URL %}
 
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -11,11 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#E2E4E9">
 
-    <title>{% block page_title %}{% settings_value 'SITE_NAME' %}{% endblock %}</title>
+    <title>{% block page_title %}{{ config.SITE_NAME }}{% endblock %}</title>
     <meta name="description" content="{% block page_description %}{% endblock %}">
     <meta name="keywords" content="{% block page_keywords %}{% endblock %}">
 
-    <link rel="icon" href="{% settings_value 'FAVICON_URL' %}">
+    <link rel="icon" href="{% if config.FAVICON %}{{ MEDIA_URL }}{{ config.FAVICON }}{% else %}{{ STATIC_PREFIX }}imageboard/favicon.png{% endif %}">
     <link rel="stylesheet" href="{% static 'imageboard/style.css' %}">
 
     {% block page_style %}{% endblock %}
