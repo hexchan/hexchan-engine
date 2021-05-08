@@ -13,11 +13,6 @@
 {% block page_keywords %}{{ board.keywords }}{% endblock %}
 
 
-{% block header %}
-    {% include 'imageboard/parts/header.html' %}
-{% endblock %}
-
-
 {% block content %}
     {% include 'imageboard/parts/board_header.html' with page_type='board_page' %}
 
@@ -38,11 +33,6 @@
     </div>
 
     <div class="popup-container js-popup-container"></div>
-{% endblock %}
-
-
-{% block footer %}
-    {% include 'imageboard/parts/footer.html' with board_pages=threads %}
 {% endblock %}
 
 

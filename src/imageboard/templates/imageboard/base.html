@@ -23,17 +23,13 @@
 <body>
     {% block main %}
         <div class="app" id="app">
-            <div class="app__header">
-                {% block header %}{% endblock%}
-            </div>
+            {% include 'imageboard/parts/header.html' %}
 
-            <div class="app__content js-content">
+            <main class="content js-content">
                 {% block content %}{% endblock%}
-            </div>
+            </main>
 
-            <div class="app__footer">
-                {% block footer %}{% endblock%}
-            </div>
+            {% include 'imageboard/parts/footer.html' %}
 
             {% if request.user.is_superuser %}
                 <a href="{% url 'admin:index' %}" class="app__admin">admin</a>

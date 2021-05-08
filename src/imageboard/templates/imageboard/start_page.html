@@ -14,11 +14,6 @@
 {% block page_keywords %}{% endblock %}
 
 
-{% block header %}
-    {% include 'imageboard/parts/header.html' %}
-{% endblock %}
-
-
 {% block content %}
     {% if index_page_text %}
         <div class="index-page-text">
@@ -43,16 +38,5 @@
     {% endfor %}
 {% endblock %}
 
-{% block footer %}
-    {% include 'imageboard/parts/footer.html' %}
-{% endblock %}
 
-{% block page_style %}
-    <style>
-        {% for board in boards %}
-            {% if not board.is_hidden and not board.is_deleted %}
-                {{ board.custom_style }}
-            {% endif %}
-        {% endfor %}
-    </style>
-{% endblock %}
+{% block page_style %}{% endblock %}
