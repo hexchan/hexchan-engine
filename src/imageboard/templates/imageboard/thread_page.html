@@ -8,6 +8,10 @@
     {% settings_value 'SITE_NAME' %} :: {{ board.name }} {% if thread.op.title %}::{% endif %} {{ thread.op.title }}
 {% endblock %}
 
+{% block page_description %}{{ board.description }}{% endblock %}
+
+{% block page_keywords %}{{ board.keywords }}{% endblock %}
+
 
 {% block header %}
     {% include 'imageboard/parts/header.html' %}

@@ -29,6 +29,13 @@ class Board(models.Model):
         blank=True
     )
 
+    keywords = models.CharField(
+        _('Keywords'),
+        help_text=_('Search engine keywords'),
+        max_length=256,
+        blank=True
+    )
+
     rules = models.TextField(
         _('Rules'),
         help_text=_('Board rules will be displayed next to posting form.'),

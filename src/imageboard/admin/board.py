@@ -47,7 +47,7 @@ class BoardAdmin(admin.ModelAdmin):
 
         ('About board', {
             'fields': (
-                'description', 'rules', 'custom_style',
+                'description', 'keywords', 'rules', 'custom_style',
             ),
         }),
 
